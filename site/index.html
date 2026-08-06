@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tungsten Desk — Tungsten Market Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ======= TICKER (haywire-style marquee) ======= -->
+<div class="ticker-wrap" id="tickerWrap">
+  <div class="ticker-label">LIVE WIRE</div>
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- ======= HEADER ======= -->
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">W</span>
+    <div>
+      <h1>Tungsten Desk</h1>
+      <div class="brand-sub">APT · WO₃ · Tungsten Carbide — multi-model price intelligence</div>
+    </div>
+  </div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="market">MARKET</button>
+    <button class="tab" data-tab="methodology">METHODOLOGY</button>
+  </nav>
+  <div class="gen-stamp" id="genStamp">—</div>
+</header>
+
+<!-- ================= MARKET TAB ================= -->
+<main id="tab-market" class="tab-panel active">
+
+  <!-- HEADLINE CARDS -->
+  <section class="cards" id="headlineCards"></section>
+
+  <!-- MAIN PRICE CHART -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Tungsten APT — five price lenses <span class="dim">(88.5% WO₃, CIF Rotterdam basis, $/mtu WO₃)</span></h2>
+      <div class="legend" id="mainLegend"></div>
+    </div>
+    <div class="chart-box big"><canvas id="mainChart"></canvas></div>
+    <div class="panel-note">
+      <span class="chip chip-verified">● VERIFIED</span> reported benchmarks (ISBP/Dornhofer anchors).
+      <span class="chip chip-est">● ESTIMATED</span> interpolated path &amp; model outputs between verified points.
+      The wide divergence between models is the story: since China's 4-Feb-2025 dual-use export controls
+      broke the Rotterdam↔Shanghai arbitrage, tungsten is a market in active price discovery.
+    </div>
+  </section>
+
+  <!-- TWO-COL: CORRELATION + EQUITY LEAD -->
+  <section class="grid-2">
+    <div class="panel">
+      <div class="panel-head"><h2>Factor exposures <span class="dim">what drives tungsten</span></h2></div>
+      <div class="chart-box"><canvas id="corrChart"></canvas></div>
+      <div class="panel-note">Correlation of daily returns, Jun 2024 → present. Tungsten vs the liquid assets used in the factor model.</div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h2>Rolling correlation vs copper <span class="dim">60-day</span></h2></div>
+      <div class="chart-box"><canvas id="rollingChart"></canvas></div>
+        <div class="panel-note" id="rollingNote">The naive tungsten↔copper correlation graph is unstable — which is exactly why a conditional factor model beats a single-metal proxy. Three lenses: 60-day rolling correlation of copper against the two daily model paths (equity-implied, factor-implied), plus 12-month monthly-return correlation vs the observed APT series. See Methodology §M3.</div>
+    </div>
+  </section>
+
+  <!-- EQUITY SIGNAL -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>The equity-implied signal <span class="dim">tungsten equities as a leading indicator</span></h2>
+    </div>
+    <div class="grid-2">
+      <div class="chart-box"><canvas id="equityChart"></canvas></div>
+      <div class="signal-box" id="signalBox"></div>
+    </div>
+  </section>
+
+  <!-- LONG HISTORY -->
+  <section class="panel">
+    <div class="panel-head"><h2>125 years of tungsten unit value <span class="dim">USGS historical statistics, 1900–2017 ($/t, log scale)</span></h2></div>
+    <div class="chart-box"><canvas id="historyChart"></canvas></div>
+    <div class="panel-note">Source: USGS Historical Statistics for Mineral and Material Commodities (ds140 tungsten workbook, 2017 ed.). The 2025–26 spike is without modern precedent — last comparable shock: WWI.</div>
+  </section>
+
+  <!-- NEWS -->
+  <section class="panel">
+    <div class="panel-head">
+      <h2>The Wire <span class="dim">tungsten market news — most signal first</span></h2>
+      <div class="news-filter">
+        <button class="nbtn active" data-f="all">ALL</button>
+        <button class="nbtn" data-f="price">PRICE</button>
+        <button class="nbtn" data-f="policy">POLICY/SUPPLY</button>
+        <button class="nbtn" data-f="company">COMPANY</button>
+      </div>
+    </div>
+    <div class="news-scroll" id="newsScroll"></div>
+  </section>
+
+</main>
+
+<!-- ================= METHODOLOGY TAB ================= -->
+<main id="tab-methodology" class="tab-panel">
+
+  <section class="panel meth-intro">
+    <h2>How we price an unpriced market</h2>
+    <p>Tungsten has no exchange, no central clearing, and since <strong>4 February 2025</strong> — when China placed tungsten under its dual-use export-control regime — the two benchmark assessments (APT 88.5% WO₃ CIF Rotterdam and the Chinese domestic market) no longer form one market. Fastmarkets calls it <em>"fragmenting"</em>. That fragmentation is our opportunity: instead of one "true" price, we publish <strong>five independent estimates</strong>, each with explicit assumptions, and let their divergence itself carry information.</p>
+  </section>
+
+  <section class="meth-grid" id="methModels"></section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Data provenance &amp; verification tiers</h2></div>
+    <table class="prov-table" id="provTable">
+      <thead><tr><th>SERIES</th><th>TIER</th><th>SOURCE</th><th>STATUS</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Research basis <span class="dim">the literature behind each model</span></h2></div>
+    <div class="refs" id="refsBox"></div>
+  </section>
+
+  <section class="panel caveat">
+    <h2>Limitations — read before trading anything</h2>
+    <ul>
+      <li><strong>The "reported" daily path between verified anchors is an analyst reconstruction</strong>, not a published assessment. Only the two ISBP/Dornhofer anchors ($330 open-2025, &gt;$3,000 on 17-Jul-2026), the IMARC carbide figure, and the export-control date are independently verified. The intermediate monthly shape is documented in M0 and is the largest source of model uncertainty.</li>
+      <li><strong>Equity-implied prices are not prices.</strong> Tungsten equities carry mine, finance, jurisdiction and dilution risk. The elasticity (β) is calibrated on a single 18-month window and would drift in a new regime.</li>
+      <li><strong>Factor-model R² is low (~0.14).</strong> Tungsten is driven by China policy, not copper. The factor path is a <em>sanity band</em>, not a forecast — that is itself a finding.</li>
+      <li>The lead-lag test found a <strong>negative</strong> 21-day lead correlation between equity excess returns and APT moves — the naive "stocks lead spot" alpha hypothesis is <em>rejected</em> by this dataset. Equities may still add information in a Kalman fusion, but as a contemporaneous noisy signal, not a leading one.</li>
+      <li>This dashboard is a research prototype. Nothing here is investment advice.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <span>TUNGSTEN DESK — research prototype · built with Hermes Agent (Qwen) · data: Yahoo Finance, USGS, ISBP via Almonty, Google News RSS</span>
+  <span>Prices: $/mtu WO₃ unless noted · 1 t APT (88.5% WO₃) = 88.5 mtu</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

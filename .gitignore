@@ -1,0 +1,25 @@
+# Build artifacts
+build/
+dist/
+*.spec
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Raw harvested data (large, regenerable) — keep only what the site needs
+data/market_raw.json
+data/news_*.xml
+data/*.html
+data/*.xlsx
+data/*.xls
+data/*.json
+!data/models_output.json
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.idea/
+.vscode/
