@@ -41,15 +41,17 @@
   <!-- MAIN PRICE CHART -->
   <section class="panel">
     <div class="panel-head">
-      <h2>Tungsten APT — five price lenses <span class="dim">(88.5% WO₃, CIF Rotterdam basis, $/mtu WO₃)</span></h2>
+      <h2>Tungsten APT — six price lenses <span class="dim">(88.5% WO₃, CIF Rotterdam basis, $/mtu WO₃)</span></h2>
       <div class="legend" id="mainLegend"></div>
     </div>
     <div class="chart-box big"><canvas id="mainChart"></canvas></div>
     <div class="panel-note">
-      <span class="chip chip-verified">● VERIFIED</span> reported benchmarks (ISBP/Dornhofer anchors).
+      <span class="chip chip-verified">● VERIFIED</span> reported benchmarks (ISBP/Dornhofer + Fastmarkets anchors).
       <span class="chip chip-est">● ESTIMATED</span> interpolated path &amp; model outputs between verified points.
       The wide divergence between models is the story: since China's 4-Feb-2025 dual-use export controls
       broke the Rotterdam↔Shanghai arbitrage, tungsten is a market in active price discovery.
+      The <b>Shanghai-implied + carry line is the cornerstone</b> — the domestic Chinese price is set by real
+      supply/demand in the 80%-of-production market, and the observed Rotterdam premium over it is the signal.
     </div>
   </section>
 
@@ -61,21 +63,31 @@
       <div class="panel-note">Correlation of daily returns, Jun 2024 → present. Tungsten vs the liquid assets used in the factor model.</div>
     </div>
     <div class="panel">
-      <div class="panel-head"><h2>Rolling correlation vs copper <span class="dim">60-day</span></h2></div>
+      <div class="panel-head"><h2>Rolling correlation vs copper &amp; iron ore <span class="dim">60-day / 12-month</span></h2></div>
       <div class="chart-box"><canvas id="rollingChart"></canvas></div>
-        <div class="panel-note" id="rollingNote">The naive tungsten↔copper correlation graph is unstable — which is exactly why a conditional factor model beats a single-metal proxy. Three lenses: 60-day rolling correlation of copper against the two daily model paths (equity-implied, factor-implied), plus 12-month monthly-return correlation vs the observed APT series. See Methodology §M3.</div>
+        <div class="panel-note" id="rollingNote">Copper's link to tungsten is unstable — which is why the factor model treats it as a control, not a driver. Iron ore (mining &amp; construction = 26% of tungsten end-use) is the more meaningful demand-side lens. See Methodology §M3.</div>
     </div>
   </section>
 
   <!-- EQUITY SIGNAL -->
   <section class="panel">
     <div class="panel-head">
-      <h2>The equity-implied signal <span class="dim">tungsten equities as a leading indicator</span></h2>
+      <h2>The equity-implied signal <span class="dim">REJECTED as a price model — kept as a diagnostic</span></h2>
     </div>
     <div class="grid-2">
       <div class="chart-box"><canvas id="equityChart"></canvas></div>
       <div class="signal-box" id="signalBox"></div>
     </div>
+  </section>
+
+  <!-- SUPPLY-DEMAND (M5) -->
+  <section class="panel" id="supplyDemandPanel" style="display:none">
+    <div class="panel-head">
+      <h2>Supply-demand equilibrium <span class="dim">stock-to-use balance → price, 2025–2035 ($/mtu WO₃)</span></h2>
+      <div class="legend" id="sdLegend"></div>
+    </div>
+    <div class="chart-box"><canvas id="sdChart"></canvas></div>
+    <div class="panel-note" id="sdNote"></div>
   </section>
 
   <!-- LONG HISTORY -->
@@ -106,7 +118,7 @@
 
   <section class="panel meth-intro">
     <h2>How we price an unpriced market</h2>
-    <p>Tungsten has no exchange, no central clearing, and since <strong>4 February 2025</strong> — when China placed tungsten under its dual-use export-control regime — the two benchmark assessments (APT 88.5% WO₃ CIF Rotterdam and the Chinese domestic market) no longer form one market. Fastmarkets calls it <em>"fragmenting"</em>. That fragmentation is our opportunity: instead of one "true" price, we publish <strong>five independent estimates</strong>, each with explicit assumptions, and let their divergence itself carry information.</p>
+    <p>Tungsten has no exchange, no central clearing, and since <strong>4 February 2025</strong> — when China placed tungsten under its dual-use export-control regime — the two benchmark assessments (APT 88.5% WO₃ CIF Rotterdam and the Chinese domestic market) no longer form one market. Fastmarkets calls it <em>"fragmenting"</em>. That fragmentation is our opportunity: instead of one "true" price, we publish <strong>six independent estimates</strong>, each with explicit assumptions, and let their divergence itself carry information. The Shanghai-implied + carry model (M1) is the cornerstone; the equity-implied model (M2) is a documented rejection; the supply-demand balance (M5) is the scenario forward-look.</p>
   </section>
 
   <section class="meth-grid" id="methModels"></section>
@@ -127,10 +139,11 @@
   <section class="panel caveat">
     <h2>Limitations — read before trading anything</h2>
     <ul>
-      <li><strong>The "reported" daily path between verified anchors is an analyst reconstruction</strong>, not a published assessment. Only the two ISBP/Dornhofer anchors ($330 open-2025, &gt;$3,000 on 17-Jul-2026), the IMARC carbide figure, and the export-control date are independently verified. The intermediate monthly shape is documented in M0 and is the largest source of model uncertainty.</li>
-      <li><strong>Equity-implied prices are not prices.</strong> Tungsten equities carry mine, finance, jurisdiction and dilution risk. The elasticity (β) is calibrated on a single 18-month window and would drift in a new regime.</li>
-      <li><strong>Factor-model R² is low (~0.14).</strong> Tungsten is driven by China policy, not copper. The factor path is a <em>sanity band</em>, not a forecast — that is itself a finding.</li>
-      <li>The lead-lag test found a <strong>negative</strong> 21-day lead correlation between equity excess returns and APT moves — the naive "stocks lead spot" alpha hypothesis is <em>rejected</em> by this dataset. Equities may still add information in a Kalman fusion, but as a contemporaneous noisy signal, not a leading one.</li>
+      <li><strong>The "reported" daily path between verified anchors is an analyst reconstruction</strong>, not a published assessment. Only the ISBP/Dornhofer anchors ($330 open-2025, &gt;$3,000 on 17-Jul-2026), the Fastmarkets print ($3,139.50 on 24-Jul-2026), the IMARC carbide figure, and the export-control date are independently verified. The intermediate monthly shape is documented in M0 and is the largest source of model uncertainty.</li>
+      <li><strong>The equity-implied model is rejected, not a price.</strong> It is kept solely as a documented diagnostic of why naive equity mapping fails (lead corr ≈ −0.19). It is excluded from the Kalman fusion.</li>
+      <li><strong>The factor model is a sanity band, not a forecast.</strong> R² ≈ 0.42 — tungsten is policy- and demand-driven; copper is a control, iron ore and moly carry the demand signal.</li>
+      <li><strong>The Shanghai-implied domestic price is reconstructed, not reported.</strong> We have no direct SMM feed; the domestic line is derived from the observed export price minus a documented fragmentation discount. Its level is the model's biggest single assumption.</li>
+      <li><strong>The M5 supply-demand model rests on company-sourced balance figures</strong> (Sangdong NI 43-101 deficits, Almonty deck) and modeled, not reported, stock levels. Inventory in tungsten is invisible; policy shocks (export controls, the DoW 2027 procurement ban) can override any balance-driven price path.</li>
       <li>This dashboard is a research prototype. Nothing here is investment advice.</li>
     </ul>
   </section>

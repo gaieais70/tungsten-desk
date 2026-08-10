@@ -13,8 +13,8 @@ let MODELS=null, NEWS=null;
 /* ---------------- palette ---------------- */
 const C={
   observed:'#f0b429', kalman:'#e8edf4', shanghai:'#e05252',
-  equity:'#a78bfa', factor:'#5aa9e6', arb:'#4dd0c4',
-  copper:'#f28c38', grid:'#1e2633', axis:'#5c6a7d'
+  equity:'#a78bfa', factor:'#5aa9e6', arb:'#4dd0c4', fair:'#4dd0c4',
+  iron:'#7bd88f', copper:'#f28c38', grid:'#1e2633', axis:'#5c6a7d'
 };
 
 /* ============================================================
@@ -236,11 +236,13 @@ function render(){
   const tkItems=[
     ['APT ROTTERDAM', fmtMtu(L.reported_rotterdam.value)+'/mtu', 'up'],
     ['SHANGHAI IMPLIED', fmtMtu(L.shanghai_implied.value)+'/mtu', 'dn'],
+    ['ROTTERDAM FAIR (SHA+CARRY)', fmtMtu(L.rotterdam_fair_from_shanghai.value)+'/mtu', 'dn'],
+    ['FRAGMENTATION PREMIUM', fmt(L.fragmentation_premium_pct.value,0)+'%', 'dn'],
     ['KALMAN FAIR VALUE', fmtMtu(L.kalman.value)+'/mtu', 'up'],
-    ['EQUITY-IMPLIED', fmtMtu(L.equity_implied.value)+'/mtu', 'dn'],
-    ['COPPER', '$'+fmt(L.copper.value,2)+'/lb', 'up'],
+    ['EQUITY-IMPLIED (REJECTED)', fmtMtu(L.equity_implied.value)+'/mtu', 'dn'],
+    ['COPPER (CONTROL)', '$'+fmt(L.copper.value,2)+'/lb', 'up'],
+    ['IRON ORE (DEMAND PROXY)', '$'+fmt(L.iron_ore.value,1)+'/t', 'up'],
     ['USD/CNY', fmt(L.usdcny.value,3), ''],
-    ['CARBIDE CHINA', '$131/kg', 'up'],
     ['CN EXPORT CONTROLS', 'ACTIVE · 4 FEB 2025', 'dn'],
   ];
   const half=tkItems.map(([k,v,cls])=>`<span class="tk-item"><b>${k}</b> ${v} ${cls?`<span class="${cls}">${cls==='up'?'▲':'▼'}</span>`:''}</span>`).join('');
@@ -250,15 +252,17 @@ function render(){
   const cards=[
     {label:'Reported APT · Rotterdam',value:fmtMtu(L.reported_rotterdam.value),unit:'$/mtu WO₃ · 88.5%',cls:'hero',cc:C.observed,
      sub:`≈ <b>${fmtMtu(L.reported_rotterdam_t.value)}/t</b> APT · ${L.reported_rotterdam.date}`},
-    {label:'Kalman fair value',value:fmtMtu(L.kalman.value),unit:'$/mtu WO₃ · fused estimate',cc:C.kalman,
+    {label:'Kalman fair value',value:fmtMtu(L.kalman.value),unit:'$/mtu WO₃ · fused, Shanghai-anchored',cc:C.kalman,
      sub:`band ${fmtMtu(L.kalman_band[0])} – ${fmtMtu(L.kalman_band[1])}`},
-    {label:'Equity-implied',value:fmtMtu(L.equity_implied.value),unit:'$/mtu · from tungsten stocks',cc:C.equity,
-     sub:`discount <b>${fmt((1-L.equity_implied.value/L.reported_rotterdam.value)*100,1)}%</b> vs reported`},
-    {label:'Factor-model implied',value:fmtMtu(L.factor_implied.value),unit:'$/mtu · proxy metals',cc:C.factor,
-     sub:`premium <b>+${fmt((L.factor_implied.value/L.reported_rotterdam.value-1)*100,1)}%</b> vs reported`},
+    {label:'Rotterdam fair (Shanghai+carry)',value:fmtMtu(L.rotterdam_fair_from_shanghai.value),unit:'$/mtu · M1 cornerstone',cc:C.fair,
+     sub:`premium <b>+${fmt(L.fragmentation_premium_pct.value,0)}%</b> observed vs fair`},
     {label:'Shanghai-implied domestic',value:fmtMtu(L.shanghai_implied.value),unit:'$/mtu · fragmentation discount',cc:C.shanghai,
      sub:`gap <b>${fmt((1-L.shanghai_implied.value/L.reported_rotterdam.value)*100,1)}%</b> vs Rotterdam`},
-    {label:'Copper (proxy)',value:'$'+fmt(L.copper.value,2),unit:'USD/lb · COMEX',cc:C.copper,
+    {label:'Factor-model implied',value:fmtMtu(L.factor_implied.value),unit:'$/mtu · iron ore + moly + macro',cc:C.factor,
+     sub:`R² <b>${MODELS.factor_model.r2}</b> · demand-driven`},
+    {label:'Equity-implied — REJECTED',value:fmtMtu(L.equity_implied.value),unit:'$/mtu · diagnostic only',cc:C.equity,
+     sub:`lead corr <b>${MODELS.backtest.lead_corr_equity_vs_apt_21d}</b> → not a leading indicator`},
+    {label:'Iron ore (demand proxy)',value:'$'+fmt(L.iron_ore.value,1),unit:'USD/t · mining & construction',cc:C.iron,
      sub:`USD/CNY ${fmt(L.usdcny.value,3)}`},
   ];
   $('#headlineCards').innerHTML=cards.map(c=>`
@@ -273,11 +277,12 @@ function render(){
   const obs=S.observed_rotterdam_mtu;
   const mainSeries=[
     {id:'obs',name:'Reported (anchors+recon)',color:C.observed,width:2.4,data:obs,
-      markers:[[ '2025-01-02',330],['2026-07-17',3050]]},
-    {id:'kal',name:'Kalman fair value',color:C.kalman,width:1.8,data:S.kalman_mtu},
-    {id:'eq',name:'Equity-implied',color:C.equity,width:1.6,data:S.equity_implied_mtu,dash:[5,4]},
-    {id:'fac',name:'Factor-implied',color:C.factor,width:1.6,data:S.factor_implied_mtu,dash:[2,3]},
+      markers:[['2025-01-02',330],['2026-07-17',3050],['2026-07-24',3139.5]]},
+    {id:'kal',name:'Kalman fair value (Shanghai-anchored)',color:C.kalman,width:1.8,data:S.kalman_mtu},
+    {id:'fair',name:'Rotterdam fair (Shanghai+carry)',color:C.fair,width:1.6,data:S.rotterdam_fair_from_shanghai_mtu,dash:[4,4]},
     {id:'sh',name:'Shanghai-implied domestic',color:C.shanghai,width:1.6,data:S.shanghai_implied_mtu,dash:[7,4]},
+    {id:'fac',name:'Factor-implied',color:C.factor,width:1.6,data:S.factor_implied_mtu,dash:[2,3]},
+    {id:'eq',name:'Equity-implied (REJECTED)',color:C.equity,width:1.2,data:S.equity_implied_mtu,dash:[5,4]},
   ];
   const mc=makeChart($('#mainChart'),{
     series:mainSeries,
@@ -300,9 +305,10 @@ function render(){
   /* ---- rolling corr ---- */
   makeChart($('#rollingChart'),{
     series:[
-      {id:'eqr',name:'Cu vs equity-implied (60d)',color:C.equity,width:1.6,data:S.rolling_corr_cu_eq,dash:[5,4]},
+      {id:'tior',name:'Iron ore vs observed APT (12M monthly)',color:C.iron,width:2.0,data:S.rolling_corr_tio_obs_m},
       {id:'facr',name:'Cu vs factor-implied (60d)',color:C.factor,width:1.6,data:S.rolling_corr_cu_fac,dash:[2,3]},
-      {id:'obsr',name:'Cu vs observed APT (12M monthly)',color:C.observed,width:2.0,data:S.rolling_corr_cu_obs_m},
+      {id:'obsr',name:'Cu vs observed APT (12M monthly)',color:C.observed,width:1.6,data:S.rolling_corr_cu_obs_m,dash:[2,3]},
+      {id:'eqr',name:'Cu vs equity-implied (60d)',color:C.equity,width:1.2,data:S.rolling_corr_cu_eq,dash:[5,4]},
     ],
     ymin:-1,ymax:1,yFmt:v=>v.toFixed(1),
   });
@@ -315,18 +321,43 @@ function render(){
     yFmt:v=>fmt(v),
   });
 
+  /* ---- supply-demand chart (M5) ---- */
+  const sd=D.supply_demand;
+  if(sd && sd.scenarios){
+    $('#supplyDemandPanel').style.display='';
+    const sdSeries=[
+      {id:'sdB',name:'Base',color:C.kalman,width:2.0,data:(sd.scenarios.base&&sd.scenarios.base.price_path_mtu||[]).map(p=>[String(p.year)+'-07-01',p.price_mtu])},
+      {id:'sdBull',name:'Bull (3.0% demand CAGR)',color:C.iron,width:1.6,data:(sd.scenarios.bull&&sd.scenarios.bull.price_path_mtu||[]).map(p=>[String(p.year)+'-07-01',p.price_mtu]),dash:[2,3]},
+      {id:'sdBear',name:'Bear (1.0% demand CAGR)',color:C.shanghai,width:1.6,data:(sd.scenarios.bear&&sd.scenarios.bear.price_path_mtu||[]).map(p=>[String(p.year)+'-07-01',p.price_mtu]),dash:[5,4]},
+      {id:'sdObs',name:'Observed APT (today ≈ '+fmtMtu(L.reported_rotterdam.value)+')',color:C.observed,width:1.4,data:obs.slice(-1)},
+    ];
+    makeChart($('#sdChart'),{series:sdSeries,yFmt:v=>'$'+fmt(v)});
+    $('#sdLegend').innerHTML=sdSeries.map(s=>
+      `<span class="lg" data-id="${s.id}"><span class="sw" style="background:${s.color}"></span>${s.name}</span>`).join('');
+    $$('#sdLegend .lg').forEach(el=>el.onclick=()=>{
+      const s=sdSeries.find(x=>x.id===el.dataset.id);
+      s.hidden=!s.hidden; el.classList.toggle('off',s.hidden);
+      makeChart($('#sdChart'),{series:sdSeries,yFmt:v=>'$'+fmt(v)});
+    });
+    const sdCaveats=(sd.caveats||[]).slice(0,3).map(c=>'<li>'+c+'</li>').join('');
+    $('#sdNote').innerHTML=`<b>M5 — supply-demand equilibrium.</b> ${sd.headline||''} <ul>${sdCaveats}</ul><i>Model built from the Almonty Jul-2026 investor deck (deficits 5,570 t 2025 / 2,330 t 2026, ~85 kt supply, 2.0% demand CAGR to 2050) + USGS history. Scenario tool, not a forecast.</i>`;
+  }
+
   /* ---- signal box ---- */
   const bt=D.backtest, fm=D.factor_model, em=D.equity_model;
   $('#signalBox').innerHTML=`
     <h3>Signal diagnostics</h3>
     <div class="row"><span>Equity excess-return β (elasticity)</span><span class="v gold">${em.beta_elasticity}</span></div>
-    <div class="row"><span>Cum. excess return, Jan25→Jul26</span><span class="v up">${fmt(em.cum_excess_return_calibration*100,1)}%</span></div>
     <div class="row"><span>Lead corr: equities → APT (21d)</span><span class="v dn">${bt.lead_corr_equity_vs_apt_21d}</span></div>
+    <div class="row"><span>Equity status</span><span class="v dn">REJECTED — diagnostic only</span></div>
     <div class="row"><span>Factor model R² (monthly)</span><span class="v">${fm.r2}</span></div>
-    <div class="row"><span>Factor β · copper</span><span class="v">${fm.betas.cu}</span></div>
+    <div class="row"><span>Factor β · iron ore (demand)</span><span class="v up">${fm.betas.tio}</span></div>
+    <div class="row"><span>Factor β · moly basket</span><span class="v up">${fm.betas.moly}</span></div>
+    <div class="row"><span>Factor β · copper (control)</span><span class="v">${fm.betas.cu}</span></div>
     <div class="row"><span>Factor β · China ETF</span><span class="v">${fm.betas.fxi}</span></div>
     <div class="row"><span>Factor β · USD/CNY</span><span class="v">${fm.betas.cny}</span></div>
-    <div class="verdict"><b style="color:var(--accent)">READ:</b> The naive "stocks lead spot" alpha is <b style="color:var(--red)">rejected</b> (lead corr ${bt.lead_corr_equity_vs_apt_21d}). Equities carry tungsten <em>direction</em> information contemporaneously but lag physical benchmarks. Factor R² ${fm.r2} confirms tungsten is policy-driven, not copper-driven.</div>`;
+    <div class="row"><span>Factor β · S&P 500</span><span class="v">${fm.betas.spx}</span></div>
+    <div class="verdict"><b style="color:var(--accent)">READ:</b> The equity-alpha idea is <b style="color:var(--red)">rejected</b> (lead corr ${bt.lead_corr_equity_vs_apt_21d}) — equities lag the physical market, so they are excluded from the fusion. The factor model now leads with the <em>demand-side</em> proxies (iron ore = mining &amp; construction, moly = sister metal under the same export controls); copper is demoted to a control. Tungsten is a policy- and demand-driven metal, not a copper story.</div>`;
 
   /* ---- 125y history ---- */
   const hist=D.usgs_history.filter(r=>r.usd_t).map(r=>[r.year+'-07-01',r.usd_t]);
@@ -395,28 +426,35 @@ $$('.nbtn').forEach(b=>b.onclick=()=>{ $$('.nbtn').forEach(x=>x.classList.remove
 /* ---------------- methodology ---------------- */
 function renderMethodology(){
   const D=MODELS,fm=D.factor_model,em=D.equity_model;
+  const sd=D.supply_demand;
   const models=[
     {id:'M0',color:C.observed,title:'Observed — reported benchmark chain',wide:true,
-     body:'Two independently verified ISBP/Dornhofer anchors (APT opened 2025 at ~$330/mtu WO₃; stood above $3,000/mtu on 17-Jul-2026), plus the IMARC carbide figure ($131/kg China). The daily path between anchors is a documented analyst reconstruction (monthly shape, time-interpolated). This is the reference series every other model is judged against.',
+     body:'Independently verified anchors: ISBP/Dornhofer (APT opened 2025 at ~$330/mtu WO₃; stood above $3,000/mtu on 17-Jul-2026), Fastmarkets ($3,139.50/mtu on 24-Jul-2026, CIF Rotterdam/Baltimore duty-free, per the Almonty Jul-2026 deck), and the IMARC carbide figure ($131/kg China). The daily path between anchors is a documented analyst reconstruction (monthly shape, time-interpolated). This is the reference series every other model is judged against.',
      formula:'P_reported(t) = verified anchors ⊕ analyst reconstruction',
      meta:'Tier-1 anchors · Tier-3 path · 1 t APT(88.5%) = 88.5 mtu WO₃',refs:['Fastmarkets fragmentation framing','USGS for unit conventions']},
-    {id:'M1',color:C.shanghai,title:'Arbitrage — Shanghai-implied fair value',
-     body:'Structural carry model. Before China\u2019s export controls, Rotterdam ≈ Shanghai + freight + normal basis (~6%). After 4-Feb-2025 the physical arbitrage died: domestic material is trapped, so Shanghai trades at a ~38% fragmentation discount. The Rotterdam-vs-Shanghai spread is itself the signal.',
-     formula:'P_rot ≈ P_sha × (1+freight) ÷ (1 − fragmentation_discount)',
-     meta:'freight+insurance ≈ 1.5% · pre-control discount 6% · post-control 38%',refs:['Interest-rate-parity / covered-arbitrage logic']},
-    {id:'M2',color:C.equity,title:'Equity-implied price (the alpha hypothesis)',
-     body:'The user\u2019s core idea: map tungsten-equity excess returns to an implied spot. We strip each stock\u2019s local benchmark (ASX/China/US), build an equal-weight basket, and raise cumulative excess return to an elasticity β calibrated on the Jan25→Jul26 window. Result: equities imply a LOWER price than reported — they are noisy contemporaneous sensors, and the lead-lag test rejects them as a leading indicator.',
+    {id:'M1',color:C.shanghai,title:'Shanghai-implied + cost of carry (cornerstone)',
+     body:'The domestic Chinese APT price is the most legitimate anchor: it is set by real supply/demand in the 80%-of-production market. Rotterdam fair = Shanghai domestic × (1 + freight + insurance + financing + export premium). After the 4-Feb-2025 export controls the two markets fragmented (Fastmarkets: "fragmenting"); Shanghai trades at a ~38% discount and the observed Rotterdam price carries a ~40%+ fragmentation premium over its Shanghai+carry fair value. That premium is the signal — policy-driven, and it should compress as Western supply (Sangdong, Panasqueira L4, Gentung) ramps.',
+     formula:'P_fair = P_shanghai × (1 + carry + export_premium) ;  premium = P_obs / P_fair − 1',
+     meta:'freight+ins ≈ 1.5% · financing ≈ 0.3% · export premium 0→12% post-controls · discount 6%→38%',refs:['Fastmarkets "markets fragmenting"','Engle & Granger co-integration (pre/post controls)']},
+    {id:'M2',color:C.equity,title:'Equity-implied price — REJECTED, kept as diagnostic',
+     body:'Maps tungsten-equity excess returns (each stock stripped of its local benchmark) to an implied spot via an elasticity β calibrated on the Jan25→Jul26 window. Result: equities imply a far LOWER price (~$864) than the physical market — they are noisy, lag the physical benchmarks, and the lead-lag test rejects them as a leading indicator (corr ≈ −0.19). Kept on the dashboard as an honest diagnostic of why naive equity mapping fails; EXCLUDED from the Kalman fusion.',
      formula:'P_eq(t) = 330 × [ ∏(1+r_excess) ]^β ,  β = '+em.beta_elasticity,
-     meta:'β calibrated on one 18-mo window · lead corr(21d) = '+D.backtest.lead_corr_equity_vs_apt_21d+' → REJECTED as leading',refs:['Fama-French equity factors','Event-study methodology']},
-    {id:'M3',color:C.factor,title:'Proxy-metal factor model',
-     body:'Monthly ridge regression of log-APT changes on copper, China ETF, USD/CNY, S&P 500 and a moly equity basket. R² ≈ '+fm.r2+' — deliberately published to show tungsten is NOT copper-driven; China policy dominates. The factor path is a sanity band, not a forecast.',
-     formula:'ΔlnP = '+fm.alpha_monthly.toFixed(4)+' + '+fm.betas.cu+'·ΔlnCu + '+fm.betas.fxi+'·ΔlnFXI + '+fm.betas.cny+'·ΔlnCNY + '+fm.betas.spx+'·ΔlnSPX + '+fm.betas.moly+'·ΔlnMoly',
-     meta:'R² = '+fm.r2+' (low by design · policy-driven market)',refs:['Pindyck & Rotemberg co-movement','Stock & Watson factor forecasting']},
+     meta:'lead corr(21d) = '+D.backtest.lead_corr_equity_vs_apt_21d+' → REJECTED · not fused',refs:['Fama-French equity factors','Event-study methodology']},
+    {id:'M3',color:C.factor,title:'Demand-side factor model (iron ore + moly + macro)',
+     body:'Monthly ridge regression of log-APT changes on the factors that actually drive tungsten demand: iron ore (mining &amp; construction = 26% of end-use), a moly equity basket (sister metal, co-mined, same Chinese export controls), China ETF, USD/CNY and S&P 500. Copper is included ONLY as a control — the model exists to price tungsten, not to re-prove that copper is unrelated. The factor path is a sanity band, not a forecast.',
+     formula:'ΔlnP = '+fm.alpha_monthly.toFixed(4)+' + '+fm.betas.tio+'·ΔlnIronOre + '+fm.betas.moly+'·ΔlnMoly + '+fm.betas.cu+'·ΔlnCu(control) + '+fm.betas.fxi+'·ΔlnFXI + '+fm.betas.cny+'·ΔlnCNY + '+fm.betas.spx+'·ΔlnSPX',
+     meta:'R² = '+fm.r2+' · copper is a control, not a driver',refs:['Pindyck & Rotemberg co-movement','Stock & Watson factor forecasting']},
     {id:'M4',color:C.kalman,title:'Kalman latent-price fusion (headline estimate)',
-     body:'State-space model fusing all three signals into a single latent log-price with drift. Reported anchors get tight measurement noise, the factor path medium, equities loose. The output is our headline "fair value" with a ±1.96σ confidence band — the most defensible single number.',
-     formula:'xₜ = F·xₜ₋₁ + w ;  zₜ = H·xₜ + v ,  R = diag(0.002, 0.05, 0.02)',
+     body:'State-space model fusing the reported chain (tight noise), the Shanghai-implied domestic (tight noise — the cornerstone) and the factor path (medium noise) into a single latent log-price with drift. The equity signal is excluded (rejected). Because Shanghai is now a tight observation, the headline fair value sits BELOW the reported Rotterdam price — reflecting the view that the export price carries a fragmentation premium that is not "true" value.',
+     formula:'xₜ = F·xₜ₋₁ + w ;  zₜ = H·xₜ + v ,  R = diag(0.002, 0.002, 0.02)',
      meta:'hand-rolled Kalman (numpy) · last σ(log) = '+D.kalman_model.last_se_log.toFixed(4),refs:['Hamilton state-space','Kalman (1960) filtering']},
   ];
+  if(sd){
+    models.push({id:'M5',color:C.fair,title:'Supply-demand equilibrium (stock-to-use balance)',
+     body:(sd.headline||'Balance-driven scenario model: global supply vs demand, mapped to price via a calibrated stock-to-use curve.')+' Scenarios: base / bull / bear on demand growth and supply ramp. Built from the Almonty Jul-2026 deck figures (5,570 t deficit 2025, 2,330 t 2026, ~85 kt production, 2.0% demand CAGR to 2050, defense only ~8% of end-use) + USGS history.',
+     formula:'stock_to_use = stock / demand ;  P = f(stock_to_use, marginal cost floor)',
+     meta:'3 scenarios · 2025-2035 horizon · stock levels modeled, not reported',refs:['Almonty Jul-2026 investor deck','USGS MCS 2026','ITIA Applications & Markets 2021']});
+  }
   $('#methModels').innerHTML=models.map(m=>`
     <div class="meth-card ${m.wide?'wide':''}" style="--cc:${m.color}">
       <div class="m-id">MODEL ${m.id}</div>
@@ -429,12 +467,14 @@ function renderMethodology(){
 
   /* provenance table */
   const prov=[
-    ['APT Rotterdam anchors ($330 / $3,000+)','TIER-1','ISBP (M. Dornhofer) via Almonty newsletter, 19 Jul 2026','VERIFIED'],
+    ['APT Rotterdam anchors ($330 / $3,000+ / $3,139.50)','TIER-1','ISBP (M. Dornhofer) via Almonty newsletter; Fastmarkets via Almonty Jul-2026 deck','VERIFIED'],
     ['China dual-use export controls date','TIER-1','Multiple; effective 4 Feb 2025','VERIFIED'],
     ['Tungsten carbide $131/kg China','TIER-1','IMARC Group via openPR, 3 Aug 2026','VERIFIED'],
     ['Daily APT path between anchors','TIER-3','Analyst reconstruction (this dashboard)','ESTIMATED'],
     ['Shanghai-implied domestic','TIER-3','M1 structural carry model','ESTIMATED'],
-    ['Copper, FX, equity indices','TIER-2','Yahoo Finance daily closes','MARKET DATA'],
+    ['Supply-demand balance (5,570 t deficit 2025, 2,330 t 2026, ~85 kt supply, 2.0% CAGR)','TIER-2','Sangdong NI 43-101 via Almonty Jul-2026 deck; Merchant Research & Consulting via deck','COMPANY-SOURCED'],
+    ['End-use split (defense ~8%, transport 26%, mining/construction 26%)','TIER-2','ITIA Applications & Markets 2021, via Almonty Jul-2026 deck','THIRD-PARTY'],
+    ['Copper, iron ore, FX, equity indices','TIER-2','Yahoo Finance daily closes','MARKET DATA'],
     ['USGS tungsten unit value 1900–2017','TIER-2','USGS ds140 historical statistics','PUBLIC DATA'],
     ['News feed','TIER-2','Google News RSS (publisher-linked)','AGGREGATED'],
   ];
