@@ -1,20 +1,29 @@
 """Harvest market data for the Tungsten Desk pricing models.
 
 Pulls daily OHLC from Yahoo Finance (chart v8, no auth) for:
-  - proxy metals: copper, molybdenum oxide, tin, iron ore, steel rebar, gold
+  - proxy metals: copper, silver, gold, platinum, palladium, aluminum, zinc,
+    iron ore
   - FX: USD/CNY
   - equity indices: S&P 500, China ETF, global materials
   - tungsten-equity basket (producers with tungsten exposure)
-Saves to data/market_daily.csv
+Pulls monthly World Bank global-price series from FRED for metals Yahoo
+does not carry (tin, nickel, lead — the LME-linked iPath ETNs were
+delisted in 2023, so FRED month-end is the reliable source).
+Saves to data/market_raw.json
 """
 import json, time, urllib.request, sys, datetime
 
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
 
-# (symbol, label, category)
+# (symbol, label, category) — Yahoo daily
 TICKERS = [
     ('HG=F', 'Copper', 'metal'),
     ('SI=F', 'Silver', 'metal'),
+    ('GC=F', 'Gold', 'metal'),
+    ('PL=F', 'Platinum', 'metal'),
+    ('PA=F', 'Palladium', 'metal'),
+    ('ALI=F', 'Aluminum', 'metal'),
+    ('ZNC=F', 'Zinc', 'metal'),
     ('TIO=F', 'IronOre', 'metal'),
     ('USDJPY=X', 'USDJPY', 'fx'),
     ('CNY=X', 'USDCNY', 'fx'),
@@ -39,6 +48,16 @@ TICKERS = [
     ('MCU', 'USA_Materials', 'index'),
 ]
 
+# (fred_series, symbol, label, category) — monthly World Bank global prices.
+# Yahoo has no daily feed for tin/nickel/lead (iPath ETNs delisted 2023);
+# FRED month-end is the reliable source. models.py resamples to month-end for
+# the correlation matrix, so the frequency mix is safe.
+FRED_MONTHLY = [
+    ('PTINUSDM', 'TIN_FRED', 'Tin', 'metal'),
+    ('PNICKUSDM', 'NICKEL_FRED', 'Nickel', 'metal'),
+    ('PLEADUSDM', 'LEAD_FRED', 'Lead', 'metal'),
+]
+
 def fetch(symbol, period1, period2):
     url = (f'https://query1.finance.yahoo.com/v8/finance/chart/{symbol}'
            f'?period1={period1}&period2={period2}&interval=1d&events=div%2Csplit')
@@ -48,6 +67,33 @@ def fetch(symbol, period1, period2):
             return json.loads(r.read())
     except Exception as e:
         return {'error': str(e)}
+
+def fetch_fred(series_id, tries=5):
+    """Monthly World Bank global price from FRED (fredgraph.csv, no auth).
+    FRED is flaky under load — retry with backoff."""
+    url = f'https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}'
+    for attempt in range(tries):
+        try:
+            req = urllib.request.Request(url, headers=HEADERS)
+            with urllib.request.urlopen(req, timeout=30) as r:
+                txt = r.read().decode('utf-8', 'ignore')
+            rows = []
+            for line in txt.strip().splitlines()[1:]:
+                if not line.strip():
+                    continue
+                date, val = line.split(',')
+                try:
+                    v = float(val)
+                except ValueError:
+                    continue
+                rows.append((date, round(v, 4)))
+            if rows:
+                return rows
+        except Exception as e:
+            if attempt == tries - 1:
+                return {'error': f'{series_id}: {e}'}
+            time.sleep(4 * (attempt + 1))
+    return {'error': f'{series_id}: empty'}
 
 def main():
     end = int(time.time())
@@ -78,6 +124,20 @@ def main():
         except Exception as e:
             print(f'PARSE ERR {sym}: {e}', file=sys.stderr)
         time.sleep(0.4)
+
+    # FRED monthly (tin, nickel, lead — no Yahoo daily feed)
+    for series_id, sym, label, cat in FRED_MONTHLY:
+        rows = fetch_fred(series_id)
+        if isinstance(rows, dict) and 'error' in rows:
+            print(f'ERR FRED {series_id}: {rows["error"]}', file=sys.stderr)
+            continue
+        if not rows:
+            continue
+        out[sym] = rows
+        labels[sym] = label
+        cats[sym] = cat
+        print(f'OK  {sym:<14} {label:<22} {len(rows)} rows (monthly)  last={rows[-1][0]} {rows[-1][1]}')
+        time.sleep(1)
 
     with open(r'D:\tungsten-dashboard\data\market_raw.json', 'w') as f:
         json.dump({'series': out, 'labels': labels, 'categories': cats}, f)

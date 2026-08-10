@@ -69,6 +69,23 @@ except Exception as e:
 
 MOLY_EQ = pd.concat({'a': JDC, 'b': CMOC}, axis=1).mean(axis=1)  # moly-equity proxy basket
 
+# Metal co-movement panel: all metals the desk tracks. Tin/nickel/lead come
+# from FRED (World Bank global price series, month-end) — Yahoo's LME-linked
+# iPath ETNs (LD/JJN/JJT) were delisted mid-2023 and are useless for our
+# 2024+ window. Everything is resampled to month-end for the correlation
+# matrix — the honest frequency for a monthly-assessed market like APT.
+# NOTE: if a series is missing from the harvest (e.g. FRED unreachable), the
+# metal is dropped from the matrix rather than crashing the engine.
+_METAL_SYMBOLS = {
+    'Gold': 'GC=F', 'Silver': 'SI=F', 'Platinum': 'PL=F', 'Palladium': 'PA=F',
+    'Copper': 'HG=F', 'Zinc': 'ZNC=F', 'Aluminum': 'ALI=F', 'Iron ore': 'TIO=F',
+    'Tin': 'TIN_FRED', 'Nickel': 'NICKEL_FRED', 'Lead': 'LEAD_FRED',
+}
+METALS = {name: px[sym] for name, sym in _METAL_SYMBOLS.items() if sym in px.columns}
+if len(METALS) < len(_METAL_SYMBOLS):
+    missing = [n for n, s in _METAL_SYMBOLS.items() if s not in px.columns]
+    print(f'WARN: metals missing from harvest (dropped from matrix): {missing}')
+
 # --------------------------------------------------------------------------
 # 2. ANCHOR CHAIN (verified reported points) — the observed market price M0
 # --------------------------------------------------------------------------
@@ -342,6 +359,29 @@ rolling_corr_fac = rc_fac
 rolling_corr_obs_m = rc_obs_m
 rolling_corr_obs_tio_m = rc_obs_tio_m
 
+# --- Metal co-movement matrix (monthly returns; the honest frequency for a
+#     monthly-assessed market like APT, and required because tin/nickel/lead
+#     are only available month-end from FRED). Correlates each metal's monthly
+#     log-return with three tungsten references: the observed/recon series,
+#     the Shanghai-implied domestic, and the Kalman fair value. ---------------
+metal_frame = pd.DataFrame({
+    'Tungsten observed': M0.resample('ME').last(),
+    'Tungsten Shanghai': SHANGHAI_IMPLIED.resample('ME').last(),
+    'Tungsten Kalman':   M4.resample('ME').last(),
+    **{name: s.resample('ME').last() for name, s in METALS.items()},
+}).dropna(how='all')
+metal_ret = np.log(metal_frame).diff().dropna()
+METAL_CORR = {}
+for metal in METALS:
+    row = {}
+    for ref in ('Tungsten observed', 'Tungsten Shanghai', 'Tungsten Kalman'):
+        a, b = metal_ret[ref], metal_ret[metal]
+        m = a.notna() & b.notna()
+        row[ref.replace('Tungsten ', '').lower()] = (round(float(a[m].corr(b[m])), 3)
+                                                     if m.sum() > 5 else None)
+    METAL_CORR[metal] = row
+METAL_N_OBS = int(metal_ret['Tungsten observed'].notna().sum())
+
 eq_fwd = EQ_EXCESS.rolling(21).sum().shift(-21)
 apt_chg = M0.pct_change(21)
 bt = pd.concat({'eq_fwd': eq_fwd, 'apt_chg': apt_chg}, axis=1).dropna()
@@ -404,6 +444,8 @@ out = {
         'rolling_corr_cu_fac': s_to_list(rolling_corr_fac),
         'rolling_corr_cu_obs_m': s_to_list(rolling_corr_obs_m),
         'rolling_corr_tio_obs_m': s_to_list(rolling_corr_obs_tio_m),
+        **{f'metal_{name.lower().replace(" ", "_")}': s_to_list(s.ffill())
+           for name, s in METALS.items()},
     },
     'factor_model': {'betas': FACTOR_BETAS, 'r2': FACTOR_R2, 'alpha_monthly': FACTOR_ALPHA},
     'equity_model': {'beta_elasticity': round(float(BETA_EQ), 4),
@@ -413,6 +455,11 @@ out = {
                      'observations': ['reported (tight)', 'shanghai-implied (tight)',
                                       'factor (medium)', 'equity EXCLUDED (rejected)']},
     'correlation_matrix': {k: {k2: float(v2) for k2, v2 in v.items()} for k, v in CORR.to_dict().items()},
+    'metal_correlations': {'monthly_returns': METAL_CORR, 'n_obs': METAL_N_OBS,
+                           'note': 'monthly log-return correlations; tin/nickel/lead via FRED (World Bank, month-end), rest daily-resampled to month-end'},
+    'metal_prices': {name: (lambda s: (lambda d: {'date': d.index[-1].strftime('%Y-%m-%d') if len(d) else None,
+                                                  'value': round(float(d.iloc[-1]), 2) if len(d) else None})(s.dropna()))(s)
+                     for name, s in METALS.items()},
     'backtest': {'lead_corr_equity_vs_apt_21d': round(lead_corr, 4) if math.isfinite(lead_corr) else None,
                  'n_obs': int(len(bt))},
     'supply_demand': {'balance': M5_BALANCE, 'scenarios': M5_SCENARIOS,

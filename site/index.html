@@ -88,6 +88,32 @@
     </div>
     <div class="chart-box"><canvas id="sdChart"></canvas></div>
     <div class="panel-note" id="sdNote"></div>
+    <div class="scrollwrap">
+      <table class="data-table" id="sdTable">
+        <thead><tr>
+          <th>YEAR</th><th>SUPPLY (t)</th><th>DEMAND (t)</th><th>DEFICIT (t)</th>
+          <th>STOCK-TO-USE (mo)</th><th>BASE $/mtu</th><th>BULL $/mtu</th><th>BEAR $/mtu</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="table-note" id="sdTableNote"></div>
+  </section>
+
+  <!-- METAL CO-MOVEMENT -->
+  <section class="panel">
+    <div class="panel-head"><h2>Metal co-movement matrix <span class="dim">monthly log-return correlation vs tungsten</span></h2></div>
+    <div class="chart-box" style="height:340px"><canvas id="metalCorrChart"></canvas></div>
+    <div class="panel-note">Correlation of monthly returns against three tungsten references: the observed/recon chain, the Shanghai-implied domestic, and the Kalman fair value. Monthly frequency (not daily) because tungsten is a monthly-assessed market; tin/nickel/lead via FRED (World Bank, month-end).</div>
+    <div class="scrollwrap">
+      <table class="data-table" id="metalCorrTable">
+        <thead><tr>
+          <th>METAL</th><th>LAST $</th><th>VS OBSERVED</th><th>VS SHANGHAI</th><th>VS KALMAN</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="table-note" id="metalCorrNote"></div>
   </section>
 
   <!-- LONG HISTORY -->

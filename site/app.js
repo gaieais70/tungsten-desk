@@ -341,6 +341,48 @@ function render(){
     });
     const sdCaveats=(sd.caveats||[]).slice(0,3).map(c=>'<li>'+c+'</li>').join('');
     $('#sdNote').innerHTML=`<b>M5 — supply-demand equilibrium.</b> ${sd.headline||''} <ul>${sdCaveats}</ul><i>Model built from the Almonty Jul-2026 investor deck (deficits 5,570 t 2025 / 2,330 t 2026, ~85 kt supply, 2.0% demand CAGR to 2050) + USGS history. Scenario tool, not a forecast.</i>`;
+
+    /* ---- supply-demand balance table ---- */
+    const bal=sd.balance||[];
+    const scPx=(sc,y)=>{const p=(sd.scenarios[sc]&&sd.scenarios[sc].price_path_mtu)||[];const r=p.find(x=>x.year===y);return r?r.price_mtu:null;};
+    const fnum=(v,d=0)=>v==null?'—':fmt(v,d);
+    const sDisp=c=>c==null?'—':(c*100).toFixed(1)+'%';
+    $('#sdTable tbody').innerHTML=bal.map(r=>{
+      const def=r.deficit_t;
+      const defCls=def>0?'neg':(def<0?'pos':'zero');
+      const st=r.stock_to_use_months;
+      return `<tr>
+        <td>${r.year}</td>
+        <td>${fnum(r.supply_t,0)}</td>
+        <td>${fnum(r.demand_t,0)}</td>
+        <td class="${defCls}">${def>0?'−':def<0?'+':''}${fnum(Math.abs(def),0)}</td>
+        <td>${st==null?'—':st.toFixed(2)}</td>
+        <td>${fnum(scPx('base',r.year),0)}</td>
+        <td>${fnum(scPx('bull',r.year),0)}</td>
+        <td>${fnum(scPx('bear',r.year),0)}</td>
+      </tr>`;}).join('');
+    $('#sdTableNote').innerHTML=`Balance = demand − supply. Negative deficit = surplus (stocks rebuild). Stock-to-use = modeled coverage in months of demand (inventory is NOT publicly reported — this is a modeled series). Scenario prices are the M5 calibration output; base demand CAGR ${sd.scenarios&&sd.scenarios.base?sDisp(sd.scenarios.base.demand_cagr):''}, bull ${sd.scenarios&&sd.scenarios.bull?sDisp(sd.scenarios.bull.demand_cagr):''}, bear ${sd.scenarios&&sd.scenarios.bear?sDisp(sd.scenarios.bear.demand_cagr):''}.`;
+
+    /* ---- metal co-movement matrix ---- */
+    const mc=D.metal_correlations;
+    if(mc && mc.monthly_returns){
+      const mp=D.metal_prices||{};
+      const rows=Object.entries(mc.monthly_returns);
+      const maxAbs=Math.max(0.05,...rows.map(([,v])=>Math.max(...['observed','shanghai','kalman'].map(k=>Math.abs(v[k]||0)))));
+      // bar chart: corr vs observed (the reference the whole desk is judged against)
+      const barData=rows.map(([name,v])=>[name,v.observed]).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));
+      drawCorrBars($('#metalCorrChart'),barData);
+      const cell=(v)=>{
+        if(v==null) return '<td class="zero">—</td>';
+        const cls=Math.abs(v)>=0.5?'corr-pos':(Math.abs(v)>=0.3?'corr-wk':'corr-neg');
+        return `<td class="${v>=0?'corr-pos':'corr-neg'}" style="background:${v>=0?`rgba(47,191,113,${(v/maxAbs)*0.28})`:`rgba(224,82,82,${(Math.abs(v)/maxAbs)*0.28})`}">${v>=0?'+':''}${v.toFixed(2)}</td>`;
+      };
+      $('#metalCorrTable tbody').innerHTML=rows.map(([name,v])=>{
+        const p=mp[name]||{};
+        return `<tr><td>${name}</td><td>${p.value!=null?fmt(p.value,2):'—'}</td>${cell(v.observed)}${cell(v.shanghai)}${cell(v.kalman)}</tr>`;
+      }).join('');
+      $('#metalCorrNote').innerHTML=`Monthly log-return correlations, ${mc.n_obs} monthly observations. Cell shading scales with |corr| (green = positive co-movement, red = negative). Tin/nickel/lead via FRED (World Bank, month-end); the rest daily-resampled to month-end. Iron ore &amp; moly are the demand-side factors used in M3; the matrix shows the whole metal complex for context. Correlation ≠ causation — and for tungsten, policy (export controls) dominates all of these.`;
+    }
   }
 
   /* ---- signal box ---- */

@@ -67,7 +67,19 @@ pre-computed JSON under `site/data/`.
   sits below the reported Rotterdam price).
 - **M5 — Supply-demand equilibrium**: stock-to-use balance model (deficits 5,570 t
   2025 / 2,330 t 2026, ~85 kt supply, 2.0% demand CAGR to 2050 — Almonty deck +
-  USGS) → price path 2025-2035 in base/bull/bear scenarios.
+  USGS) → price path 2025-2035 in base/bull/bear scenarios, shown as a chart AND
+  a full balance table (supply/demand/deficit/stock-to-use/price per year).
+
+## The metal co-movement matrix
+
+- Monthly log-return correlations of tungsten (observed, Shanghai-implied,
+  Kalman) against the full metal complex: gold, silver, platinum, palladium,
+  copper, zinc, aluminum, iron ore, tin, nickel, lead.
+- Tin/nickel/lead come from FRED (World Bank global prices, month-end) — Yahoo's
+  LME-linked iPath ETNs (LD/JJN/JJT) were delisted mid-2023 and are useless for
+  the 2024+ window. Everything else is Yahoo daily, resampled to month-end.
+- Monthly (not daily) is the honest frequency: APT is a monthly-assessed market.
+- Shown as a sorted bar chart + a color-scaled matrix table.
 
 ## Rebuild everything
 
