@@ -75,11 +75,13 @@ function makeChart(canvas, opts){
     return Math.ceil(rawCount/100)*100;
   }
 
-  function redraw(){
-    ctx.clearRect(0,0,w,h);
-    const {series,xmin,xmax,ymin,ymax,log=false,yFmt=(v)=>fmt(v),bands}=opts;
+  /* Plot domain: zoom state if active, else opts overrides, else auto. */
+  const zoom={active:false,X0:null,X1:null,Y0:null,Y1:null};
+  function domain(){
+    const {series,xmin,xmax,ymin,ymax,log=false}=opts;
+    if(zoom.active)return {X0:zoom.X0,X1:zoom.X1,Y0:zoom.Y0,Y1:zoom.Y1};
     let X0=xmin,X1=xmax,Y0=ymin,Y1=ymax;
-    if(X0==null||X1==null){ // auto
+    if(X0==null||X1==null){
       let lo=Infinity,hi=-Infinity;
       for(const s of series){ if(s.hidden)continue; for(const p of s.data){ const t=+new Date(p[0]); if(t<lo)lo=t; if(t>hi)hi=t; } }
       X0=lo;X1=hi;
@@ -89,6 +91,13 @@ function makeChart(canvas, opts){
       for(const s of series){ if(s.hidden)continue; for(const p of s.data){ let v=log?Math.log10(p[1]):p[1]; if(v<lo)lo=v; if(v>hi)hi=v; } }
       const pad=(hi-lo)*0.06||1; Y0=lo-pad; Y1=hi+pad;
     }
+    return {X0,X1,Y0,Y1};
+  }
+
+  function redraw(){
+    ctx.clearRect(0,0,w,h);
+    const {series,log=false,yFmt=(v)=>fmt(v),bands}=opts;
+    const {X0,X1,Y0,Y1}=domain();
     const iw=w-M.l-M.r, ih=h-M.t-M.b;
     const sx=t=>M.l+( (t-X0)/(X1-X0||1) )*iw;
     const sy=v=>{ const lv=log?Math.log10(v):v; return M.t+ih-( (lv-Y0)/(Y1-Y0||1) )*ih; };
@@ -192,10 +201,8 @@ function makeChart(canvas, opts){
     const mx=ev.clientX-rect.left, my=ev.clientY-rect.top;
     const iw=w-M.l-M.r, ih=h-M.t-M.b;
     if(mx<M.l||mx>w-M.r||my<M.t||my>h-M.b){clearHover();return;}
-    const {series,xmin,xmax,ymin,ymax,log=false,yFmt=(v)=>fmt(v),bands}=opts;
-    let X0=xmin,X1=xmax,Y0=ymin,Y1=ymax;
-    if(X0==null||X1==null){let lo=Infinity,hi=-Infinity;for(const s of series){if(s.hidden)continue;for(const p of s.data){const t=+new Date(p[0]);if(t<lo)lo=t;if(t>hi)hi=t;}}X0=lo;X1=hi;}
-    if(Y0==null||Y1==null){let lo=Infinity,hi=-Infinity;for(const s of series){if(s.hidden)continue;for(const p of s.data){let v=log?Math.log10(p[1]):p[1];if(v<lo)lo=v;if(v>hi)hi=v;}}const pad=(hi-lo)*0.06||1;Y0=lo-pad;Y1=hi+pad;}
+    const {series,log=false,yFmt=(v)=>fmt(v),bands}=opts;
+    const {X0,X1,Y0,Y1}=domain();
     const sx=t=>M.l+( (t-X0)/(X1-X0||1) )*iw;
     const sy=v=>{ const lv=log?Math.log10(v):v; return M.t+ih-( (lv-Y0)/(Y1-Y0||1) )*ih; };
     const tMouse=X0+(mx-M.l)/iw*(X1-X0);
@@ -282,7 +289,55 @@ function makeChart(canvas, opts){
   }
   function findSeriesData(series,name){const s=series.find(x=>x.name===name);return s?s.data:null;}
 
-  canvas.addEventListener('mousemove',hoverAt);
+  /* ============================================================
+     Drag-to-zoom: press + drag a window over the plot area; the
+     chart zooms into it. Double-click resets to the full view.
+     ============================================================ */
+  const drag={active:false,x0:0,y0:0,x1:0,y1:0};
+  function plotRect(){const r=canvas.getBoundingClientRect();return {l:M.l,r:w-M.r,t:M.t,b:h-M.b,iw:w-M.l-M.r,ih:h-M.t-M.b};}
+  function drawSelection(){
+    const {l,t,iw,ih}=plotRect();
+    const x0=Math.max(l,Math.min(drag.x0,drag.x1)), x1=Math.min(l+iw,Math.max(drag.x0,drag.x1));
+    const y0=Math.max(t,Math.min(drag.y0,drag.y1)), y1=Math.min(t+ih,Math.max(drag.y0,drag.y1));
+    ctx.fillStyle='rgba(90,169,230,.12)';
+    ctx.fillRect(x0,y0,x1-x0,y1-y0);
+    ctx.strokeStyle='#5aa9e6'; ctx.lineWidth=1;
+    ctx.strokeRect(x0,y0,x1-x0,y1-y0);
+  }
+  canvas.addEventListener('mousedown',ev=>{
+    const r=canvas.getBoundingClientRect();
+    drag.active=true; drag.x0=drag.x1=ev.clientX-r.left; drag.y0=drag.y1=ev.clientY-r.top;
+    canvas.style.cursor='crosshair';
+  });
+  canvas.addEventListener('mousemove',ev=>{
+    const r=canvas.getBoundingClientRect();
+    if(drag.active){
+      drag.x1=ev.clientX-r.left; drag.y1=ev.clientY-r.top;
+      clearHover();                       // suppress tooltip while dragging
+      redraw(); drawSelection();
+      return;
+    }
+    hoverAt(ev);
+  });
+  canvas.addEventListener('mouseup',ev=>{
+    if(!drag.active)return;
+    drag.active=false; canvas.style.cursor='default';
+    const r=canvas.getBoundingClientRect();
+    drag.x1=ev.clientX-r.left; drag.y1=ev.clientY-r.top;
+    const {l,t,iw,ih}=plotRect();
+    const x0=Math.max(l,Math.min(drag.x0,drag.x1)), x1=Math.min(l+iw,Math.max(drag.x0,drag.x1));
+    const y0=Math.max(t,Math.min(drag.y0,drag.y1)), y1=Math.min(t+ih,Math.max(drag.y0,drag.y1));
+    if(x1-x0<8||y1-y0<8){ redraw(); return; }   // click, not a drag
+    const {X0,X1,Y0,Y1}=domain();
+    const {log=false}=opts;
+    const tFromPx=px=>X0+(px-l)/iw*(X1-X0);
+    const vFromPx=py=>Y0+(1-(py-t)/ih)*(Y1-Y0);
+    zoom.active=true;
+    zoom.X0=tFromPx(x0); zoom.X1=tFromPx(x1);
+    zoom.Y0=vFromPx(y1); zoom.Y1=vFromPx(y0);
+    redraw();
+  });
+  canvas.addEventListener('dblclick',()=>{ zoom.active=false; zoom.X0=zoom.X1=zoom.Y0=zoom.Y1=null; clearHover(); redraw(); });
   canvas.addEventListener('mouseleave',clearHover);
   new ResizeObserver(()=>{resize();redraw();}).observe(canvas.parentElement);
   return api;
