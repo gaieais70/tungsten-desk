@@ -140,8 +140,10 @@ def build_m0_daily():
 M0 = build_m0_daily()
 
 # --------------------------------------------------------------------------
-# 3. USGS long history (1900-2017) for context + regime stats
+# 3. USGS long history (1900-2026) for context + regime stats
 # --------------------------------------------------------------------------
+# 1900-2017 from ds140 historical workbook; 2018-2026 extended from MCS
+# concentrate prices (Argus basis) x126.11, with 2026 a YTD estimate.
 usgs = json.load(open(f'{DATA}\\usgs_tungsten_history.json'))
 usgs_df = pd.DataFrame(usgs).set_index('year')
 

@@ -21,7 +21,8 @@ const C={
    Judgment call: wars significant enough to plausibly move strategic-metal
    demand/stockpiling. `kind` controls marker color — 'world' = global/industrial
    wars (the ones that historically spiked tungsten), 'regional' = major regional
-   conflicts. The USGS series runs 1900–2017, so coverage stops there. */
+   conflicts. The USGS series runs 1900–2026 (ds140 + MCS extension), so
+   coverage stops there. */
 const WARS=[
   {id:'russia-japan', name:'Russo-Japanese War',  short:'R-J',  start:1904, end:1905, kind:'regional'},
   {id:'ww1',          name:'World War I',         short:'WWI',  start:1914, end:1918, kind:'world'},
@@ -39,7 +40,9 @@ const WARS=[
   {id:'yugoslav',     name:'Yugoslav Wars',       short:'YUG',  start:1991, end:2001, kind:'regional'},
   {id:'afghan-01',    name:'War in Afghanistan',  short:'AF2',  start:2001, end:2021, kind:'regional'},
   {id:'iraq-03',      name:'Iraq War',            short:'IRQ',  start:2003, end:2011, kind:'regional'},
-  {id:'ukraine-14',   name:'Russo-Ukrainian War', short:'UKR',  start:2014, end:null, kind:'regional'},
+  {id:'ukraine-14',   name:'Russo-Ukrainian War (Crimea/Donbas)', short:'UKR14', start:2014, end:null, kind:'regional'},
+  {id:'ukraine-22',   name:'Russo-Ukrainian War (full-scale)', short:'UKR', start:2022, end:null, kind:'regional'},
+  {id:'iran-israel',  name:'Iran–Israel War',     short:'IRN',  start:2024, end:null, kind:'regional'},
 ];
 
 /* ============================================================
@@ -260,8 +263,7 @@ function makeChart(canvas, opts){
       const yrs=hitWar.end?hitWar.start+'–'+hitWar.end:String(hitWar.start)+'–';
       const kindTxt=hitWar.kind==='world'?'GLOBAL / INDUSTRIAL WAR':'REGIONAL WAR';
       html+=`<div class="tip-row tip-war"><span class="tip-dot" style="background:${hitWar.color}"></span><span class="tip-name" style="color:${hitWar.color}">⚔ ${hitWar.name}</span><span class="tip-val">${kindTxt}</span></div>
-      <div class="tip-row"><span class="tip-name" style="color:var(--dim2)">years</span><span class="tip-val">${yrs}</span></div>
-      <div class="tip-row"><span class="tip-name" style="color:var(--dim2)">unit value at start</span><span class="tip-val">${yFmt(hitWar.value)}</span></div>`;
+      <div class="tip-row"><span class="tip-name" style="color:var(--dim2)">YEARS</span><span class="tip-val">${yrs}</span></div>`;
     }
     for(const r of rows){
       html+=`<div class="tip-row"><span class="tip-dot" style="background:${r.color}"></span><span class="tip-name">${r.name}</span><span class="tip-val">${yFmt(r.val)}</span></div>`;
@@ -574,7 +576,7 @@ function renderWarMenu(chart, wars, hist){
             <span class="wm-years">${yrs}</span>
           </label>`;}).join('')}
       `).join('')}
-      <div class="wm-note">Dots pinned to the USGS unit value in each war's start year · series ends 2017</div>
+      <div class="wm-note">Dots pinned to the unit value in each war's start year · series 1900–2026</div>
     </div>`;
   const drop=$('#wmDrop'), count=$('#wmCount');
   $('#wmToggle').onclick=(e)=>{ e.stopPropagation(); const open=drop.hidden; drop.hidden=!open; $('#wmToggle').setAttribute('aria-expanded',!open); };
@@ -658,7 +660,7 @@ function renderMethodology(){
     ['Supply-demand balance (5,570 t deficit 2025, 2,330 t 2026, ~85 kt supply, 2.0% CAGR)','TIER-2','Sangdong NI 43-101 via Almonty Jul-2026 deck; Merchant Research & Consulting via deck','COMPANY-SOURCED'],
     ['End-use split (defense ~8%, transport 26%, mining/construction 26%)','TIER-2','ITIA Applications & Markets 2021, via Almonty Jul-2026 deck','THIRD-PARTY'],
     ['Copper, iron ore, FX, equity indices','TIER-2','Yahoo Finance daily closes','MARKET DATA'],
-    ['USGS tungsten unit value 1900–2017','TIER-2','USGS ds140 historical statistics','PUBLIC DATA'],
+    ['USGS tungsten unit value 1900–2026','TIER-2','USGS ds140 historical statistics + MCS concentrate prices (2018–25) + APT YTD (2026, ESTIMATED)','PUBLIC DATA'],
     ['News feed','TIER-2','Google News RSS (publisher-linked)','AGGREGATED'],
   ];
   $('#provTable tbody').innerHTML=prov.map(r=>`<tr>
