@@ -189,3 +189,5 @@ td.cell-cold{background:rgba(224,82,82,.10)}
 #chartTip .tip-dot{width:8px;height:8px;border-radius:2px;flex:0 0 auto}
 #chartTip .tip-name{color:var(--dim);flex:1 1 auto;padding-right:8px}
 #chartTip .tip-val{color:var(--txt);font-weight:600;white-space:nowrap}
+#chartTip .tip-war{border-top:1px dashed var(--line2);margin-top:4px;padding-top:6px}
+#chartTip .tip-war .tip-name{font-weight:700}

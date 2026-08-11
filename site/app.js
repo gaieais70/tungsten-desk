@@ -197,6 +197,15 @@ function makeChart(canvas, opts){
     const sy=v=>{ const lv=log?Math.log10(v):v; return M.t+ih-( (lv-Y0)/(Y1-Y0||1) )*ih; };
     const tMouse=X0+(mx-M.l)/iw*(X1-X0);
 
+    // war-marker hit: is the cursor on/near a visible war dot? (7px box)
+    let hitWar=null;
+    const wars=opts.warOverlay||[];
+    for(const w of wars){
+      if(w.hidden||w.value==null)continue;
+      const wx=sx(+new Date(w.date)), wy=sy(w.value);
+      if(Math.abs(mx-wx)<7 && Math.abs(my-wy)<7){hitWar=w;break;}
+    }
+
     // nearest data point on each series (by time)
     function nearest(arr){
       if(!arr||!arr.length)return null;
@@ -232,6 +241,11 @@ function makeChart(canvas, opts){
       const px=sx(+new Date(p[0])), py=sy(p[1]);
       ctx.beginPath();ctx.arc(px,py,3.4,0,7);ctx.fillStyle=r.color;ctx.fill();
     }
+    // highlight the hovered war dot
+    if(hitWar){
+      const wx=sx(+new Date(hitWar.date)), wy=sy(hitWar.value);
+      ctx.beginPath();ctx.arc(wx,wy,7,0,7);ctx.strokeStyle=hitWar.color;ctx.lineWidth=1.6;ctx.stroke();
+    }
     hover.active=true;
 
     // tooltip DOM
@@ -242,6 +256,13 @@ function makeChart(canvas, opts){
     const dateLabel=spanY>=1? String(dt.getFullYear())
       : dt.toLocaleString('en-US',{month:'short',year:'numeric'})+(spanY<0.5? ' '+String(dt.getDate()):'');
     let html=`<div class="tip-x">${dateLabel}</div>`;
+    if(hitWar){
+      const yrs=hitWar.end?hitWar.start+'–'+hitWar.end:String(hitWar.start)+'–';
+      const kindTxt=hitWar.kind==='world'?'GLOBAL / INDUSTRIAL WAR':'REGIONAL WAR';
+      html+=`<div class="tip-row tip-war"><span class="tip-dot" style="background:${hitWar.color}"></span><span class="tip-name" style="color:${hitWar.color}">⚔ ${hitWar.name}</span><span class="tip-val">${kindTxt}</span></div>
+      <div class="tip-row"><span class="tip-name" style="color:var(--dim2)">years</span><span class="tip-val">${yrs}</span></div>
+      <div class="tip-row"><span class="tip-name" style="color:var(--dim2)">unit value at start</span><span class="tip-val">${yFmt(hitWar.value)}</span></div>`;
+    }
     for(const r of rows){
       html+=`<div class="tip-row"><span class="tip-dot" style="background:${r.color}"></span><span class="tip-name">${r.name}</span><span class="tip-val">${yFmt(r.val)}</span></div>`;
     }
