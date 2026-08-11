@@ -17,6 +17,31 @@ const C={
   iron:'#7bd88f', copper:'#f28c38', grid:'#1e2633', axis:'#5c6a7d'
 };
 
+/* ---------------- major wars (markers on the 125y history chart) ----------------
+   Judgment call: wars significant enough to plausibly move strategic-metal
+   demand/stockpiling. `kind` controls marker color — 'world' = global/industrial
+   wars (the ones that historically spiked tungsten), 'regional' = major regional
+   conflicts. The USGS series runs 1900–2017, so coverage stops there. */
+const WARS=[
+  {id:'russia-japan', name:'Russo-Japanese War',  short:'R-J',  start:1904, end:1905, kind:'regional'},
+  {id:'ww1',          name:'World War I',         short:'WWI',  start:1914, end:1918, kind:'world'},
+  {id:'spanish-civil',name:'Spanish Civil War',   short:'SPA',  start:1936, end:1939, kind:'regional'},
+  {id:'sino-japan',   name:'Second Sino-Japanese War', short:'SJ', start:1937, end:1945, kind:'world'},
+  {id:'ww2',          name:'World War II',        short:'WWII', start:1939, end:1945, kind:'world'},
+  {id:'korea',        name:'Korean War',          short:'KOR',  start:1950, end:1953, kind:'world'},
+  {id:'vietnam',      name:'Vietnam War',         short:'VIE',  start:1955, end:1975, kind:'regional'},
+  {id:'sixday',       name:'Six-Day War',         short:'6D',   start:1967, end:1967, kind:'regional'},
+  {id:'yomkippur',    name:'Yom Kippur War',      short:'YK',   start:1973, end:1973, kind:'regional'},
+  {id:'afghan-79',    name:'Soviet–Afghan War',   short:'AFG',  start:1979, end:1989, kind:'regional'},
+  {id:'iran-iraq',    name:'Iran–Iraq War',       short:'II',   start:1980, end:1988, kind:'regional'},
+  {id:'falklands',    name:'Falklands War',       short:'FAL',  start:1982, end:1982, kind:'regional'},
+  {id:'gulf-1',       name:'Gulf War',            short:'G1',   start:1990, end:1991, kind:'regional'},
+  {id:'yugoslav',     name:'Yugoslav Wars',       short:'YUG',  start:1991, end:2001, kind:'regional'},
+  {id:'afghan-01',    name:'War in Afghanistan',  short:'AF2',  start:2001, end:2021, kind:'regional'},
+  {id:'iraq-03',      name:'Iraq War',            short:'IRQ',  start:2003, end:2011, kind:'regional'},
+  {id:'ukraine-14',   name:'Russo-Ukrainian War', short:'UKR',  start:2014, end:null, kind:'regional'},
+];
+
 /* ============================================================
    Minimal canvas chart engine
    ============================================================ */
@@ -120,6 +145,29 @@ function makeChart(canvas, opts){
       ctx.stroke(); ctx.setLineDash([]);
       // markers on verified points
       if(s.markers){ ctx.fillStyle=s.color; for(const mk of s.markers){ ctx.beginPath(); ctx.arc(sx(+new Date(mk[0])),sy(mk[1]),3.2,0,7); ctx.fill(); } }
+    }
+
+    // war overlay: vertical hairline + dot pinned to the price line + label
+    if(opts.warOverlay){
+      const wars=opts.warOverlay.filter(w=>!w.hidden);
+      ctx.font='600 9px "IBM Plex Mono",monospace'; ctx.textAlign='left'; ctx.textBaseline='top';
+      let lastLabelX=-Infinity;
+      for(const w of wars){
+        const x=sx(+new Date(w.date));
+        const y=sy(w.value);
+        if(x<M.l||x>w-M.r)continue;
+        ctx.strokeStyle=(w.color||'#e05252')+'55'; ctx.setLineDash([3,3]);
+        ctx.beginPath(); ctx.moveTo(x,M.t); ctx.lineTo(x,M.t+ih); ctx.stroke(); ctx.setLineDash([]);
+        // dot on the price line
+        ctx.fillStyle=w.color||'#e05252';
+        ctx.beginPath(); ctx.arc(x,y,3.6,0,7); ctx.fill();
+        ctx.strokeStyle='#0d1117'; ctx.lineWidth=1; ctx.stroke();
+        // label above (skip if too close to previous)
+        if(x-lastLabelX>64){
+          ctx.fillStyle=(w.color||'#e05252'); ctx.fillText(w.short,x+5,M.t+4);
+          lastLabelX=x;
+        }
+      }
     }
     // frame
     ctx.strokeStyle=C.grid; ctx.strokeRect(M.l,M.t,iw,ih);
@@ -403,10 +451,21 @@ function render(){
 
   /* ---- 125y history ---- */
   const hist=D.usgs_history.filter(r=>r.usd_t).map(r=>[r.year+'-07-01',r.usd_t]);
-  makeChart($('#historyChart'),{
+  // build war overlay: dot pinned to the USGS unit value at the war start year
+  const usgsByYear={}; D.usgs_history.forEach(r=>{ if(r.usd_t!=null) usgsByYear[r.year]=r.usd_t; });
+  const warOverlay=WARS.map(w=>({
+    ...w,
+    date:String(w.start)+'-07-01',
+    value:usgsByYear[w.start]!=null?usgsByYear[w.start]:null,
+    color:w.kind==='world'?'#e05252':'#5aa9e6',
+    hidden:false,
+  })).filter(w=>w.value!=null);
+  const hc=makeChart($('#historyChart'),{
     series:[{id:'h',name:'USGS unit value',color:C.observed,width:1.6,data:hist}],
     log:true,yFmt:v=>v>=1000?'$'+fmt(v/1000)+'k':'$'+fmt(v),
+    warOverlay,
   });
+  renderWarMenu(hc, warOverlay, hist);
 
   /* ---- news ---- */
   renderNews('all');
@@ -464,6 +523,67 @@ function renderNews(filter){
   }).join('')||'<div class="panel-note" style="padding:20px">No items match this filter.</div>';
 }
 $$('.nbtn').forEach(b=>b.onclick=()=>{ $$('.nbtn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); renderNews(b.dataset.f); });
+
+/* ---------------- war dropdown ---------------- */
+function renderWarMenu(chart, wars, hist){
+  const wrap=$('#warMenu');
+  if(!wrap)return;
+  const kindLabel={world:'GLOBAL / INDUSTRIAL',regional:'REGIONAL'};
+  const groups={world:[],regional:[]};
+  wars.forEach(w=>groups[w.kind].push(w));
+  const allOn=wars.filter(w=>!w.hidden).length===wars.length;
+  wrap.innerHTML=`
+    <button class="wm-toggle" id="wmToggle" aria-haspopup="true" aria-expanded="false">
+      ⚔ WARS <span class="wm-count" id="wmCount">${wars.length - wars.filter(w=>w.hidden).length}</span> ▾
+    </button>
+    <div class="wm-drop" id="wmDrop" hidden>
+      <div class="wm-actions">
+        <button class="wm-act" data-act="all">ALL ON</button>
+        <button class="wm-act" data-act="none">ALL OFF</button>
+        <button class="wm-act" data-act="world">WORLD ONLY</button>
+      </div>
+      ${Object.entries(groups).map(([kind,list])=>`
+        <div class="wm-group">${kindLabel[kind]}</div>
+        ${list.map(w=>{
+          const yrs=w.end?w.start+'–'+w.end:String(w.start)+'–';
+          return `<label class="wm-item" data-id="${w.id}">
+            <input type="checkbox" ${w.hidden?'':'checked'}>
+            <span class="wm-dot" style="background:${w.color}"></span>
+            <span class="wm-name">${w.name}</span>
+            <span class="wm-years">${yrs}</span>
+          </label>`;}).join('')}
+      `).join('')}
+      <div class="wm-note">Dots pinned to the USGS unit value in each war's start year · series ends 2017</div>
+    </div>`;
+  const drop=$('#wmDrop'), count=$('#wmCount');
+  $('#wmToggle').onclick=(e)=>{ e.stopPropagation(); const open=drop.hidden; drop.hidden=!open; $('#wmToggle').setAttribute('aria-expanded',!open); };
+  document.addEventListener('click',(e)=>{ if(!wrap.contains(e.target)) drop.hidden=true; });
+  const refresh=()=>{
+    const n=wars.filter(w=>!w.hidden).length;
+    count.textContent=n;
+    chart.redraw();
+  };
+  $$('#wmDrop .wm-item input').forEach(cb=>{
+    cb.onchange=()=>{
+      const w=wars.find(x=>x.id===cb.closest('.wm-item').dataset.id);
+      w.hidden=!cb.checked;
+      refresh();
+    };
+  });
+  $$('#wmDrop .wm-act').forEach(btn=>{
+    btn.onclick=()=>{
+      const act=btn.dataset.act;
+      wars.forEach(w=>{
+        w.hidden = act==='all'?false : act==='none'?true : w.kind!=='world';
+      });
+      $$('#wmDrop .wm-item input').forEach(cb=>{
+        const w=wars.find(x=>x.id===cb.closest('.wm-item').dataset.id);
+        cb.checked=!w.hidden;
+      });
+      refresh();
+    };
+  });
+}
 
 /* ---------------- methodology ---------------- */
 function renderMethodology(){
