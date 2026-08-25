@@ -95,6 +95,10 @@ if len(METALS) < len(_METAL_SYMBOLS):
 # Verified: IMARC 3 Aug 2026: tungsten carbide $131/kg in China.
 # Verified: Fastmarkets (via Almonty Jul-2026 investor deck): APT 88.5% WO3 min CIF
 #   Rotterdam/Baltimore duty-free = $3,139.50/mtu on 24 Jul 2026.
+# Verified: SMM Tungsten Daily Review 12 Aug 2026: European APT offers stable USD 2,900-3,250/mtu.
+# Verified: CTIA China Tungsten Industry 24 Aug 2026: European APT stable USD 2,900-3,000/mtu;
+#   China domestic APT transactions hovering around RMB 600,000/t (~$1,005/mtu at ~6.74 CNY/USD,
+#   consistent with our CNY=X series) — fragmentation wedge remains policy-driven and wide.
 # Intermediate shape is an analyst reconstruction (labelled ESTIMATED), monotone-convex
 # between verified endpoints, with a documented June-2026 softening.
 ANCHORS_VERIFIED = [
@@ -106,6 +110,10 @@ ANCHORS_VERIFIED = [
      'source': 'ISBP (M. Dornhofer) assessment 17 Jul 2026: "above $3,000"'},
     {'date': '2026-07-24', 'mtu': 3139.5, 'verified': True,
      'source': 'Fastmarkets (via Almonty Jul-2026 deck): APT 88.5% min CIF Rotterdam/Baltimore duty-free, 24 Jul 2026'},
+    {'date': '2026-08-12', 'mtu': 3075.0, 'verified': True,
+     'source': 'SMM Tungsten Daily Review 12 Aug 2026: European APT offers stable USD 2,900-3,250/mtu (range midpoint)'},
+    {'date': '2026-08-24', 'mtu': 2950.0, 'verified': True,
+     'source': 'CTIA China Tungsten Industry 24 Aug 2026: European APT stable USD 2,900-3,000/mtu (range midpoint); China domestic ~RMB 600,000/t'},
 ]
 # Analyst reconstruction between verified anchors (NOT verified; shape assumptions documented).
 # Constraints honoured: (1) export-control shock 4 Feb 2025; (2) SMM Apr 2026 report of a
@@ -122,6 +130,9 @@ RECON_MONTHLY = [
     ('2026-05-31', 2280), ('2026-06-15', 2480), ('2026-06-30', 2700),
     ('2026-07-17', 3050), ('2026-07-24', 3139.5), ('2026-07-31', 3115),
     ('2026-08-01', 3108),
+    # Aug 2026: European APT eased off the late-July peak — SMM 12-Aug offers
+    # $2,900-3,250, CTIA 24-Aug stable $2,900-3,000 (both verified anchors above).
+    ('2026-08-12', 3075), ('2026-08-24', 2950),
 ]
 MTU_TO_T_APT = 88.5   # 1 t APT(88.5% WO3) = 88.5 mtu WO3
 

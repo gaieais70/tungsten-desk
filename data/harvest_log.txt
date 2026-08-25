@@ -1,25 +1,33 @@
-OK  HG=F           Copper                 2912 rows  last=2026-08-03 6.54
-OK  SI=F           Silver                 2911 rows  last=2026-08-03 58.335
-OK  TIO=F          IronOre                2910 rows  last=2026-07-31 98.0
-OK  USDJPY=X       USDJPY                 3016 rows  last=2026-08-03 157.365
-OK  CNY=X          USDCNY                 3015 rows  last=2026-08-03 6.7464
-OK  EURUSD=X       EURUSD                 3016 rows  last=2026-08-03 1.1511
-OK  ^GSPC          SP500                  2912 rows  last=2026-08-03 7600.5
-OK  FXI            ChinaETF               2912 rows  last=2026-08-03 36.46
-OK  XME            USEquityMaterials      2912 rows  last=2026-08-03 103.11
-OK  GDX            GoldMinersETF          2912 rows  last=2026-08-03 76.05
-OK  EWC            CanadaETF              2912 rows  last=2026-08-03 59.65
-OK  EWA            AustraliaETF           2912 rows  last=2026-08-03 29.4
-OK  EQR.AX         EQResources            2933 rows  last=2026-08-03 0.26
-OK  TGN.AX         TungstenMining         2933 rows  last=2026-08-03 0.2
+OK  HG=F           Copper                 2928 rows  last=2026-08-25 6.6975
+OK  SI=F           Silver                 2927 rows  last=2026-08-25 68.8
+OK  GC=F           Gold                   2927 rows  last=2026-08-25 4699.8999
+OK  PL=F           Platinum               2926 rows  last=2026-08-25 1862.4
+OK  PA=F           Palladium              2925 rows  last=2026-08-25 1332.0
+OK  ALI=F          Aluminum               2891 rows  last=2026-08-25 3416.5
+OK  ZNC=F          Zinc                   2792 rows  last=2026-08-24 3950.0
+OK  TIO=F          IronOre                2926 rows  last=2026-08-24 95.34
+OK  USDJPY=X       USDJPY                 3031 rows  last=2026-08-25 159.253
+OK  CNY=X          USDCNY                 3030 rows  last=2026-08-25 6.7084
+OK  EURUSD=X       EURUSD                 3031 rows  last=2026-08-25 1.1677
+OK  ^GSPC          SP500                  2928 rows  last=2026-08-25 7667.04
+OK  FXI            ChinaETF               2928 rows  last=2026-08-25 35.545
+OK  XME            USEquityMaterials      2928 rows  last=2026-08-25 119.74
+OK  GDX            GoldMinersETF          2928 rows  last=2026-08-25 105.135
+OK  EWC            CanadaETF              2928 rows  last=2026-08-25 62.63
+OK  EWA            AustraliaETF           2928 rows  last=2026-08-25 30.39
+OK  EQR.AX         EQResources            2949 rows  last=2026-08-25 0.375
+OK  TGN.AX         TungstenMining         2949 rows  last=2026-08-25 0.275
 ERR ALI.TO: HTTP Error 404: Not Found
 ERR ALM.TO: HTTP Error 404: Not Found
-OK  1124.HK        ChinaTungsten          2850 rows  last=2026-07-31 0.115
-OK  0697.HK        ShouchengHoldings      2850 rows  last=2026-07-31 1.76
-OK  603993.SS      CMOCLuoyang            2811 rows  last=2026-07-31 19.52
-OK  000657.SZ      ChinaTungstenHighTech  2811 rows  last=2026-07-31 49.51
-OK  601958.SS      JinduichengMoly        2811 rows  last=2026-07-31 20.99
-OK  603520.SS      NingboJinshi           2525 rows  last=2026-07-31 8.66
+OK  1124.HK        ChinaTungsten          2866 rows  last=2026-08-24 0.11
+OK  0697.HK        ShouchengHoldings      2866 rows  last=2026-08-24 1.46
+OK  603993.SS      CMOCLuoyang            2827 rows  last=2026-08-24 18.99
+OK  000657.SZ      ChinaTungstenHighTech  2827 rows  last=2026-08-24 66.76
+OK  601958.SS      JinduichengMoly        2827 rows  last=2026-08-24 23.29
+OK  603520.SS      NingboJinshi           2541 rows  last=2026-08-24 8.69
 PARSE ERR MCU: 'timestamp'
+ERR FRED PTINUSDM: PTINUSDM: The read operation timed out
+ERR FRED PNICKUSDM: PNICKUSDM: The read operation timed out
+ERR FRED PLEADUSDM: PLEADUSDM: Remote end closed connection without response
 
-Saved 20 series to market_raw.json
+Saved 25 series to market_raw.json
