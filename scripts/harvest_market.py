@@ -95,7 +95,7 @@ def fetch_fred(series_id, tries=5):
             time.sleep(4 * (attempt + 1))
     return {'error': f'{series_id}: empty'}
 
-def main():
+def main(skip_fred=False):
     end = int(time.time())
     start = int(datetime.datetime(2015, 1, 1).timestamp())
     out = {}
@@ -126,22 +126,29 @@ def main():
         time.sleep(0.4)
 
     # FRED monthly (tin, nickel, lead — no Yahoo daily feed)
-    for series_id, sym, label, cat in FRED_MONTHLY:
-        rows = fetch_fred(series_id)
-        if isinstance(rows, dict) and 'error' in rows:
-            print(f'ERR FRED {series_id}: {rows["error"]}', file=sys.stderr)
-            continue
-        if not rows:
-            continue
-        out[sym] = rows
-        labels[sym] = label
-        cats[sym] = cat
-        print(f'OK  {sym:<14} {label:<22} {len(rows)} rows (monthly)  last={rows[-1][0]} {rows[-1][1]}')
-        time.sleep(1)
+    # FRED throttles Python urllib from this host (RemoteDisconnected after
+    # ~19s, every time). Retrying costs ~7 minutes for nothing, so callers
+    # that have the Node fallback available pass --skip-fred.
+    if skip_fred:
+        print('SKIP FRED (--skip-fred); caller supplies the Node fallback',
+              file=sys.stderr)
+    else:
+        for series_id, sym, label, cat in FRED_MONTHLY:
+            rows = fetch_fred(series_id)
+            if isinstance(rows, dict) and 'error' in rows:
+                print(f'ERR FRED {series_id}: {rows["error"]}', file=sys.stderr)
+                continue
+            if not rows:
+                continue
+            out[sym] = rows
+            labels[sym] = label
+            cats[sym] = cat
+            print(f'OK  {sym:<14} {label:<22} {len(rows)} rows (monthly)  last={rows[-1][0]} {rows[-1][1]}')
+            time.sleep(1)
 
     with open(r'D:\tungsten-dashboard\data\market_raw.json', 'w') as f:
         json.dump({'series': out, 'labels': labels, 'categories': cats}, f)
     print(f'\nSaved {len(out)} series to market_raw.json')
 
 if __name__ == '__main__':
-    main()
+    main(skip_fred='--skip-fred' in sys.argv)
