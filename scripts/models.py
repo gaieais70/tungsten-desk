@@ -99,6 +99,14 @@ if len(METALS) < len(_METAL_SYMBOLS):
 # Verified: CTIA China Tungsten Industry 24 Aug 2026: European APT stable USD 2,900-3,000/mtu;
 #   China domestic APT transactions hovering around RMB 600,000/t (~$1,005/mtu at ~6.74 CNY/USD,
 #   consistent with our CNY=X series) — fragmentation wedge remains policy-driven and wide.
+# Verified: CTIA China Tungsten Industry 7 Sep 2026: European APT USD 2,900-3,000/mtu
+#   (equivalent to ~RMB 1.723-1.782 m/ton on their own conversion, which reproduces
+#   mtu x 88.5 x FX exactly); up 220.7% YTD but down 6.1% from the recent peak. Domestic
+#   APT locked near the RMB 595,000/t cost line — i.e. flat exports, easing domestic.
+# Verified: Chinatungsten Online 15 Sep 2026 (via amsuo Industry Brief Wk-38, citing
+#   21st Century Business Herald): European APT USD 2,900-3,000/mtu; China domestic APT
+#   RMB 590,000-600,000/t. Export range has now held $2,900-3,000 for ~3 weeks while
+#   domestic prints drifted from RMB 600,000 to ~RMB 595,000/t: the wedge WIDENED.
 # Intermediate shape is an analyst reconstruction (labelled ESTIMATED), monotone-convex
 # between verified endpoints, with a documented June-2026 softening.
 ANCHORS_VERIFIED = [
@@ -114,6 +122,10 @@ ANCHORS_VERIFIED = [
      'source': 'SMM Tungsten Daily Review 12 Aug 2026: European APT offers stable USD 2,900-3,250/mtu (range midpoint)'},
     {'date': '2026-08-24', 'mtu': 2950.0, 'verified': True,
      'source': 'CTIA China Tungsten Industry 24 Aug 2026: European APT stable USD 2,900-3,000/mtu (range midpoint); China domestic ~RMB 600,000/t'},
+    {'date': '2026-09-07', 'mtu': 2950.0, 'verified': True,
+     'source': 'CTIA China Tungsten Industry 7 Sep 2026: European APT USD 2,900-3,000/mtu (range midpoint); China domestic APT ~RMB 595,000/t'},
+    {'date': '2026-09-15', 'mtu': 2950.0, 'verified': True,
+     'source': 'Chinatungsten Online 15 Sep 2026 (via amsuo Industry Brief Wk-38 / 21st Century Business Herald): European APT USD 2,900-3,000/mtu (range midpoint)'},
 ]
 # Analyst reconstruction between verified anchors (NOT verified; shape assumptions documented).
 # Constraints honoured: (1) export-control shock 4 Feb 2025; (2) SMM Apr 2026 report of a
@@ -133,6 +145,10 @@ RECON_MONTHLY = [
     # Aug 2026: European APT eased off the late-July peak — SMM 12-Aug offers
     # $2,900-3,250, CTIA 24-Aug stable $2,900-3,000 (both verified anchors above).
     ('2026-08-12', 3075), ('2026-08-24', 2950),
+    # Sep 2026: export range has held flat at $2,900-3,000 for three weeks
+    # (CTIA 7-Sep, Chinatungsten Online 15-Sep — both verified anchors above).
+    # No value change; this extends the flat verified run to 15 Sep.
+    ('2026-09-07', 2950), ('2026-09-15', 2950),
 ]
 MTU_TO_T_APT = 88.5   # 1 t APT(88.5% WO3) = 88.5 mtu WO3
 
