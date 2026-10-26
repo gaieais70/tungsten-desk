@@ -1,154 +1,122 @@
-"""Harvest market data for the Tungsten Desk pricing models.
+"""Harvest market data for the Tungsten Desk (Yahoo Finance chart API, no auth).
 
-Pulls daily OHLC from Yahoo Finance (chart v8, no auth) for:
-  - proxy metals: copper, silver, gold, platinum, palladium, aluminum, zinc,
-    iron ore
-  - FX: USD/CNY
-  - equity indices: S&P 500, China ETF, global materials
-  - tungsten-equity basket (producers with tungsten exposure)
-Pulls monthly World Bank global-price series from FRED for metals Yahoo
-does not carry (tin, nickel, lead — the LME-linked iPath ETNs were
-delisted in 2023, so FRED month-end is the reliable source).
-Saves to data/market_raw.json
+Pulls daily closes for
+  * proxy metals + FX + indices (candidate *drivers* - the models test whether
+    they actually carry information about tungsten; most do not)
+  * the tungsten-equity universe: listed companies with real tungsten exposure
+    (producers, developers, processors). The old basket contained two tickers that
+    are not tungsten companies at all (1124.HK = Coastal Greenland, 0697.HK =
+    Shoucheng Holdings) and missed the actual pure plays (Almonty, Xiamen
+    Tungsten, Chongyi Zhangyuan, Guardian Metal, Tungsten West, Group 6).
+Writes data/market_raw.json.   A symbol that fails keeps its previous history.
+
+Usage:  python scripts/harvest_market.py [--with-fred]
 """
-import json, time, urllib.request, sys, datetime
+import datetime
+import json
+import sys
+import time
 
-HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+from common import DATA, log, http_json, http_get
 
-# (symbol, label, category) — Yahoo daily
+# (symbol, label, category)
+#   category: metal | fx | index | tungsten_equity | tungsten_user | moly_equity
 TICKERS = [
-    ('HG=F', 'Copper', 'metal'),
-    ('SI=F', 'Silver', 'metal'),
-    ('GC=F', 'Gold', 'metal'),
-    ('PL=F', 'Platinum', 'metal'),
-    ('PA=F', 'Palladium', 'metal'),
-    ('ALI=F', 'Aluminum', 'metal'),
-    ('ZNC=F', 'Zinc', 'metal'),
-    ('TIO=F', 'IronOre', 'metal'),
-    ('USDJPY=X', 'USDJPY', 'fx'),
-    ('CNY=X', 'USDCNY', 'fx'),
-    ('EURUSD=X', 'EURUSD', 'fx'),
-    ('^GSPC', 'SP500', 'index'),
-    ('FXI', 'ChinaETF', 'index'),
-    ('XME', 'USEquityMaterials', 'index'),
-    ('GDX', 'GoldMinersETF', 'index'),
-    ('EWC', 'CanadaETF', 'index'),
-    ('EWA', 'AustraliaETF', 'index'),
-    # tungsten-linked equities
-    ('EQR.AX', 'EQResources', 'tungsten_equity'),
+    ('HG=F', 'Copper', 'metal'), ('SI=F', 'Silver', 'metal'), ('GC=F', 'Gold', 'metal'),
+    ('PL=F', 'Platinum', 'metal'), ('PA=F', 'Palladium', 'metal'), ('ALI=F', 'Aluminum', 'metal'),
+    ('ZNC=F', 'Zinc', 'metal'), ('TIO=F', 'IronOre', 'metal'),
+    ('CNY=X', 'USDCNY', 'fx'), ('USDJPY=X', 'USDJPY', 'fx'), ('EURUSD=X', 'EURUSD', 'fx'),
+    ('^GSPC', 'SP500', 'index'), ('000300.SS', 'CSI300', 'index'), ('FXI', 'ChinaETF', 'index'),
+    ('XME', 'USMetalsMiningETF', 'index'), ('REMX', 'StrategicMetalsETF', 'index'),
+    ('COPX', 'CopperMinersETF', 'index'), ('SLX', 'SteelETF', 'index'),
+    ('EWA', 'AustraliaETF', 'index'), ('EWC', 'CanadaETF', 'index'), ('EWU', 'UKETF', 'index'),
+    # --- tungsten equity universe -------------------------------------------------
+    ('ALM', 'Almonty', 'tungsten_equity'),                       # Sangdong (KR); NASDAQ since Jul-2025
+    ('AII.TO', 'AlmontyTSX', 'tungsten_equity'),                 # legacy TSX line (pre-2025 history)
+    ('GMTL', 'GuardianMetal', 'tungsten_equity'),                # Pilot Mountain / Idaho (US)
+    ('GMET.L', 'GuardianMetalAIM', 'tungsten_equity'),
+    ('TUN.L', 'TungstenWest', 'tungsten_equity'),                # Hemerdon (UK)
+    ('EQR.AX', 'EQResources', 'tungsten_equity'),                # Mt Carbine (AU)
     ('TGN.AX', 'TungstenMining', 'tungsten_equity'),
-    ('ALI.TO', 'Almonty', 'tungsten_equity'),
-    ('ALM.TO', 'Almonty2', 'tungsten_equity'),
-    ('1124.HK', 'ChinaTungsten', 'tungsten_equity'),
-    ('0697.HK', 'ShouchengHoldings', 'tungsten_equity'),
-    ('603993.SS', 'CMOCLuoyang', 'tungsten_equity'),
-    ('000657.SZ', 'ChinaTungstenHighTech', 'tungsten_equity'),
-    ('601958.SS', 'JinduichengMoly', 'tungsten_equity'),
-    ('603520.SS', 'NingboJinshi', 'tungsten_equity'),
-    ('MCU', 'USA_Materials', 'index'),
+    ('G6M.AX', 'Group6Metals', 'tungsten_equity'),               # Dolphin (AU)
+    ('FWZ.V', 'Fireweed', 'tungsten_equity'),                    # Mactung (CA)
+    ('600549.SS', 'XiamenTungsten', 'tungsten_equity'),          # China's largest W processor/miner
+    ('002378.SZ', 'ChongyiZhangyuan', 'tungsten_equity'),        # pure-play W (Jiangxi)
+    ('000657.SZ', 'ChinaTungstenHighTech', 'tungsten_equity'),   # W carbide / powder
+    # --- tungsten *users* (negative input-cost exposure) / sister metal ------------
+    ('KMT', 'Kennametal', 'tungsten_user'), ('SAND.ST', 'Sandvik', 'tungsten_user'),
+    ('601958.SS', 'JinduichengMoly', 'moly_equity'), ('603993.SS', 'CMOC', 'moly_equity'),
 ]
 
-# (fred_series, symbol, label, category) — monthly World Bank global prices.
-# Yahoo has no daily feed for tin/nickel/lead (iPath ETNs delisted 2023);
-# FRED month-end is the reliable source. models.py resamples to month-end for
-# the correlation matrix, so the frequency mix is safe.
-FRED_MONTHLY = [
-    ('PTINUSDM', 'TIN_FRED', 'Tin', 'metal'),
-    ('PNICKUSDM', 'NICKEL_FRED', 'Nickel', 'metal'),
-    ('PLEADUSDM', 'LEAD_FRED', 'Lead', 'metal'),
-]
+FRED_MONTHLY = [('PTINUSDM', 'TIN_FRED', 'Tin', 'metal'),
+                ('PNICKUSDM', 'NICKEL_FRED', 'Nickel', 'metal'),
+                ('PLEADUSDM', 'LEAD_FRED', 'Lead', 'metal')]
 
-def fetch(symbol, period1, period2):
-    url = (f'https://query1.finance.yahoo.com/v8/finance/chart/{symbol}'
-           f'?period1={period1}&period2={period2}&interval=1d&events=div%2Csplit')
-    req = urllib.request.Request(url, headers=HEADERS)
-    try:
-        with urllib.request.urlopen(req, timeout=20) as r:
-            return json.loads(r.read())
-    except Exception as e:
-        return {'error': str(e)}
 
-def fetch_fred(series_id, tries=5):
-    """Monthly World Bank global price from FRED (fredgraph.csv, no auth).
-    FRED is flaky under load — retry with backoff."""
-    url = f'https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}'
-    for attempt in range(tries):
+def fetch_symbol(sym, start, end):
+    url = (f'https://query1.finance.yahoo.com/v8/finance/chart/{sym}'
+           f'?period1={start}&period2={end}&interval=1d&events=div%2Csplit')
+    d = http_json(url, tries=3, timeout=25, backoff=2)
+    res = d['chart']['result'][0]
+    ts = res['timestamp']
+    close = res['indicators']['quote'][0]['close']
+    return [(datetime.datetime.fromtimestamp(t, datetime.timezone.utc).strftime('%Y-%m-%d'), round(c, 4))
+            for t, c in zip(ts, close) if c is not None]
+
+
+def fetch_fred(series_id):
+    txt = http_get(f'https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}',
+                   tries=2, timeout=15, backoff=2).decode('utf-8', 'ignore')
+    rows = []
+    for line in txt.strip().splitlines()[1:]:
         try:
-            req = urllib.request.Request(url, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=30) as r:
-                txt = r.read().decode('utf-8', 'ignore')
-            rows = []
-            for line in txt.strip().splitlines()[1:]:
-                if not line.strip():
-                    continue
-                date, val = line.split(',')
-                try:
-                    v = float(val)
-                except ValueError:
-                    continue
-                rows.append((date, round(v, 4)))
-            if rows:
-                return rows
-        except Exception as e:
-            if attempt == tries - 1:
-                return {'error': f'{series_id}: {e}'}
-            time.sleep(4 * (attempt + 1))
-    return {'error': f'{series_id}: empty'}
-
-def main(skip_fred=False):
-    end = int(time.time())
-    start = int(datetime.datetime(2015, 1, 1).timestamp())
-    out = {}
-    labels = {}
-    cats = {}
-    for sym, label, cat in TICKERS:
-        d = fetch(sym, start, end)
-        if 'error' in d:
-            print(f'ERR {sym}: {d["error"]}', file=sys.stderr)
+            d, v = line.split(',')
+            rows.append((d, round(float(v), 4)))
+        except ValueError:
             continue
+    return rows
+
+
+def main(with_fred=False):
+    path = DATA / 'market_raw.json'
+    old = json.load(open(path)) if path.exists() else {'series': {}, 'labels': {}, 'categories': {}}
+    # drop series that are no longer in the universe (e.g. the mislabelled HK tickers)
+    keep = {s for s, _, _ in TICKERS} | {s for _, s, _, _ in FRED_MONTHLY}
+    out = {k: v for k, v in old['series'].items() if k in keep}
+    labels = {k: v for k, v in old['labels'].items() if k in keep}
+    cats = {k: v for k, v in old['categories'].items() if k in keep}
+
+    end = int(time.time()) + 86400
+    start = int(datetime.datetime(2015, 1, 1).timestamp())
+    ok = fail = 0
+    for sym, label, cat in TICKERS:
         try:
-            res = d['chart']['result'][0]
-            ts = res['timestamp']
-            close = res['indicators']['quote'][0]['close']
-            rows = []
-            for t, c in zip(ts, close):
-                if c is None: continue
-                dt = datetime.datetime.utcfromtimestamp(t).strftime('%Y-%m-%d')
-                rows.append((dt, round(c, 4)))
+            rows = fetch_symbol(sym, start, end)
             if not rows:
-                continue
-            out[sym] = rows
-            labels[sym] = label
-            cats[sym] = cat
-            print(f'OK  {sym:<14} {label:<22} {len(rows)} rows  last={rows[-1][0]} {rows[-1][1]}')
+                raise ValueError('no rows')
+            out[sym], labels[sym], cats[sym] = rows, label, cat
+            ok += 1
+            log(f'{sym:<10} {label:<22} {len(rows):>5} rows  last={rows[-1][0]} {rows[-1][1]}')
         except Exception as e:
-            print(f'PARSE ERR {sym}: {e}', file=sys.stderr)
-        time.sleep(0.4)
+            fail += 1
+            log(f'{sym}: {str(e)[:70]} (keeping {"old data" if sym in out else "nothing"})', 'WARN')
+        time.sleep(0.25)
 
-    # FRED monthly (tin, nickel, lead — no Yahoo daily feed)
-    # FRED throttles Python urllib from this host (RemoteDisconnected after
-    # ~19s, every time). Retrying costs ~7 minutes for nothing, so callers
-    # that have the Node fallback available pass --skip-fred.
-    if skip_fred:
-        print('SKIP FRED (--skip-fred); caller supplies the Node fallback',
-              file=sys.stderr)
-    else:
-        for series_id, sym, label, cat in FRED_MONTHLY:
-            rows = fetch_fred(series_id)
-            if isinstance(rows, dict) and 'error' in rows:
-                print(f'ERR FRED {series_id}: {rows["error"]}', file=sys.stderr)
-                continue
-            if not rows:
-                continue
-            out[sym] = rows
-            labels[sym] = label
-            cats[sym] = cat
-            print(f'OK  {sym:<14} {label:<22} {len(rows)} rows (monthly)  last={rows[-1][0]} {rows[-1][1]}')
-            time.sleep(1)
+    if with_fred:
+        for sid, sym, label, cat in FRED_MONTHLY:
+            try:
+                rows = fetch_fred(sid)
+                out[sym], labels[sym], cats[sym] = rows, label, cat
+                log(f'{sym:<10} {label:<22} {len(rows):>5} rows (monthly)')
+            except Exception as e:
+                log(f'FRED {sid}: {str(e)[:70]}', 'WARN')
 
-    with open(r'D:\tungsten-dashboard\data\market_raw.json', 'w') as f:
-        json.dump({'series': out, 'labels': labels, 'categories': cats}, f)
-    print(f'\nSaved {len(out)} series to market_raw.json')
+    json.dump({'series': out, 'labels': labels, 'categories': cats,
+               'harvested_utc': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M')},
+              open(path, 'w'))
+    log(f'market: saved {len(out)} series ({ok} refreshed, {fail} failed)')
+    return 0 if ok >= len(TICKERS) * 0.6 else 1
+
 
 if __name__ == '__main__':
-    main(skip_fred='--skip-fred' in sys.argv)
+    sys.exit(main(with_fred='--with-fred' in sys.argv))

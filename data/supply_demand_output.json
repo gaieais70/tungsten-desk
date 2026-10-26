@@ -1,0 +1,434 @@
+{
+ "generated_utc": "2026-10-19 16:10 UTC",
+ "model_name": "M5 \u2014 supply-demand equilibrium (stock-to-use balance)",
+ "sources": [
+  {
+   "name": "Almonty Industries investor presentation, July 2026 (C:\\Users\\Josh\\Downloads\\true.txt)",
+   "key_figures": "~85,000 t global primary production 2025 (USGS MCS Apr 2026); deficits ~5,570 t (2025) / ~2,330 t (2026) (Sangdong NI 43-101); demand CAGR 2.0% 2025-2050 (Merchant Research & Consulting); China ~79% of production; end-use: transport 26%, mining/construction 26%, industrial 14%, chemical/petrochem 10%, consumer durables 9%, DEFENSE 8%, energy 6%, medical 1% (ITIA 2021); APT $3,139.50/mtu 24-Jul-2026 (Fastmarkets); Sangdong I 2,300 t (230,000 MTU) / Phase II +2,300 t by 2027 (640kt->1.2Mt); Panasqueira L4 -> 1,240 t; Gentung (MT) small, ~2029+; C1 US$126.8/MTU; export controls 4-Feb-2025; DoW ban on China/Russia/NK tungsten from 1-Jan-2027."
+  },
+  {
+   "name": "USGS Mineral Commodity Summaries 2026 (via Almonty deck)",
+   "key_figures": "~85,000 t primary production 2025; China ~79-80% of global production."
+  },
+  {
+   "name": "D:\\tungsten-dashboard\\data\\usgs_tungsten_history.json",
+   "key_figures": "1900-2017 unit value (US$/t) + apparent consumption; 2012-2017 $25.0k-$56.7k/t -> ~$282-$642/mtu sanity band for the long-run balance curve."
+  },
+  {
+   "name": "D:\\tungsten-dashboard\\scripts\\models.py (project M0 anchor chain)",
+   "key_figures": "Verified anchors: $330/mtu open-2025 (ISBP/Dornhofer); $1,737/mtu 17-Feb-2026; >$3,000/mtu 17-Jul-2026; used for premium calibration."
+  },
+  {
+   "name": "D:\\tungsten-dashboard\\data\\almonty_posts.json (Almonty newsletters)",
+   "key_figures": "Context: price discovery is \"broken\" after ~30 yrs of China-administered pricing; Dornhofer China-West market split commentary; next squeeze narrative."
+  }
+ ],
+ "params": {
+  "years": [
+   2025,
+   2026,
+   2027,
+   2028,
+   2029,
+   2030,
+   2031,
+   2032,
+   2033,
+   2034,
+   2035
+  ],
+  "supply_2025_t": 85000.0,
+  "demand_2025_t": 90600.0,
+  "known_deficit_2025_t": 5570.0,
+  "deficit_2025_implied_note": "demand_2025 (90,600 t) - supply_2025 (85,000 t) = 5,600 t implied deficit vs NI 43-101 ~5,570 t \u2014 30 t rounding on the demand base; both used, ~5,570 cited as the source figure.",
+  "known_deficit_2026_t": 2330.0,
+  "china_share_2025": 0.79,
+  "china_decline_per_yr": 0.003,
+  "other_row_growth_per_yr": 0.025,
+  "additions_schedule_t": {
+   "base": {
+    "2026": 2600,
+    "2027": 5440,
+    "2028": 5640,
+    "2029": 6440
+   },
+   "bull": {
+    "2026": 2300,
+    "2027": 3140,
+    "2028": 5440,
+    "2029": 5440,
+    "2030": 6240
+   },
+   "bear": {
+    "2026": 2600,
+    "2027": 5440,
+    "2028": 6140,
+    "2029": 6640
+   }
+  },
+  "additions_plateau_t": {
+   "base": 6440,
+   "bull": 6240,
+   "bear": 6640
+  },
+  "second_wave_unnamed_supply_t": {
+   "base": {
+    "start": 2028,
+    "step": 1200,
+    "ramp_end": 2032,
+    "plateau": 6000
+   },
+   "bull": {
+    "start": 2030,
+    "step": 1000,
+    "ramp_end": 2035,
+    "plateau": 6000
+   },
+   "bear": {
+    "start": 2027,
+    "step": 2400,
+    "ramp_end": 2031,
+    "plateau": 12000
+   }
+  },
+  "initial_stock_end2024_months": 3.0,
+  "price_floor_usd_mtu": 300.0,
+  "curve_amplitude_A": 30.0,
+  "curve_exponent_k": 3.0,
+  "price_ref_usd_mtu": 330.0,
+  "max_price_cap_usd_mtu": 5000.0,
+  "coverage_floor_months": 0.3,
+  "demand_feedback_start_year": 2027,
+  "demand_cagr_by_scenario": {
+   "base": 0.02,
+   "bull": 0.03,
+   "bear": 0.01
+  },
+  "demand_price_elasticity_by_scenario": {
+   "base": 0.05,
+   "bull": 0.08,
+   "bear": 0.03
+  },
+  "policy_premium_schedule": {
+   "base": {
+    "2025": 2.5,
+    "2026": 6.2,
+    "2027": 4.8,
+    "2028": 3.2,
+    "2029": 2.2,
+    "2030": 2.0,
+    "2031": 1.6,
+    "2032": 1.35,
+    "2033": 1.15,
+    "2034": 1.05,
+    "2035": 1.0
+   },
+   "bull": {
+    "2025": 2.5,
+    "2026": 6.5,
+    "2027": 5.5,
+    "2028": 4.0,
+    "2029": 3.2,
+    "2030": 2.5,
+    "2031": 2.0,
+    "2032": 1.6,
+    "2033": 1.3,
+    "2034": 1.15,
+    "2035": 1.05
+   },
+   "bear": {
+    "2025": 2.5,
+    "2026": 6.0,
+    "2027": 3.5,
+    "2028": 2.0,
+    "2029": 1.4,
+    "2030": 1.1,
+    "2031": 1.0
+   }
+  },
+  "calibration_anchors": [
+   {
+    "point": "open-2025",
+    "price_mtu": 330.0,
+    "coverage_months": 3.0,
+    "premium": 1.0,
+    "source": "ISBP/Dornhofer via Almonty (balanced market)"
+   },
+   {
+    "point": "17-Feb-2026",
+    "price_mtu": 1737.0,
+    "coverage_months": 2.17,
+    "premium": 4.6,
+    "source": "Stockhouse/AD HOC NEWS via project M0"
+   },
+   {
+    "point": "24-Jul-2026",
+    "price_mtu": 3139.5,
+    "coverage_months": 1.99,
+    "premium": 7.8,
+    "source": "Fastmarkets via Almonty deck"
+   }
+  ],
+  "usgs_sanity_check": {
+   "years": "2012-2017",
+   "usd_per_t_min": 25000.0,
+   "usd_per_t_max": 56700.0,
+   "implied_usd_per_mtu_min": 282.0,
+   "implied_usd_per_mtu_max": 641.0,
+   "note": "USGS unit value (US$/t contained W, APT-equivalent approx) converted to $/mtu by /88.5; the normal-market band our balance curve is checked against. USGS consumption series ends 2017."
+  },
+  "units": "t = tonnes WO3; mtu = 10 kg WO3; price = $/mtu APT 88.5% WO3, Rotterdam/Baltimore basis"
+ },
+ "balance": [
+  {
+   "year": 2025,
+   "supply_t": 85000.0,
+   "demand_t": 90600.0,
+   "deficit_t": 5600.0,
+   "stock_to_use_months": 2.258,
+   "price_mtu": 925.8
+  },
+  {
+   "year": 2026,
+   "supply_t": 90082.0,
+   "demand_t": 92412.0,
+   "deficit_t": 2330.0,
+   "stock_to_use_months": 1.911,
+   "price_mtu": 2579.1
+  },
+  {
+   "year": 2027,
+   "supply_t": 93234.5,
+   "demand_t": 93560.0,
+   "deficit_t": 325.5,
+   "stock_to_use_months": 1.846,
+   "price_mtu": 2057.8
+  },
+  {
+   "year": 2028,
+   "supply_t": 94960.4,
+   "demand_t": 95155.5,
+   "deficit_t": 195.1,
+   "stock_to_use_months": 1.791,
+   "price_mtu": 1411.4
+  },
+  {
+   "year": 2029,
+   "supply_t": 97300.1,
+   "demand_t": 96853.0,
+   "deficit_t": -447.1,
+   "stock_to_use_months": 1.815,
+   "price_mtu": 958.2
+  },
+  {
+   "year": 2030,
+   "supply_t": 98853.9,
+   "demand_t": 98720.2,
+   "deficit_t": -133.7,
+   "stock_to_use_months": 1.797,
+   "price_mtu": 879.3
+  },
+  {
+   "year": 2031,
+   "supply_t": 100422.0,
+   "demand_t": 100635.4,
+   "deficit_t": 213.4,
+   "stock_to_use_months": 1.737,
+   "price_mtu": 727.3
+  },
+  {
+   "year": 2032,
+   "supply_t": 102005.0,
+   "demand_t": 102531.6,
+   "deficit_t": 526.6,
+   "stock_to_use_months": 1.643,
+   "price_mtu": 651.4
+  },
+  {
+   "year": 2033,
+   "supply_t": 102403.0,
+   "demand_t": 104363.8,
+   "deficit_t": 1960.7,
+   "stock_to_use_months": 1.389,
+   "price_mtu": 692.6
+  },
+  {
+   "year": 2034,
+   "supply_t": 102816.6,
+   "demand_t": 105711.4,
+   "deficit_t": 2894.8,
+   "stock_to_use_months": 1.043,
+   "price_mtu": 1065.4
+  },
+  {
+   "year": 2035,
+   "supply_t": 103245.9,
+   "demand_t": 105833.7,
+   "deficit_t": 2587.8,
+   "stock_to_use_months": 0.748,
+   "price_mtu": 2235.5
+  }
+ ],
+ "scenarios": {
+  "base": {
+   "demand_cagr": 0.02,
+   "price_path_mtu": [
+    {
+     "year": 2025,
+     "price_mtu": 925.8
+    },
+    {
+     "year": 2026,
+     "price_mtu": 2579.1
+    },
+    {
+     "year": 2027,
+     "price_mtu": 2057.8
+    },
+    {
+     "year": 2028,
+     "price_mtu": 1411.4
+    },
+    {
+     "year": 2029,
+     "price_mtu": 958.2
+    },
+    {
+     "year": 2030,
+     "price_mtu": 879.3
+    },
+    {
+     "year": 2031,
+     "price_mtu": 727.3
+    },
+    {
+     "year": 2032,
+     "price_mtu": 651.4
+    },
+    {
+     "year": 2033,
+     "price_mtu": 692.6
+    },
+    {
+     "year": 2034,
+     "price_mtu": 1065.4
+    },
+    {
+     "year": 2035,
+     "price_mtu": 2235.5
+    }
+   ],
+   "note": "Base: demand CAGR 2.0% (Merchant Research & Consulting via deck), documented Western additions on schedule, ~6 kt of deck-implied \"second wave\" supply by 2032, policy premium decays through 2033."
+  },
+  "bull": {
+   "demand_cagr": 0.03,
+   "price_path_mtu": [
+    {
+     "year": 2025,
+     "price_mtu": 925.8
+    },
+    {
+     "year": 2026,
+     "price_mtu": 2726.3
+    },
+    {
+     "year": 2027,
+     "price_mtu": 2943.9
+    },
+    {
+     "year": 2028,
+     "price_mtu": 2706.5
+    },
+    {
+     "year": 2029,
+     "price_mtu": 3751.7
+    },
+    {
+     "year": 2030,
+     "price_mtu": 2750.0
+    },
+    {
+     "year": 2031,
+     "price_mtu": 2522.6
+    },
+    {
+     "year": 2032,
+     "price_mtu": 2754.6
+    },
+    {
+     "year": 2033,
+     "price_mtu": 2744.8
+    },
+    {
+     "year": 2034,
+     "price_mtu": 2807.6
+    },
+    {
+     "year": 2035,
+     "price_mtu": 3242.3
+    }
+   ],
+   "note": "Bull: demand CAGR 3.0% (defense build-up, semiconductors/AI, EV), Sangdong II/Gentung delayed ~1 yr, second-wave supply halved and late, premium decays slowly (policy persists)."
+  },
+  "bear": {
+   "demand_cagr": 0.01,
+   "price_path_mtu": [
+    {
+     "year": 2025,
+     "price_mtu": 925.8
+    },
+    {
+     "year": 2026,
+     "price_mtu": 2475.6
+    },
+    {
+     "year": 2027,
+     "price_mtu": 1292.5
+    },
+    {
+     "year": 2028,
+     "price_mtu": 665.9
+    },
+    {
+     "year": 2029,
+     "price_mtu": 440.7
+    },
+    {
+     "year": 2030,
+     "price_mtu": 337.7
+    },
+    {
+     "year": 2031,
+     "price_mtu": 303.5
+    },
+    {
+     "year": 2032,
+     "price_mtu": 302.1
+    },
+    {
+     "year": 2033,
+     "price_mtu": 301.4
+    },
+    {
+     "year": 2034,
+     "price_mtu": 301.0
+    },
+    {
+     "year": 2035,
+     "price_mtu": 300.8
+    }
+   ],
+   "note": "Bear: demand CAGR 1.0% (global slowdown, substitution), additions accelerated (Gentung 2028), 12 kt second-wave supply by 2031, premium unwinds fast."
+  }
+ },
+ "caveats": [
+  "Inventory is invisible: global tungsten stocks are not publicly reported. The initial stock (3.0 months coverage at end-2024) is a calibration guess and the entire stock series is MODELED, not observed; errors compound over the forecast horizon.",
+  "Policy shocks dominate: China export controls (effective 4-Feb-2025), US DoW military procurement ban on China/Russia/NK tungsten (1-Jan-2027) and any new controls can override a balance model. The 2025-26 price explosion is mostly a policy/fragmentation premium (coverage only fell ~3.0 -> ~2.0 months), not pure balance.",
+  "Single-source deficits: the 5,570 t (2025) / 2,330 t (2026) figures come from the Sangdong NI 43-101 technical report quoted in Almonty marketing materials \u2014 one, potentially biased source; not independently verified.",
+  "USGS consumption data ends 2017; the long-run price/balance relationship is inferred from partial history and the deck-cited normal band (~$283-$642/mtu 2012-2017).",
+  "The \"second wave\" supply term (6-12 kt of unnamed supply by 2031-2035) is required to close the deck's own supply-gap chart but is NOT an announced project list. If it does not materialise, the late-decade re-tightening shown in base/bull is worse.",
+  "Demand price-elasticity (0.03-0.08) and the premium decay path are labelled estimates; they are the two least-observable parameters and drive most of the 2028+ spread.",
+  "Scenario tool for the Tungsten Desk dashboard \u2014 NOT investment advice."
+ ],
+ "headline": "The 2025-26 tungsten spike ($330 -> ~$3,140/mtu) is reproduced as a stock-to-use squeeze amplified by a policy premium: the known 5.6 kt (2025) and 2.3 kt (2026) deficits drew modeled stocks from ~3.0 to ~1.9 months of coverage, and even a strongly convex balance curve cannot explain a 10x price move from that alone \u2014 export-control fragmentation, panic buying and defense stockpiling carry most of the move and decay into the early 2030s. Base case: price stays elevated (~$2,000-2,600) through 2027, then normalizes into the $850-1,500 range by 2029-2033 as documented Western supply (Sangdong I/II, Panasqueira L4, Gentung) plus ~6 kt of unnamed supply lands, with a re-tightening after 2033 if demand keeps compounding ~2% against a finite supply ramp. Bull (3% demand, delays): chronic $2,500-3,700 tightness through 2035. Bear (1% demand, accelerated supply): premium unwinds to a ~$300 floor by 2030-31. Confidence is LOW beyond ~2027: inventory is unobserved, the deficit anchors are single-source, and policy can override the balance at any time."
+}

@@ -17,6 +17,8 @@ data/*.xlsx
 data/*.xls
 data/*.json
 !data/models_output.json
+!data/supply_demand_output.json
+!data/usgs_tungsten_history.json
 
 # OS / editor
 Thumbs.db
