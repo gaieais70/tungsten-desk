@@ -14,6 +14,7 @@ import csv
 import json
 import re
 from pathlib import Path
+from prices_db import usdcny
 
 ROOT = Path(__file__).resolve().parent.parent
 POSTS_PATH = ROOT / 'data' / 'raw' / 'ctia_posts.jsonl'
@@ -28,6 +29,12 @@ def clean_sentences(txt: str) -> str:
     sents = re.split(r'(?<=[.!?;])\s+|\n+', txt)
     out = []
     for s in sents:
+        s = re.sub(
+            r'(?:fell|dropped|dipped)\s+below\s+the\s+rmb\s+[^.;]+?\s+threshold\s+and\s+',
+            '',
+            s,
+            flags=re.I,
+        )
         sl = s.lower()
         if any(p in sl for p in [
             'on august 15', 'in the first three quarters', 'started at approximately',
@@ -99,7 +106,7 @@ def build_observations():
 
         # 1. European APT (USD/mtu)
         for m in re.finditer(
-            rf'European (?:ammonium paratungstate\s*\(APT\)|APT)[^.;\n]{{0,90}}?(?:USD|US\$)\s*{NUM}(?:{DASH}{NUM})?\s*(?:/|\s*per\s*)(?:mtu|metric tonne unit|ton)',
+            rf'(?:European (?:ammonium paratungstate\s*\(APT\)|APT)|(?:ammonium paratungstate\s*\(APT\)|APT)\s+in\s+Europe)[^.;\n]{{0,90}}?(?:USD|US\$|\$)\s*{NUM}(?:{DASH}(?:USD|US\$|\$)?\s*{NUM})?\s*(?:/|\s*per\s*)(?:mtu|metric tonne unit|ton)',
             txt, re.I
         ):
             lo = float(m.group(1).replace(',', ''))
@@ -109,7 +116,7 @@ def build_observations():
 
         # 2. European Ferrotungsten (USD/kg W)
         for m in re.finditer(
-            rf'European ferro-?tungsten[^.;\n]{{0,90}}?(?:USD|US\$)\s*{NUM}(?:{DASH}{NUM})?\s*(?:/|\s*per\s*)kg',
+            rf'(?:European (?:ferro-?tungsten|ferro\s+tungsten|tungsten\s+iron)|(?:ferro-?tungsten|ferro\s+tungsten|tungsten\s+iron)\s+in\s+Europe)[^.;\n]{{0,90}}?(?:USD|US\$|\$)\s*{NUM}(?:{DASH}(?:USD|US\$|\$)?\s*{NUM})?\s*(?:/|\s*per\s*)kg',
             txt, re.I
         ):
             lo = float(m.group(1).replace(',', ''))
@@ -118,12 +125,20 @@ def build_observations():
                 record(dt, 'few_eu_usd_kg', lo, hi, 'USD/kg W', p)
 
         # 3–5. China Concentrate, APT, and Tungsten Powder (handling "respectively" phrasing)
+        found_conc = False
+        found_apt = False
+        found_pwd = False
+
         m_resp3 = re.search(
             rf'concentrate,\s*APT,\s*and\s*[^.;\n]*?tungsten powder[^.;\n]{{0,50}}?RMB\s*{NUM}\s*/\s*(?:standard\s+)?ton,\s*RMB\s*{NUM}\s*/\s*ton,\s*and\s*RMB\s*{NUM}\s*/\s*(kg|ton)',
             txt, re.I
         )
         m_resp2 = re.search(
             rf'concentrate and (?:ammonium paratungstate\s*\(APT\)|APT)[^.;\n]{{0,60}}?RMB\s*{NUM}\s*/\s*(?:standard\s+)?ton\s+and\s+RMB\s*{NUM}\s*/\s*ton',
+            txt, re.I
+        )
+        m_resp_apt_pwd = re.search(
+            rf'(?:ammonium paratungstate\s*\(APT\)|APT)\s+and\s+tungsten powder[^.;\n]{{0,60}}?RMB\s*{NUM}\s*/\s*ton\s+and\s+RMB\s*{NUM}\s*/\s*(kg|ton)',
             txt, re.I
         )
         if m_resp3:
@@ -135,16 +150,27 @@ def build_observations():
             record(dt, 'conc65_cn_rmb_t', c_val, c_val, 'RMB/t', p)
             record(dt, 'apt_cn_rmb_t', a_val, a_val, 'RMB/t', p)
             record(dt, 'powder_cn_rmb_t', p_val, p_val, 'RMB/t', p)
-        elif m_resp2:
-            c_val = float(m_resp2.group(1).replace(',', ''))
-            a_val = float(m_resp2.group(2).replace(',', ''))
-            record(dt, 'conc65_cn_rmb_t', c_val, c_val, 'RMB/t', p)
-            record(dt, 'apt_cn_rmb_t', a_val, a_val, 'RMB/t', p)
+            found_conc = found_apt = found_pwd = True
         else:
-            # China Domestic APT (RMB/t)
-            found_apt = False
+            if m_resp2:
+                c_val = float(m_resp2.group(1).replace(',', ''))
+                a_val = float(m_resp2.group(2).replace(',', ''))
+                record(dt, 'conc65_cn_rmb_t', c_val, c_val, 'RMB/t', p)
+                record(dt, 'apt_cn_rmb_t', a_val, a_val, 'RMB/t', p)
+                found_conc = found_apt = True
+            if m_resp_apt_pwd:
+                a_val = float(m_resp_apt_pwd.group(1).replace(',', ''))
+                p_val = float(m_resp_apt_pwd.group(2).replace(',', ''))
+                if m_resp_apt_pwd.group(3).lower() == 'kg':
+                    p_val *= 1000.0
+                record(dt, 'apt_cn_rmb_t', a_val, a_val, 'RMB/t', p)
+                record(dt, 'powder_cn_rmb_t', p_val, p_val, 'RMB/t', p)
+                found_apt = found_pwd = True
+
+        # China Domestic APT (RMB/t)
+        if not found_apt:
             for m in re.finditer(
-                rf'(?<!European )(?:ammonium paratungstate\s*\(APT\)|(?<!European )\bAPT\b)(?!\s*(?:is|was|prices|stood|quotes)?\s*(?:at\s+)?(?:USD|US\$))[^.;\n]{{0,85}}?RMB\s*{NUM}(?:{DASH}{NUM})?\s*(?:million)?\s*/\s*(?:ton|t\b)',
+                rf'(?<!European )(?:ammonium paratungstate\s*\(APT\)|(?<!European )\bAPT\b)(?!\s+in\s+Europe)(?!\s*(?:is|was|prices|stood|quotes)?\s*(?:at\s+)?(?:USD|US\$))[^.;\n]{{0,85}}?RMB\s*{NUM}(?:{DASH}{NUM})?\s*(?:million)?\s*/\s*(?:ton|t\b)',
                 txt, re.I
             ):
                 if 'equivalent to rmb' in m.group(0).lower():
@@ -157,15 +183,15 @@ def build_observations():
                     found_apt = True
 
             if not found_apt and dt < '2025-04-10':
-                m_usd = re.search(rf'(?:ammonium paratungstate\s*\(APT\)|\bAPT\b)[^.;\n]{{0,80}}?\$\s*{NUM}\s*/\s*mtu', txt, re.I)
+                m_usd = re.search(rf'(?<!European )(?:ammonium paratungstate\s*\(APT\)|\bAPT\b)(?!\s+in\s+Europe)[^.;\n]{{0,80}}?\$\s*{NUM}\s*/\s*mtu', txt, re.I)
                 if m_usd:
                     usd_mtu = float(m_usd.group(1).replace(',', ''))
                     if 280 <= usd_mtu <= 450:
-                        rmb_val = round(usd_mtu * 88.5 * 7.18 / 500) * 500
+                        rmb_val = round(usd_mtu * 88.5 * usdcny(dt) / 500) * 500
                         record(dt, 'apt_cn_rmb_t', rmb_val, rmb_val, 'RMB/t', p)
 
-            # China 65% Concentrate (RMB/t)
-            found_conc = False
+        # China 65% Concentrate (RMB/t)
+        if not found_conc:
             for m in re.finditer(
                 rf'(?:55%|65%)?\s*(?:grade\s+)?(?:black\s+|white\s+)?(?:tungsten|wolframite|scheelite)\s+concentrate[^.;\n]{{0,90}}?RMB\s*{NUM}(?:{DASH}{NUM})?\s*(?:million)?\s*/\s*(?:standard\s+)?ton',
                 txt, re.I
@@ -182,17 +208,25 @@ def build_observations():
                 if m_usd:
                     usd_t = float(m_usd.group(1).replace(',', ''))
                     if 18000 <= usd_t <= 26000:
-                        rmb_val = round(usd_t * 7.18 / 500) * 500
+                        rmb_val = round(usd_t * usdcny(dt) / 500) * 500
                         record(dt, 'conc65_cn_rmb_t', rmb_val, rmb_val, 'RMB/t', p)
 
-            # China Tungsten Powder (RMB/t)
+        # China Tungsten Powder (RMB/t)
+        if not found_pwd:
             for m in re.finditer(
-                rf'tungsten powder(?!\s+imports|\s+exports)[^.;\n]{{0,90}}?RMB\s*{NUM}(?:{DASH}{NUM})?\s*(?:million)?\s*/\s*(kg|ton)',
+                rf'(?<!ferro)(?<!ferro-)(?<!carbide )tungsten powder(?!\s+imports|\s+exports)[^.;\n]{{0,90}}?RMB\s*{NUM}(?:{DASH}{NUM})?\s*(?:million)?\s*/\s*(kg|ton)',
                 txt, re.I
             ):
-                if 'scrap' in m.group(0).lower() or 'carbide' in m.group(0).lower().split('RMB')[0]:
+                m_str = m.group(0).lower()
+                # Check preceding context in the sentence
+                prefix = txt[max(0, m.start() - 40):m.start()].lower().rsplit('.', 1)[-1]
+                if (
+                    'scrap' in m_str
+                    or 'carbide' in m_str.split('rmb')[0]
+                    or any(w in prefix for w in ('ferrotungsten', 'ferro-tungsten', 'carbide'))
+                ):
                     continue
-                mult = 1e6 if 'million' in m.group(0).lower() else 1.0
+                mult = 1e6 if 'million' in m_str else 1.0
                 lo = float(m.group(1).replace(',', '')) * mult
                 hi = float((m.group(2) or m.group(1)).replace(',', '')) * mult
                 unit = m.group(3).lower()

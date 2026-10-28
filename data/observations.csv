@@ -5,61 +5,65 @@ date,stream,low,high,unit,source,url,note,conf
 2025-01-02,few_cn_rmb_t,214000.0,216000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/,Opening Jan 2025 China 70% ferrotungsten baseline,verified
 2025-01-02,few_eu_usd_kg,44.0,44.5,USD/kg W,CTIA / Rotterdam Baseline,http://www.ctia.com.cn/en/,Opening 2025 European FeW 75% baseline,verified
 2025-01-02,powder_cn_rmb_t,315000.0,317000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/,Opening Jan 2025 China tungsten powder baseline,verified
-2025-02-10,apt_cn_rmb_t,216500.0,216500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37270.html,Tungsten Concentrate and APT Prices Remain Stable,verified
-2025-02-10,conc65_cn_rmb_t,147500.0,147500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37270.html,Tungsten Concentrate and APT Prices Remain Stable,verified
-2025-02-12,apt_cn_rmb_t,215500.0,215500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37326.html,Ammonium Paratungstate Prices Decline Slightly,verified
-2025-02-12,conc65_cn_rmb_t,147000.0,147000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37326.html,Ammonium Paratungstate Prices Decline Slightly,verified
-2025-02-13,apt_cn_rmb_t,215500.0,215500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37373.html,Tungsten Powder and Ferro Tungsten Prices Remain Stable,verified
-2025-02-13,conc65_cn_rmb_t,147000.0,147000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37373.html,Tungsten Powder and Ferro Tungsten Prices Remain Stable,verified
-2025-02-14,apt_cn_rmb_t,215500.0,215500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37397.html,Price Reduction for Tungsten Concentrate and Tungsten Powder,verified
-2025-02-14,conc65_cn_rmb_t,146500.0,146500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37397.html,Price Reduction for Tungsten Concentrate and Tungsten Powder,verified
-2025-02-17,apt_cn_rmb_t,215500.0,215500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37421.html,Prices of Tungsten Carbide Powder and Cobalt Powder Decline,verified
-2025-02-17,conc65_cn_rmb_t,146500.0,146500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37421.html,Prices of Tungsten Carbide Powder and Cobalt Powder Decline,verified
-2025-02-18,apt_cn_rmb_t,215500.0,215500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37456.html,Insufficient Tungsten Ore Supply and Weak Alloy Demand,verified
-2025-02-18,conc65_cn_rmb_t,146500.0,146500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37456.html,Insufficient Tungsten Ore Supply and Weak Alloy Demand,verified
-2025-02-20,apt_cn_rmb_t,214500.0,214500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37561.html,Tungsten Concentrate and Ammonium Paratungstate Prices Fall,verified
-2025-02-20,conc65_cn_rmb_t,145500.0,145500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37561.html,Tungsten Concentrate and Ammonium Paratungstate Prices Fall,verified
-2025-02-24,conc65_cn_rmb_t,145500.0,145500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37691.html,Tungsten Powder Prices Decline,verified
-2025-02-25,apt_cn_rmb_t,213500.0,213500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37715.html,Tungsten Waste and Scrap Market Weakens,verified
-2025-02-25,conc65_cn_rmb_t,145000.0,145000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37715.html,Tungsten Waste and Scrap Market Weakens,verified
-2025-02-27,apt_cn_rmb_t,213500.0,213500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37870.html,Tungsten Market Pressured by Weak Demand and Export Issues,verified
-2025-02-27,conc65_cn_rmb_t,145000.0,145000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37870.html,Tungsten Market Pressured by Weak Demand and Export Issues,verified
-2025-03-03,apt_cn_rmb_t,212500.0,212500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37944.html,Prices of APT & Tungsten Waste and Scrap Decline,verified
-2025-03-03,conc65_cn_rmb_t,144500.0,144500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37944.html,Prices of APT & Tungsten Waste and Scrap Decline,verified
-2025-03-04,apt_cn_rmb_t,212500.0,212500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38001.html,Tungsten Market Faces Evident Supply-Demand Imbalance,verified
-2025-03-04,conc65_cn_rmb_t,144500.0,144500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38001.html,Tungsten Market Faces Evident Supply-Demand Imbalance,verified
-2025-03-05,apt_cn_rmb_t,212500.0,212500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38102.html,Tungsten Powder and Tungsten Waste and Scrap Prices Under Pressure,verified
-2025-03-05,conc65_cn_rmb_t,144500.0,144500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38102.html,Tungsten Powder and Tungsten Waste and Scrap Prices Under Pressure,verified
-2025-03-07,apt_cn_rmb_t,212500.0,212500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38200.html,"Tungsten Prices Decline, Cobalt Prices Surge Over 10%",verified
-2025-03-07,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38200.html,"Tungsten Prices Decline, Cobalt Prices Surge Over 10%",verified
-2025-03-10,apt_cn_rmb_t,212500.0,212500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38305.html,Tungsten Market: Supply-Demand Dynamics and Macroeconomic Pressures Coexist,verified
-2025-03-10,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38305.html,Tungsten Market: Supply-Demand Dynamics and Macroeconomic Pressures Coexist,verified
-2025-03-12,apt_cn_rmb_t,210500.0,210500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38339.html,"Tungsten and Cobalt Prices Diverge, Cemented Carbide Sector in Stalemate",verified
-2025-03-12,conc65_cn_rmb_t,141500.0,141500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38339.html,"Tungsten and Cobalt Prices Diverge, Cemented Carbide Sector in Stalemate",verified
-2025-03-13,apt_cn_rmb_t,210500.0,210500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38373.html,"Tungsten Market Stagnant, Industry Sentiment Divided",verified
-2025-03-13,conc65_cn_rmb_t,141500.0,141500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38373.html,"Tungsten Market Stagnant, Industry Sentiment Divided",verified
-2025-03-14,apt_cn_rmb_t,210500.0,210500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38377.html,Tungsten Market: Weak Trends Under Supply-Demand Pressure,verified
-2025-03-14,conc65_cn_rmb_t,141500.0,141500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38377.html,Tungsten Market: Weak Trends Under Supply-Demand Pressure,verified
-2025-03-17,apt_cn_rmb_t,209500.0,209500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38456.html,Tungsten Prices Stable Amid Cost Support and Weak Demand,verified
-2025-03-17,conc65_cn_rmb_t,141500.0,141500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38456.html,Tungsten Prices Stable Amid Cost Support and Weak Demand,verified
-2025-03-18,apt_cn_rmb_t,210500.0,210500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38492.html,"Tungsten Powder Prices Hold Steady, Cobalt Powder Prices Surge 70%",verified
-2025-03-18,conc65_cn_rmb_t,141500.0,141500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38492.html,"Tungsten Powder Prices Hold Steady, Cobalt Powder Prices Surge 70%",verified
-2025-03-19,apt_cn_rmb_t,210500.0,210500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38552.html,Tungsten Market: Demand Repairs Needed Amid Temporary Price Stability,verified
-2025-03-19,conc65_cn_rmb_t,141500.0,141500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38552.html,Tungsten Market: Demand Repairs Needed Amid Temporary Price Stability,verified
-2025-03-20,apt_cn_rmb_t,210500.0,210500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38596.html,"Tungsten Price Stable with Caution, Cobalt Market Heat Fades",verified
-2025-03-20,conc65_cn_rmb_t,141500.0,141500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38596.html,"Tungsten Price Stable with Caution, Cobalt Market Heat Fades",verified
-2025-03-24,apt_cn_rmb_t,209500.0,209500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38661.html,Tungsten Market Stalemate Awaits Breakthrough,verified
-2025-03-24,conc65_cn_rmb_t,141500.0,141500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38661.html,Tungsten Market Stalemate Awaits Breakthrough,verified
-2025-03-25,apt_cn_rmb_t,210500.0,210500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38689.html,Tungsten and Cobalt Markets: Constrained Supply Meets Weak Demand,verified
-2025-03-25,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38689.html,Tungsten and Cobalt Markets: Constrained Supply Meets Weak Demand,verified
-2025-03-26,apt_cn_rmb_t,210500.0,210500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38791.html,"Tungsten Market Report - March 26, 2025",verified
-2025-03-26,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38791.html,"Tungsten Market Report - March 26, 2025",verified
-2025-03-27,apt_cn_rmb_t,210500.0,210500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38804.html,Tungsten Prices Consolidate Amid Supply-Demand Tug-of-War,verified
-2025-03-27,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38804.html,Tungsten Prices Consolidate Amid Supply-Demand Tug-of-War,verified
-2025-03-28,conc65_cn_rmb_t,143000.0,143000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38900.html,"Tungsten Weekly: Small Prices Rise, Supply-Demand Deadlock",verified
-2025-04-01,conc65_cn_rmb_t,143500.0,143500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38966.html,"Tungsten Prices Rise, Cobalt Market Contradictions Intensify",verified
-2025-04-02,conc65_cn_rmb_t,143500.0,143500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38993.html,"Tungsten Concentrate and APT Prices on April 2, 2025",verified
-2025-04-03,conc65_cn_rmb_t,143500.0,143500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/39061.html,"Tungsten Prices Rise This Week: Tight Supply, Hesitant Demand",verified
+2025-02-10,apt_cn_rmb_t,219500.0,219500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37270.html,Tungsten Concentrate and APT Prices Remain Stable,verified
+2025-02-10,conc65_cn_rmb_t,150000.0,150000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37270.html,Tungsten Concentrate and APT Prices Remain Stable,verified
+2025-02-12,apt_cn_rmb_t,219000.0,219000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37326.html,Ammonium Paratungstate Prices Decline Slightly,verified
+2025-02-12,conc65_cn_rmb_t,149500.0,149500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37326.html,Ammonium Paratungstate Prices Decline Slightly,verified
+2025-02-13,apt_cn_rmb_t,219500.0,219500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37373.html,Tungsten Powder and Ferro Tungsten Prices Remain Stable,verified
+2025-02-13,conc65_cn_rmb_t,150000.0,150000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37373.html,Tungsten Powder and Ferro Tungsten Prices Remain Stable,verified
+2025-02-14,apt_cn_rmb_t,218500.0,218500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37397.html,Price Reduction for Tungsten Concentrate and Tungsten Powder,verified
+2025-02-14,conc65_cn_rmb_t,149000.0,149000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37397.html,Price Reduction for Tungsten Concentrate and Tungsten Powder,verified
+2025-02-17,apt_cn_rmb_t,217500.0,217500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37421.html,Prices of Tungsten Carbide Powder and Cobalt Powder Decline,verified
+2025-02-17,conc65_cn_rmb_t,148000.0,148000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37421.html,Prices of Tungsten Carbide Powder and Cobalt Powder Decline,verified
+2025-02-18,apt_cn_rmb_t,217500.0,217500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37456.html,Insufficient Tungsten Ore Supply and Weak Alloy Demand,verified
+2025-02-18,conc65_cn_rmb_t,148000.0,148000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37456.html,Insufficient Tungsten Ore Supply and Weak Alloy Demand,verified
+2025-02-19,apt_eu_usd_mtu,330.0,355.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37517.html,Strengthening International Tungsten Prices and Weakening Domestic Tungsten Prices,verified
+2025-02-19,few_eu_usd_kg,44.8,46.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37517.html,Strengthening International Tungsten Prices and Weakening Domestic Tungsten Prices,verified
+2025-02-20,apt_cn_rmb_t,217500.0,217500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37561.html,Tungsten Concentrate and Ammonium Paratungstate Prices Fall,verified
+2025-02-20,conc65_cn_rmb_t,147500.0,147500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37561.html,Tungsten Concentrate and Ammonium Paratungstate Prices Fall,verified
+2025-02-24,conc65_cn_rmb_t,147000.0,147000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37691.html,Tungsten Powder Prices Decline,verified
+2025-02-25,apt_cn_rmb_t,215500.0,215500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37715.html,Tungsten Waste and Scrap Market Weakens,verified
+2025-02-25,conc65_cn_rmb_t,146500.0,146500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37715.html,Tungsten Waste and Scrap Market Weakens,verified
+2025-02-27,apt_cn_rmb_t,215500.0,215500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37870.html,Tungsten Market Pressured by Weak Demand and Export Issues,verified
+2025-02-27,conc65_cn_rmb_t,146500.0,146500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37870.html,Tungsten Market Pressured by Weak Demand and Export Issues,verified
+2025-03-03,apt_cn_rmb_t,215500.0,215500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37944.html,Prices of APT & Tungsten Waste and Scrap Decline,verified
+2025-03-03,conc65_cn_rmb_t,146500.0,146500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/37944.html,Prices of APT & Tungsten Waste and Scrap Decline,verified
+2025-03-04,apt_cn_rmb_t,215500.0,215500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38001.html,Tungsten Market Faces Evident Supply-Demand Imbalance,verified
+2025-03-04,conc65_cn_rmb_t,146500.0,146500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38001.html,Tungsten Market Faces Evident Supply-Demand Imbalance,verified
+2025-03-05,apt_cn_rmb_t,215000.0,215000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38102.html,Tungsten Powder and Tungsten Waste and Scrap Prices Under Pressure,verified
+2025-03-05,conc65_cn_rmb_t,146500.0,146500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38102.html,Tungsten Powder and Tungsten Waste and Scrap Prices Under Pressure,verified
+2025-03-07,apt_cn_rmb_t,214500.0,214500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38200.html,"Tungsten Prices Decline, Cobalt Prices Surge Over 10%",verified
+2025-03-07,conc65_cn_rmb_t,144000.0,144000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38200.html,"Tungsten Prices Decline, Cobalt Prices Surge Over 10%",verified
+2025-03-10,apt_cn_rmb_t,214000.0,214000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38305.html,Tungsten Market: Supply-Demand Dynamics and Macroeconomic Pressures Coexist,verified
+2025-03-10,conc65_cn_rmb_t,143500.0,143500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38305.html,Tungsten Market: Supply-Demand Dynamics and Macroeconomic Pressures Coexist,verified
+2025-03-12,apt_cn_rmb_t,212500.0,212500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38339.html,"Tungsten and Cobalt Prices Diverge, Cemented Carbide Sector in Stalemate",verified
+2025-03-12,apt_eu_usd_mtu,350.0,355.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38339.html,"Tungsten and Cobalt Prices Diverge, Cemented Carbide Sector in Stalemate",verified
+2025-03-12,conc65_cn_rmb_t,143000.0,143000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38339.html,"Tungsten and Cobalt Prices Diverge, Cemented Carbide Sector in Stalemate",verified
+2025-03-12,few_eu_usd_kg,46.5,46.75,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38339.html,"Tungsten and Cobalt Prices Diverge, Cemented Carbide Sector in Stalemate",verified
+2025-03-13,apt_cn_rmb_t,212000.0,212000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38373.html,"Tungsten Market Stagnant, Industry Sentiment Divided",verified
+2025-03-13,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38373.html,"Tungsten Market Stagnant, Industry Sentiment Divided",verified
+2025-03-14,apt_cn_rmb_t,212000.0,212000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38377.html,Tungsten Market: Weak Trends Under Supply-Demand Pressure,verified
+2025-03-14,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38377.html,Tungsten Market: Weak Trends Under Supply-Demand Pressure,verified
+2025-03-17,apt_cn_rmb_t,211000.0,211000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38456.html,Tungsten Prices Stable Amid Cost Support and Weak Demand,verified
+2025-03-17,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38456.html,Tungsten Prices Stable Amid Cost Support and Weak Demand,verified
+2025-03-18,apt_cn_rmb_t,212000.0,212000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38492.html,"Tungsten Powder Prices Hold Steady, Cobalt Powder Prices Surge 70%",verified
+2025-03-18,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38492.html,"Tungsten Powder Prices Hold Steady, Cobalt Powder Prices Surge 70%",verified
+2025-03-19,apt_cn_rmb_t,211500.0,211500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38552.html,Tungsten Market: Demand Repairs Needed Amid Temporary Price Stability,verified
+2025-03-19,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38552.html,Tungsten Market: Demand Repairs Needed Amid Temporary Price Stability,verified
+2025-03-20,apt_cn_rmb_t,212000.0,212000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38596.html,"Tungsten Price Stable with Caution, Cobalt Market Heat Fades",verified
+2025-03-20,conc65_cn_rmb_t,142500.0,142500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38596.html,"Tungsten Price Stable with Caution, Cobalt Market Heat Fades",verified
+2025-03-24,apt_cn_rmb_t,211500.0,211500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38661.html,Tungsten Market Stalemate Awaits Breakthrough,verified
+2025-03-24,conc65_cn_rmb_t,143000.0,143000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38661.html,Tungsten Market Stalemate Awaits Breakthrough,verified
+2025-03-25,apt_cn_rmb_t,212500.0,212500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38689.html,Tungsten and Cobalt Markets: Constrained Supply Meets Weak Demand,verified
+2025-03-25,conc65_cn_rmb_t,144000.0,144000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38689.html,Tungsten and Cobalt Markets: Constrained Supply Meets Weak Demand,verified
+2025-03-26,apt_cn_rmb_t,212500.0,212500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38791.html,"Tungsten Market Report - March 26, 2025",verified
+2025-03-26,conc65_cn_rmb_t,144000.0,144000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38791.html,"Tungsten Market Report - March 26, 2025",verified
+2025-03-27,apt_cn_rmb_t,212500.0,212500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38804.html,Tungsten Prices Consolidate Amid Supply-Demand Tug-of-War,verified
+2025-03-27,conc65_cn_rmb_t,144000.0,144000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38804.html,Tungsten Prices Consolidate Amid Supply-Demand Tug-of-War,verified
+2025-03-28,conc65_cn_rmb_t,145000.0,145000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38900.html,"Tungsten Weekly: Small Prices Rise, Supply-Demand Deadlock",verified
+2025-04-01,conc65_cn_rmb_t,145500.0,145500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38966.html,"Tungsten Prices Rise, Cobalt Market Contradictions Intensify",verified
+2025-04-02,conc65_cn_rmb_t,145500.0,145500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/38993.html,"Tungsten Concentrate and APT Prices on April 2, 2025",verified
+2025-04-03,conc65_cn_rmb_t,145500.0,145500.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/39061.html,"Tungsten Prices Rise This Week: Tight Supply, Hesitant Demand",verified
 2025-04-08,apt_cn_rmb_t,212000.0,212000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/39204.html,Gap Exists Between APT Long-Term Procurement Price and Spot Price,verified
 2025-04-08,powder_cn_rmb_t,316000.0,316000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/39204.html,Gap Exists Between APT Long-Term Procurement Price and Spot Price,verified
 2025-04-09,conc65_cn_rmb_t,141000.0,141000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/39266.html,Tungsten Prices Hold Firm on Supply Support,verified
@@ -124,6 +128,7 @@ date,stream,low,high,unit,source,url,note,conf
 2025-05-20,few_cn_rmb_t,248000.0,248000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40627.html,"Tungsten Prices at a Crossroads - May 20, 2025",verified
 2025-05-20,powder_cn_rmb_t,360000.0,360000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40627.html,"Tungsten Prices at a Crossroads - May 20, 2025",verified
 2025-05-23,apt_cn_rmb_t,244000.0,244000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40808.html,"Tungsten Market Cools Off This Week - May 23, 2025",verified
+2025-05-23,apt_eu_usd_mtu,400.0,430.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40808.html,"Tungsten Market Cools Off This Week - May 23, 2025",verified
 2025-05-23,conc65_cn_rmb_t,166000.0,166000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40808.html,"Tungsten Market Cools Off This Week - May 23, 2025",verified
 2025-05-23,few_cn_rmb_t,248000.0,248000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40808.html,"Tungsten Market Cools Off This Week - May 23, 2025",verified
 2025-05-23,few_eu_usd_kg,48.7,49.1,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40808.html,"Tungsten Market Cools Off This Week - May 23, 2025",verified
@@ -135,7 +140,9 @@ date,stream,low,high,unit,source,url,note,conf
 2025-05-27,apt_cn_rmb_t,244000.0,244000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40855.html,"Tungsten Market Remains Stable at High Level - May 27, 2025",verified
 2025-05-27,conc65_cn_rmb_t,166000.0,166000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40855.html,"Tungsten Market Remains Stable at High Level - May 27, 2025",verified
 2025-05-28,apt_cn_rmb_t,246000.0,246000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40920.html,"Tungsten Prices Rises Again - May 28, 2025",verified
+2025-05-28,apt_eu_usd_mtu,400.0,430.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40920.html,"Tungsten Prices Rises Again - May 28, 2025",verified
 2025-05-28,conc65_cn_rmb_t,167000.0,167000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40920.html,"Tungsten Prices Rises Again - May 28, 2025",verified
+2025-05-28,few_eu_usd_kg,48.95,49.5,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40920.html,"Tungsten Prices Rises Again - May 28, 2025",verified
 2025-05-28,powder_cn_rmb_t,362000.0,362000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40920.html,"Tungsten Prices Rises Again - May 28, 2025",verified
 2025-05-29,apt_cn_rmb_t,250000.0,250000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/40996.html,"Tungsten Ore Price Breaks Through 170,000 Mark",verified
 2025-06-03,conc65_cn_rmb_t,172000.0,172000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/41055.html,Tungsten Powder Price Reaches RMB 370/kg,verified
@@ -156,6 +163,7 @@ date,stream,low,high,unit,source,url,note,conf
 2025-06-10,apt_cn_rmb_t,253000.0,253000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/41426.html,European APT Price Has Risen 30% This Year,verified
 2025-06-10,apt_eu_usd_mtu,410.0,450.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/41426.html,European APT Price Has Risen 30% This Year,verified
 2025-06-10,few_cn_rmb_t,258000.0,258000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/41426.html,European APT Price Has Risen 30% This Year,verified
+2025-06-10,few_eu_usd_kg,50.0,51.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/41426.html,European APT Price Has Risen 30% This Year,verified
 2025-06-10,powder_cn_rmb_t,378000.0,378000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/41426.html,European APT Price Has Risen 30% This Year,verified
 2025-06-11,conc65_cn_rmb_t,174000.0,174000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/41440.html,"Tungsten Ore and Ferrotungsten Prices Remain Stable - June 11, 2025",verified
 2025-06-11,few_cn_rmb_t,258000.0,258000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/41440.html,"Tungsten Ore and Ferrotungsten Prices Remain Stable - June 11, 2025",verified
@@ -227,6 +235,7 @@ date,stream,low,high,unit,source,url,note,conf
 2025-07-04,apt_cn_rmb_t,253000.0,253000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/42253.html,"Tungsten Ore Price Hits New High - July 4, 2025",verified
 2025-07-04,apt_eu_usd_mtu,440.0,485.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/42253.html,"Tungsten Ore Price Hits New High - July 4, 2025",verified
 2025-07-04,conc65_cn_rmb_t,174000.0,174000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/42253.html,"Tungsten Ore Price Hits New High - July 4, 2025",verified
+2025-07-04,few_eu_usd_kg,51.4,52.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/42253.html,"Tungsten Ore Price Hits New High - July 4, 2025",verified
 2025-07-04,powder_cn_rmb_t,378000.0,378000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/42253.html,"Tungsten Ore Price Hits New High - July 4, 2025",verified
 2025-07-07,apt_cn_rmb_t,253000.0,253000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/42308.html,"APT Long-Order Purchase Price Increased - July 7, 2025",verified
 2025-07-07,conc65_cn_rmb_t,174000.0,174000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/42308.html,"APT Long-Order Purchase Price Increased - July 7, 2025",verified
@@ -304,6 +313,8 @@ date,stream,low,high,unit,source,url,note,conf
 2025-08-01,few_cn_rmb_t,290000.0,290000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/43082.html,"Tungsten Market Stabilizes - August 1, 2025",verified
 2025-08-01,few_eu_usd_kg,59.45,64.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/43082.html,"Tungsten Market Stabilizes - August 1, 2025",verified
 2025-08-01,powder_cn_rmb_t,430000.0,430000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/43082.html,"Tungsten Market Stabilizes - August 1, 2025",verified
+2025-08-04,apt_eu_usd_mtu,495.0,495.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/43115.html,"Domestic Tungsten Prices Dip Slightly, International Tungsten Prices Stay Strong",verified
+2025-08-04,few_eu_usd_kg,62.5,64.5,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/43115.html,"Domestic Tungsten Prices Dip Slightly, International Tungsten Prices Stay Strong",verified
 2025-08-05,apt_cn_rmb_t,285000.0,285000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/43158.html,"Tungsten Powder and Cobalt Powder Prices Strengthen - August 5, 2025",verified
 2025-08-05,conc65_cn_rmb_t,195000.0,195000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/43158.html,"Tungsten Powder and Cobalt Powder Prices Strengthen - August 5, 2025",verified
 2025-08-05,few_cn_rmb_t,290000.0,290000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/43158.html,"Tungsten Powder and Cobalt Powder Prices Strengthen - August 5, 2025",verified
@@ -514,7 +525,8 @@ date,stream,low,high,unit,source,url,note,conf
 2025-10-10,few_cn_rmb_t,385000.0,385000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/44826.html,"Tungsten Concentrate Price Slightly Lowered - October 10, 2025",verified
 2025-10-10,few_eu_usd_kg,82.8,85.5,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/44826.html,"Tungsten Concentrate Price Slightly Lowered - October 10, 2025",verified
 2025-10-10,powder_cn_rmb_t,625000.0,625000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/44826.html,"Tungsten Concentrate Price Slightly Lowered - October 10, 2025",verified
-2025-10-11,apt_cn_rmb_t,366000.0,410000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/44851.html,"Tungsten Waste and Scrap Market Picks Up - October 11, 2025",verified
+2025-10-11,apt_cn_rmb_t,393000.0,393000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/44851.html,"Tungsten Waste and Scrap Market Picks Up - October 11, 2025",verified
+2025-10-11,apt_eu_usd_mtu,580.0,650.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/44851.html,"Tungsten Waste and Scrap Market Picks Up - October 11, 2025",verified
 2025-10-11,conc65_cn_rmb_t,269000.0,269000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/44851.html,"Tungsten Waste and Scrap Market Picks Up - October 11, 2025",verified
 2025-10-11,few_cn_rmb_t,385000.0,385000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/44851.html,"Tungsten Waste and Scrap Market Picks Up - October 11, 2025",verified
 2025-10-11,few_eu_usd_kg,82.8,85.5,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/44851.html,"Tungsten Waste and Scrap Market Picks Up - October 11, 2025",verified
@@ -539,7 +551,8 @@ date,stream,low,high,unit,source,url,note,conf
 2025-10-16,few_cn_rmb_t,382000.0,382000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45092.html,"Domestic and Foreign Ferrotungsten Prices Diverge - October 16, 2025",verified
 2025-10-16,few_eu_usd_kg,86.0,89.5,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45092.html,"Domestic and Foreign Ferrotungsten Prices Diverge - October 16, 2025",verified
 2025-10-16,powder_cn_rmb_t,615000.0,615000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45092.html,"Domestic and Foreign Ferrotungsten Prices Diverge - October 16, 2025",verified
-2025-10-17,apt_cn_rmb_t,379000.0,423000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45129.html,"Wolframite and APT Prices Increased - October 17, 2025",verified
+2025-10-17,apt_cn_rmb_t,395000.0,395000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45129.html,"Wolframite and APT Prices Increased - October 17, 2025",verified
+2025-10-17,apt_eu_usd_mtu,600.0,670.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45129.html,"Wolframite and APT Prices Increased - October 17, 2025",verified
 2025-10-17,conc65_cn_rmb_t,270000.0,270000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45129.html,"Wolframite and APT Prices Increased - October 17, 2025",verified
 2025-10-17,few_cn_rmb_t,382000.0,382000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45129.html,"Wolframite and APT Prices Increased - October 17, 2025",verified
 2025-10-17,few_eu_usd_kg,86.0,89.5,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45129.html,"Wolframite and APT Prices Increased - October 17, 2025",verified
@@ -555,7 +568,8 @@ date,stream,low,high,unit,source,url,note,conf
 2025-10-21,few_cn_rmb_t,386000.0,386000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45194.html,"Tungsten Prices Strengthen - October 21, 2025",verified
 2025-10-21,few_eu_usd_kg,86.0,89.5,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45194.html,"Tungsten Prices Strengthen - October 21, 2025",verified
 2025-10-21,powder_cn_rmb_t,620000.0,620000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45194.html,"Tungsten Prices Strengthen - October 21, 2025",verified
-2025-10-22,apt_cn_rmb_t,378000.0,432000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45234.html,"Tungsten and Cobalt Prices Remain Strong - October 22, 2025",verified
+2025-10-22,apt_cn_rmb_t,408000.0,408000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45234.html,"Tungsten and Cobalt Prices Remain Strong - October 22, 2025",verified
+2025-10-22,apt_eu_usd_mtu,600.0,685.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45234.html,"Tungsten and Cobalt Prices Remain Strong - October 22, 2025",verified
 2025-10-22,conc65_cn_rmb_t,277000.0,277000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45234.html,"Tungsten and Cobalt Prices Remain Strong - October 22, 2025",verified
 2025-10-22,few_cn_rmb_t,388000.0,388000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45234.html,"Tungsten and Cobalt Prices Remain Strong - October 22, 2025",verified
 2025-10-22,few_eu_usd_kg,86.0,89.5,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45234.html,"Tungsten and Cobalt Prices Remain Strong - October 22, 2025",verified
@@ -622,6 +636,7 @@ date,stream,low,high,unit,source,url,note,conf
 2025-11-07,apt_eu_usd_mtu,610.0,685.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45516.html,"Tungsten Prices Soared This Week – November 7, 2025",verified
 2025-11-07,conc65_cn_rmb_t,313000.0,313000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45516.html,"Tungsten Prices Soared This Week – November 7, 2025",verified
 2025-11-07,few_cn_rmb_t,428000.0,428000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45516.html,"Tungsten Prices Soared This Week – November 7, 2025",verified
+2025-11-07,few_eu_usd_kg,92.0,94.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45516.html,"Tungsten Prices Soared This Week – November 7, 2025",verified
 2025-11-07,powder_cn_rmb_t,725000.0,725000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45516.html,"Tungsten Prices Soared This Week – November 7, 2025",verified
 2025-11-10,apt_cn_rmb_t,464000.0,464000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45529.html,"International Tungsten Prices Remain Firm – November 10, 2025",verified
 2025-11-10,apt_eu_usd_mtu,647.5,700.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45529.html,"International Tungsten Prices Remain Firm – November 10, 2025",verified
@@ -633,6 +648,7 @@ date,stream,low,high,unit,source,url,note,conf
 2025-11-11,apt_eu_usd_mtu,647.5,700.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45556.html,"Tungsten Market Shows Emerging Divergence - November 11, 2025",verified
 2025-11-11,conc65_cn_rmb_t,315000.0,315000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45556.html,"Tungsten Market Shows Emerging Divergence - November 11, 2025",verified
 2025-11-11,few_cn_rmb_t,430000.0,430000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45556.html,"Tungsten Market Shows Emerging Divergence - November 11, 2025",verified
+2025-11-11,few_eu_usd_kg,92.0,94.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45556.html,"Tungsten Market Shows Emerging Divergence - November 11, 2025",verified
 2025-11-11,powder_cn_rmb_t,730000.0,730000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45556.html,"Tungsten Market Shows Emerging Divergence - November 11, 2025",verified
 2025-11-12,apt_cn_rmb_t,470000.0,470000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45607.html,"Tungsten Market Stalemate, Cobalt Prices Strengthen - November 12, 2025",verified
 2025-11-12,apt_eu_usd_mtu,647.5,700.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/45607.html,"Tungsten Market Stalemate, Cobalt Prices Strengthen - November 12, 2025",verified
@@ -1021,6 +1037,7 @@ date,stream,low,high,unit,source,url,note,conf
 2026-03-03,few_eu_usd_kg,209.0,230.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/48277.html,"Tungsten Powder Price Reaches RMB 2000/kg – March 3, 2026",verified
 2026-03-04,conc65_cn_rmb_t,869000.0,869000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/48345.html,"Ammonium Paratungstate Price Hits RMB 1.3 Million/ton - March 4, 2026",verified
 2026-03-04,few_cn_rmb_t,1250000.0,1250000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/48345.html,"Ammonium Paratungstate Price Hits RMB 1.3 Million/ton - March 4, 2026",verified
+2026-03-04,few_eu_usd_kg,209.0,230.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/48345.html,"Ammonium Paratungstate Price Hits RMB 1.3 Million/ton - March 4, 2026",verified
 2026-03-05,apt_cn_rmb_t,1330000.0,1330000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/48397.html,"65% Wolframite Concentrate Price Reaches RMB 900,000/ton - March 5, 2026",verified
 2026-03-05,apt_eu_usd_mtu,1890.0,1998.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/48397.html,"65% Wolframite Concentrate Price Reaches RMB 900,000/ton - March 5, 2026",verified
 2026-03-05,conc65_cn_rmb_t,899000.0,899000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/48397.html,"65% Wolframite Concentrate Price Reaches RMB 900,000/ton - March 5, 2026",verified
@@ -1140,6 +1157,7 @@ date,stream,low,high,unit,source,url,note,conf
 2026-04-09,few_eu_usd_kg,310.0,330.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/49203.html,"Tungsten Market Weakens - April 9, 2026",verified
 2026-04-09,powder_cn_rmb_t,2310000.0,2310000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/49203.html,"Tungsten Market Weakens - April 9, 2026",verified
 2026-04-10,apt_cn_rmb_t,1430000.0,1430000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/49306.html,"Wolframite Concentrate and Tungsten Powder Prices Reduced - April 10, 2026",verified
+2026-04-10,apt_eu_usd_mtu,2800.0,3190.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/49306.html,"Wolframite Concentrate and Tungsten Powder Prices Reduced - April 10, 2026",verified
 2026-04-10,conc65_cn_rmb_t,929000.0,929000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/49306.html,"Wolframite Concentrate and Tungsten Powder Prices Reduced - April 10, 2026",verified
 2026-04-10,few_cn_rmb_t,1330000.0,1330000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/49306.html,"Wolframite Concentrate and Tungsten Powder Prices Reduced - April 10, 2026",verified
 2026-04-10,few_eu_usd_kg,310.0,330.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/49306.html,"Wolframite Concentrate and Tungsten Powder Prices Reduced - April 10, 2026",verified
@@ -1345,7 +1363,7 @@ date,stream,low,high,unit,source,url,note,conf
 2026-06-04,conc65_cn_rmb_t,479000.0,479000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/50676.html,"Tungsten Concentrate Prices Remain Firm - June 4, 2026",verified
 2026-06-04,few_cn_rmb_t,750000.0,750000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/50676.html,"Tungsten Concentrate Prices Remain Firm - June 4, 2026",verified
 2026-06-04,few_eu_usd_kg,200.0,250.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/50676.html,"Tungsten Concentrate Prices Remain Firm - June 4, 2026",verified
-2026-06-04,powder_cn_rmb_t,750000.0,750000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/50676.html,"Tungsten Concentrate Prices Remain Firm - June 4, 2026",verified
+2026-06-04,powder_cn_rmb_t,1180000.0,1180000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/50676.html,"Tungsten Concentrate Prices Remain Firm - June 4, 2026",verified
 2026-06-05,apt_cn_rmb_t,770000.0,770000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/50728.html,"Tungsten Prices Rise 20% This Week - June 5, 2026",verified
 2026-06-05,apt_eu_usd_mtu,2900.0,3180.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/50728.html,"Tungsten Prices Rise 20% This Week - June 5, 2026",verified
 2026-06-05,conc65_cn_rmb_t,499000.0,499000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/50728.html,"Tungsten Prices Rise 20% This Week - June 5, 2026",verified
@@ -1494,6 +1512,7 @@ date,stream,low,high,unit,source,url,note,conf
 2026-07-15,conc65_cn_rmb_t,400000.0,400000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/51681.html,"Tungsten Market Holds Steady Amid Wait-and-See Sentiment - July 15, 2026",verified
 2026-07-15,few_cn_rmb_t,660000.0,660000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/51681.html,"Tungsten Market Holds Steady Amid Wait-and-See Sentiment - July 15, 2026",verified
 2026-07-15,few_eu_usd_kg,200.0,210.0,USD/kg W,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/51681.html,"Tungsten Market Holds Steady Amid Wait-and-See Sentiment - July 15, 2026",verified
+2026-07-15,powder_cn_rmb_t,970000.0,970000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/51681.html,"Tungsten Market Holds Steady Amid Wait-and-See Sentiment - July 15, 2026",verified
 2026-07-16,apt_cn_rmb_t,600000.0,600000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/51684.html,"Price of Scrap Tungsten Carbide Rod Raised – July 16, 2026",verified
 2026-07-16,apt_eu_usd_mtu,3000.0,3265.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/51684.html,"Price of Scrap Tungsten Carbide Rod Raised – July 16, 2026",verified
 2026-07-16,conc65_cn_rmb_t,404000.0,404000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/51684.html,"Price of Scrap Tungsten Carbide Rod Raised – July 16, 2026",verified
@@ -1698,8 +1717,8 @@ date,stream,low,high,unit,source,url,note,conf
 2026-09-29,conc65_cn_rmb_t,360000.0,380000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/53217.html,Where Will Tungsten Prices Go After the National Day Holiday?,verified
 2026-09-29,powder_cn_rmb_t,830000.0,860000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/53217.html,Where Will Tungsten Prices Go After the National Day Holiday?,verified
 2026-09-30,apt_cn_rmb_t,560000.0,560000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/53244.html,China's Tungsten Market Weakens in September 2026,verified
-2026-09-30,conc65_cn_rmb_t,400000.0,400000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/53244.html,China's Tungsten Market Weakens in September 2026,verified
-2026-09-30,powder_cn_rmb_t,560000.0,560000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/53244.html,China's Tungsten Market Weakens in September 2026,verified
+2026-09-30,conc65_cn_rmb_t,380000.0,380000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/53244.html,China's Tungsten Market Weakens in September 2026,verified
+2026-09-30,powder_cn_rmb_t,850000.0,850000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/53244.html,China's Tungsten Market Weakens in September 2026,verified
 2026-10-08,apt_cn_rmb_t,530000.0,550000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/53259.html,"Tungsten Prices Weaken After National Day Holiday - October 8, 2026",verified
 2026-10-08,apt_eu_usd_mtu,2700.0,2900.0,USD/mtu,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/53259.html,"Tungsten Prices Weaken After National Day Holiday - October 8, 2026",verified
 2026-10-08,conc65_cn_rmb_t,330000.0,360000.0,RMB/t,CTIA / Chinatungsten Online,http://www.ctia.com.cn/en/news/53259.html,"Tungsten Prices Weaken After National Day Holiday - October 8, 2026",verified

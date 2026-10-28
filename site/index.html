@@ -5,16 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tungsten Desk — Econometric Pricing, Synthetic Forward Curve & Market Intelligence</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<!-- ======= TICKER MARQUEE ======= -->
-<div class="ticker-wrap" id="tickerWrap">
-  <div class="ticker-label">LIVE WIRE</div>
-  <div class="ticker-track" id="tickerTrack"></div>
-</div>
 
 <!-- ======= TOPBAR ======= -->
 <header class="topbar">
@@ -33,7 +28,7 @@
     <button class="tab active" data-tab="nowcast" role="tab" aria-selected="true">OVERVIEW &amp; NOWCAST</button>
     <button class="tab" data-tab="forecast" role="tab" aria-selected="false">FORECAST &amp; FORWARD CURVE</button>
     <button class="tab" data-tab="models" role="tab" aria-selected="false">FACTOR &amp; EQUITY MODELS</button>
-    <button class="tab" data-tab="intel" role="tab" aria-selected="false">QUARTERLY BRIEF &amp; WIRE</button>
+    <button class="tab" data-tab="intel" role="tab" aria-selected="false">QUARTERLY BRIEF &amp; HISTORY</button>
     <button class="tab" data-tab="methodology" role="tab" aria-selected="false">METHODOLOGY &amp; AUDIT</button>
   </nav>
 
@@ -56,35 +51,38 @@
       <span class="regime-status-chip">BIFURCATED MARKET REGIME</span>
       <span class="regime-tag">DUAL-USE EXPORT CONTROLS</span>
       <span class="regime-tag alert">CN EXPORTS −89.3% YoY</span>
+      <span class="regime-tag" style="background:rgba(4,120,87,0.12);border-color:rgba(4,120,87,0.4);color:#047857;font-weight:700">FINAL ROW BENCHMARK ACTIVE</span>
     </div>
     <div class="regime-content">
-      <div class="regime-title">Spot Disconnect &amp; Physical Value-Chain Nowcast</div>
-      <p class="regime-desc">
+      <div class="regime-title">Spot Disconnect, Physical Value-Chain Nowcast &amp; Final Rest-of-World (ROW) Assumed Price</div>
+      <p class="regime-desc" id="regimeDesc">
         Rotterdam Spot (<b class="c-obs">$2,700/mtu</b> | $238,950/t) trades at an unprecedented
-        <b class="c-wedge">+178.9% export fragmentation premium</b> over China Landed Parity (<b class="c-cn">$968/mtu</b>)
-        following China's 4-Feb-2025 dual-use export controls. Our Bayesian Kalman Filter estimates true
-        <b>Global Fundamental Fair Value at <span class="c-kal">$1,539/mtu</span></b>, while nowcasting realistic Western contract
-        settlements at <b><span class="c-west">$2,109/mtu Western Executable Spot</span></b>.
+        <b class="c-wedge">+178.8% export fragmentation premium</b> over China Landed Parity (<b class="c-cn">$969/mtu</b>)
+        following China's 4-Feb-2025 dual-use export controls. Synthesizing all 10 physical, netback, econometric, incentive cost-floor, and structural balance signals, our
+        <b>Final Rest-of-World (ROW) Assumed Tungsten Price is <span class="c-row">$1,717/mtu ($151,988/t APT)</span></b>
+        — sitting between <b>Global Fundamental Fair Value (<span class="c-kal">$1,471/mtu</span>)</b> and
+        <b>Western Executable Contract Spot (<span class="c-west">$1,999/mtu</span>)</b>.
       </p>
     </div>
     <div class="regime-pills">
+      <div class="reg-pill" style="border-color:rgba(4,120,87,0.45);background:rgba(4,120,87,0.06)"><span class="rp-lbl">ROW ASSUMED PRICE (FINAL)</span><span class="rp-val c-row" id="regRow">$1,717/mtu</span></div>
       <div class="reg-pill"><span class="rp-lbl">ROTTERDAM SPOT</span><span class="rp-val c-obs" id="regRot">$2,700/mtu</span></div>
-      <div class="reg-pill"><span class="rp-lbl">CHINA LANDED PARITY</span><span class="rp-val c-cn" id="regCn">$968/mtu</span></div>
-      <div class="reg-pill"><span class="rp-lbl">FRAGMENTATION WEDGE</span><span class="rp-val c-wedge" id="regWedge">+178.9%</span></div>
-      <div class="reg-pill"><span class="rp-lbl">WESTERN EXECUTABLE</span><span class="rp-val c-west" id="regWest">$2,109/mtu</span></div>
-      <div class="reg-pill"><span class="rp-lbl">KALMAN GLOBAL FAIR</span><span class="rp-val c-kal" id="regKal">$1,539/mtu</span></div>
+      <div class="reg-pill"><span class="rp-lbl">WESTERN EXECUTABLE</span><span class="rp-val c-west" id="regWest">$1,999/mtu</span></div>
+      <div class="reg-pill"><span class="rp-lbl">KALMAN GLOBAL FAIR</span><span class="rp-val c-kal" id="regKal">$1,471/mtu</span></div>
+      <div class="reg-pill"><span class="rp-lbl">CHINA LANDED PARITY</span><span class="rp-val c-cn" id="regCn">$969/mtu</span></div>
+      <div class="reg-pill"><span class="rp-lbl">FRAGMENTATION WEDGE</span><span class="rp-val c-wedge" id="regWedge">+178.8%</span></div>
     </div>
   </section>
 
-  <!-- 6 STRUCTURED KPI CARDS -->
+  <!-- 7 STRUCTURED KPI CARDS -->
   <section class="cards" id="headlineCards"></section>
 
   <!-- PRIMARY MULTI-MODEL NOWCAST & FORECAST CHART -->
   <section class="panel">
     <div class="panel-head">
       <div>
-        <h2>Tungsten APT — Multi-Model Price Discovery &amp; 12-Month Forward Projection</h2>
-        <div class="dim">CIF Rotterdam basis (88.5% WO₃, $/mtu WO₃) · Observed physical benchmarks, econometric lenses &amp; synthetic term structure</div>
+        <h2>Tungsten APT — Multi-Model Price Discovery, Final ROW Assumed Price &amp; 12-Month Forward Projection</h2>
+        <div class="dim">CIF Rotterdam / Ex-China ROW basis (88.5% WO₃, $/mtu WO₃) · Observed physical benchmarks, 10-lens ROW composite &amp; synthetic term structure</div>
       </div>
       <div class="legend" id="mainLegend"></div>
     </div>
@@ -96,21 +94,51 @@
     </div>
   </section>
 
+  <!-- DEDICATED PANEL: FINAL REST-OF-WORLD (ROW) ASSUMED PRICE WEIGHTING MATRIX -->
+  <section class="panel" id="rowCompositePanel">
+    <div class="panel-head">
+      <div>
+        <h2>Final Rest-of-World (ROW) Assumed Tungsten Price — 10-Lens Weighting Matrix (M6)</h2>
+        <div class="dim">Explicit multi-model synthesis weighting all 10 physical, netback, econometric, incentive cost-floor, and structural balance signals for ex-China valuation</div>
+      </div>
+      <span class="chip chip-verified" id="rowHeadlineBadge">FINAL ROW ASSUMED: $1,717/mtu ($151,988/t)</span>
+    </div>
+    <div class="scrollwrap">
+      <table class="data-table" id="rowWeightTable">
+        <thead>
+          <tr>
+            <th>PRICE LENS / BENCHMARK</th>
+            <th>MODEL</th>
+            <th>ASSESSMENT / LEVEL</th>
+            <th>VS ROTTERDAM</th>
+            <th>ROW WEIGHT</th>
+            <th>CONTRIBUTION</th>
+            <th>WEIGHT ALLOCATION</th>
+            <th style="text-align:left">ECONOMIC RATIONALE IN REST-OF-WORLD (EX-CHINA) MARKET</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
+    <div class="panel-note" id="rowWeightNote"></div>
+  </section>
+
   <!-- 2-COLUMN: PHYSICAL ARBITRAGE STACK + FRAGMENTATION WEDGE -->
   <section class="grid-2">
     <!-- Physical Stream Benchmark Stack -->
     <div class="panel">
       <div class="panel-head">
         <div>
-          <h2>6-Stream Physical Benchmark Stack</h2>
-          <div class="dim">All products normalized to common $/mtu WO₃-equivalent alongside native quotes</div>
+          <h2>Physical Stream Benchmark &amp; Metallurgical Netback Stack</h2>
+          <div class="dim">Observed physical streams, stage metallurgical netbacks &amp; Final ROW Assumed Price ($/mtu WO₃-equivalent)</div>
         </div>
       </div>
       <div class="scrollwrap">
         <table class="stream-table" id="streamTable">
           <thead>
             <tr>
-              <th>PHYSICAL STREAM</th>
+              <th>PHYSICAL STREAM / NETBACK BENCHMARK</th>
               <th>NATIVE ASSESSMENT</th>
               <th>USD/mtu-eq</th>
               <th>VS ROTTERDAM</th>
@@ -121,8 +149,8 @@
         </table>
       </div>
       <div class="panel-note">
-        Physical conversion factors: European Ferrotungsten 75% W converted at 7.93 kg W/mtu WO₃; Concentrate 65% WO₃ ex-works converted at 65 mtu/t;
-        China Powder ≥99.7% converted at 7.93 kg W/mtu WO₃. China Smelting Parity derived via $P_{smelt} = 1.418 \cdot P_{conc} + \text{RMB 22,000/t}$ conversion cost ($r = 0.992$).
+        Physical conversion &amp; metallurgical netbacks: European Ferrotungsten 75% W converted at 7.93 kg W/mtu WO₃ (netback factor 0.925); Concentrate 65% WO₃ ex-works converted at 65 mtu/t;
+        China Powder ≥99.7% metallurgical netback derived via (P_pwd − RMB 22,000/t) / (1.4615 · 88.5 · USDCNY); China 70% Ferrotungsten netback derived via (P_few − RMB 16,000/t) · 0.96 / (88.28 · USDCNY). China Smelting Parity derived via P_smelt = 1.445 · P_conc + RMB 24,000/t (level R² = 0.9953). Hybrid landed export parity adds 17.10% ad-valorem tax/compliance carry + $1,550/t fixed container ocean freight ($17.51/mtu).
       </div>
     </div>
 
@@ -136,8 +164,8 @@
       </div>
       <div class="chart-box" style="height:270px"><canvas id="wedgeChart"></canvas></div>
       <div class="panel-note">
-        <b>Mechanism:</b> In March 2026, Chinese domestic APT spiked to RMB 1.52M/t ($2,570/mtu), which catapulted Rotterdam to $3,000/mtu.
-        When domestic Chinese prices cooled to RMB 480k/t ($812/mtu ex-works / $968/mtu landed parity), Chinese APT exports collapsed <b>89.3% YoY</b>,
+        <b>Mechanism:</b> In March 2026, Chinese domestic APT spiked to $227,450/t ($2,570/mtu), which catapulted Rotterdam to $3,000/mtu ($265,500/t).
+        When domestic Chinese prices cooled to $71,880/t ($812/mtu ex-works / $968/mtu landed parity), Chinese APT exports collapsed <b>89.3% YoY</b>,
         leaving Western consumers physically stranded and keeping the export fragmentation premium elevated at <b>+178.9%</b>.
       </div>
     </div>
@@ -186,7 +214,7 @@
     <div class="panel-head">
       <div>
         <h2>Synthetic Forward Term Structure &amp; Catalyst Breakdown</h2>
-        <div class="dim">Contract tenor pricing, confidence intervals, implied export wedge, and primary horizon drivers</div>
+        <div class="dim">Contract tenor pricing, Final ROW Assumed Forward, confidence intervals, implied export wedge, and primary horizon drivers</div>
       </div>
     </div>
     <div class="scrollwrap">
@@ -197,6 +225,7 @@
             <th>TARGET DATE</th>
             <th>ROTTERDAM FORWARD</th>
             <th>CHG VS SPOT</th>
+            <th>ROW ASSUMED FWD (M6)</th>
             <th>80% CONFIDENCE BAND</th>
             <th>GLOBAL FAIR FORWARD</th>
             <th>CHINA LANDED PARITY</th>
@@ -249,8 +278,8 @@
   <section class="audit-banner">
     <div class="audit-head">
       <span class="audit-chip">ECONOMETRIC AUDIT &amp; MODEL REHABILITATION</span>
-      <h2>Why Legacy Models Failed vs. V3 Econometric Rehabilitation</h2>
-      <p class="dim">Direct audit comparison: replacing uncorrelated macro proxies and contaminated equity tickers with verified value-chain physics.</p>
+      <h2>Why Legacy Models Failed vs. V4 Econometric Rehabilitation</h2>
+      <p class="dim">Direct audit comparison: formula audit fixes, Duan (1983) smearing, RTS backward smoothing, and 12 pure-play miners.</p>
     </div>
     <div class="audit-grid" id="auditCards"></div>
   </section>
@@ -260,7 +289,7 @@
     <div class="panel-head">
       <div>
         <h2>M3: Value-Chain &amp; Industrial Factor Model</h2>
-        <div class="dim">Non-circular cointegrated regression on verified intermediate products ($R^2 = 0.878$, return $R^2 = 0.551$)</div>
+        <div class="dim">Non-circular centered cointegrated regression on verified intermediate products ($R^2 = 0.855$, return $R^2 = 0.545$, Duan smearing = 1.063)</div>
       </div>
     </div>
     <div class="grid-2">
@@ -268,7 +297,7 @@
       <div>
         <h3 class="sub-head">Monthly Return &amp; 4-Week Lead Correlation</h3>
         <div class="chart-box" style="height:260px"><canvas id="corrChart"></canvas></div>
-        <div class="panel-note">European Ferrotungsten (+0.75 ret, +0.80 lead) and Chinese Concentrate/Powder lead EU APT by 4 weeks, while Copper (-0.09) and S&amp;P 500 (-0.28) have negative correlation.</div>
+        <div class="panel-note">European Ferrotungsten (+0.78 ret, +0.74 lead) and Chinese Concentrate/Powder lead EU APT by 4 weeks, while Copper (−0.09) and S&amp;P 500 (−0.28) have negative correlation.</div>
       </div>
       <!-- Factor Detail Table -->
       <div>
@@ -290,7 +319,7 @@
             <tbody></tbody>
           </table>
         </div>
-        <div class="panel-note">Regresses log(APT) on intermediate value-chain quotes. When FeW ($152.5/kg) and Concentrates cooled from March 2026 peaks, M3 nowcasts $1,379/mtu, proving Rotterdam spot ($2,700) carries $1,321/mtu of illiquidity premium.</div>
+        <div class="panel-note">Regresses log(APT) on intermediate value-chain quotes with interior positive elasticities and Duan smearing. When FeW ($152.5/kg) and Concentrates cooled from March 2026 peaks, M3 nowcasts $1,389/mtu, demonstrating that Rotterdam spot ($2,700) carries a $1,311/mtu illiquidity premium.</div>
       </div>
     </div>
   </section>
@@ -300,13 +329,13 @@
     <div class="panel-head">
       <div>
         <h2>Rolling Correlation Evolution (90-Day Window)</h2>
-        <div class="dim">EU FeW vs APT, Pure-Play Equities vs APT, and Copper vs APT over 2025–2026</div>
+        <div class="dim">EU FeW vs EU APT, Pure-Play Equities vs EU APT, and Copper vs EU APT over 2025–2026</div>
       </div>
       <div class="legend" id="rollingLegend"></div>
     </div>
     <div class="chart-box" style="height:260px"><canvas id="rollingChart"></canvas></div>
     <div class="panel-note">
-      Notice how Pure-Play Equities (coral) and European FeW (blue) consistently exhibit strong positive correlation (+0.60 to +0.85) to APT throughout the 2025–2026 export-control shock,
+      Notice how Pure-Play Equities (coral) and European FeW (blue) consistently exhibit strong positive correlation (+0.55 to +0.85) to European APT throughout the 2025–2026 export-control shock,
       whereas Copper (orange) fluctuates near zero or goes sharply negative—confirming that tungsten is decoupled from copper macro cycles.
     </div>
   </section>
@@ -316,17 +345,17 @@
     <div class="panel-head">
       <div>
         <h2>M2: Pure-Play Tungsten Equity Valuation Model</h2>
-        <div class="dim">11 pure-play producers, developers, and tooling majors · 21-day forward lead $r = +0.626$, Level $R^2 = 0.944$</div>
+        <div class="dim">All 12 pure-play producers, developers, and tooling majors weighted (USD-normalized) · 21-day forward lead $r = +0.602$, Level $R^2 = 0.918$, Duan factor = 1.032</div>
       </div>
       <div class="legend" id="equityLegend"></div>
     </div>
     <div class="chart-box big"><canvas id="equityChart"></canvas></div>
     <div class="panel-note">
-      Plots Observed EU APT alongside Equity-Implied APT ($1,518/mtu) and the three sub-basket indexes: Western Producers &amp; Developers (EQR, GMET, TUN, ALM, FWZ, TGN), Chinese Integrated Majors (002378.SZ, 600549.SS, 000657.SZ), and Downstream Tooling (KMT, SAND.ST).
+      Plots Observed EU APT alongside Equity-Implied APT ($1,517/mtu) and the three USD-normalized sub-basket indexes: Western Producers &amp; Developers (EQR, GMET, TUN, ALM, FWZ, TGN, G6M), Chinese Integrated Majors (002378.SZ, 600549.SS, 000657.SZ), and Downstream Tooling (KMT, SAND.ST).
     </div>
   </section>
 
-  <!-- 11 EQUITIES CONSTITUENT TABLE -->
+  <!-- 12 EQUITIES CONSTITUENT TABLE -->
   <section class="panel">
     <div class="panel-head">
       <div>
@@ -437,23 +466,6 @@
     </div>
   </section>
 
-  <!-- THE LIVE WIRE (NEWS FEED) -->
-  <section class="panel">
-    <div class="panel-head">
-      <div>
-        <h2>The Live Wire — Tungsten Market Feed</h2>
-        <div class="dim">Filter verified news, regulatory filings, and corporate press releases by primary focus</div>
-      </div>
-      <div class="news-filter">
-        <button class="nbtn active" data-f="all">ALL</button>
-        <button class="nbtn" data-f="price">PRICE</button>
-        <button class="nbtn" data-f="policy">POLICY / SUPPLY</button>
-        <button class="nbtn" data-f="company">COMPANY</button>
-      </div>
-    </div>
-    <div class="news-scroll" id="newsScroll"></div>
-  </section>
-
 </main>
 
 <!-- ================= TAB 5: METHODOLOGY & AUDIT ================= -->
@@ -468,8 +480,10 @@
       have decoupled. Fastmarkets characterises the structural phenomenon as <em>"markets fragmenting"</em>.
     </p>
     <p>
-      Tungsten Desk synthesizes <b>six complementary econometric lenses (M0 through M5)</b>, eliminating arbitrary assumptions through bounded Ridge regressions,
-      empirical smelting conversion balances, pure-play equity lead signals, and Bayesian Kalman filtering.
+      Tungsten Desk synthesizes <b>ten complementary econometric lenses (M0 through M9)</b>, culminating in the
+      <b>Final Rest-of-World (ROW) Assumed Tungsten Price ($1,717/mtu | $151,988/t APT)</b> via bounded centered Ridge regressions,
+      empirical metallurgical netback equations, hybrid logistics export parity, USD-normalized pure-play equity lead signals,
+      and staleness-aware Bayesian Kalman filtering with RTS smoothing.
     </p>
   </section>
 
@@ -514,11 +528,13 @@
   <section class="panel caveat">
     <h2>Model Assumptions &amp; Risk Disclosures</h2>
     <ul>
+      <li><strong>Final ROW Assumed Composite Price (M6):</strong> Weighted benchmark ($1,717/mtu | $151,988/t) combining Ex-China Spot &amp; Executable Clearing (30%), Econometric Lead &amp; Value-Chain Nowcasts (44%), and Physical Netback, Incentive Cost Floor &amp; Balance Anchors (26%) to represent a realistic clearing price for Rest-of-World commercial and project valuation. Cross-checked with Log-Geometric Mean ($1,715/mtu), Bates-Granger Precision ($2,191/mtu), and Trimmed Mean ($1,589/mtu).</li>
       <li><strong>Physical Assessment Illiquidity:</strong> CIF Rotterdam assessments reflect reported bilateral transactions and survey bids. With Chinese APT exports down 89.3%, Western transaction volumes are thin. The Rotterdam spot assessment ($2,700/mtu) reflects urgent Western unhedged restocking rather than long-term clearing value.</li>
-      <li><strong>China Domestic Pricing Integrity:</strong> Domestic Chinese APT (RMB 480k/t = $812/mtu) and 65% Concentrate (RMB 310k/t = $714/mtu) are backed by 1,750 verified transaction records from CTIA, SMM, and Jiangxi smelters. Smelting parity matches domestic APT with $r = 0.992$.</li>
-      <li><strong>M2 Pure-Play Equities:</strong> The equity model extracts an implied spot price ($1,518/mtu) via cointegrated log-return regression across 11 pure-play companies ($R^2 = 0.944$). Equities lead physical APT by 21 trading days ($r = +0.626$), acting as an empirical early-warning indicator.</li>
-      <li><strong>M4 Kalman State-Space Fusion:</strong> Fuses M0, M1, M2, and M3 with dynamic inverse-variance weighting, yielding a Global Fundamental Fair Value of $1,539/mtu$ (90% band $1,292–$1,833/mtu) and a Western Executable Nowcast of $2,109/mtu$.</li>
-      <li><strong>M5 Supply-Demand Equilibrium:</strong> Calibrated using Almonty Sangdong NI 43-101 deficit projections (5,570 t in 2025, 2,330 t in 2026) and 2.0% baseline demand CAGR. Inventory coverage is modeled since strategic reserves are not publicly disclosed.</li>
+      <li><strong>China Domestic Pricing Integrity:</strong> Domestic Chinese APT ($71,880/t = $812/mtu) and 65% Concentrate ($46,542/t = $714/mtu) are backed by 1,769 verified transaction records from CTIA, SMM, and Jiangxi smelters. Smelting parity matches domestic APT with level $R^2 = 0.9953$.</li>
+      <li><strong>M2 Pure-Play Equities:</strong> The equity model extracts an implied spot price ($1,517/mtu) via centered constrained cointegrated log-return regression across all 12 pure-play companies in USD with Duan (1983) smearing ($R^2 = 0.918$). Equities lead physical APT by 21 trading days ($r = +0.602$), acting as an empirical early-warning indicator.</li>
+      <li><strong>M4 Kalman State-Space Fusion:</strong> Fuses M0, M1, M2, and M3 with staleness-aware dynamic inverse-variance weighting and backward Rauch-Tung-Striebel (RTS) smoothing, yielding a Global Fundamental Fair Value of $1,471/mtu$ (90% band $1,223–$1,769/mtu) and a Western Executable Nowcast of $1,999/mtu$.</li>
+      <li><strong>M5 Supply-Demand Equilibrium:</strong> Calibrated using Almonty Sangdong NI 43-101 deficit projections (5,570 t in 2025, 2,330 t in 2026), secondary price-elastic scrap elasticity, and 2.0% baseline demand CAGR. Inventory coverage is modeled since strategic reserves are not publicly disclosed.</li>
+      <li><strong>M7–M9 Price Discovery Lenses:</strong> M7 captures the 90th-percentile marginal smelting AISC floor ($596/mtu) and Western DFARS greenfield incentive clearing price ($1,576/mtu); M8 nowcasts the 21-day econometric lead-lag impulse ($1,214/mtu); M9 computes ITIA downstream value-in-use netback parity ($1,232/mtu).</li>
       <li><strong>Research Prototype:</strong> Tungsten Desk is an institutional market research prototype. Nothing herein constitutes investment advice, trading solicitation, or hedging counsel.</li>
     </ul>
   </section>
@@ -529,7 +545,7 @@
 <footer class="footer">
   <div class="footer-left">
     <span class="f-brand">TUNGSTEN DESK</span>
-    <span>Econometric Pricing &amp; Synthetic Forward Forecasting Engine V3</span>
+    <span>Econometric Pricing &amp; Synthetic Forward Forecasting Engine V4</span>
     <span>Data sources: CTIA, ISBP, Fastmarkets, USGS, Almonty NI 43-101, Yahoo Finance</span>
   </div>
   <div class="footer-right">

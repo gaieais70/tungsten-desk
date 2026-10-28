@@ -1,5 +1,5 @@
 {
- "generated_utc": "2026-10-19 16:10 UTC",
+ "generated_utc": "2026-10-28 18:38 UTC",
  "model_name": "M5 \u2014 supply-demand equilibrium (stock-to-use balance)",
  "sources": [
   {
@@ -38,9 +38,9 @@
    2035
   ],
   "supply_2025_t": 85000.0,
-  "demand_2025_t": 90600.0,
+  "demand_2025_t": 90570.0,
   "known_deficit_2025_t": 5570.0,
-  "deficit_2025_implied_note": "demand_2025 (90,600 t) - supply_2025 (85,000 t) = 5,600 t implied deficit vs NI 43-101 ~5,570 t \u2014 30 t rounding on the demand base; both used, ~5,570 cited as the source figure.",
+  "deficit_2025_implied_note": "demand_2025 (90,570 t) - supply_2025 (85,000 t) = 5,570 t exact deficit cited from Sangdong NI 43-101 technical report.",
   "known_deficit_2026_t": 2330.0,
   "china_share_2025": 0.79,
   "china_decline_per_yr": 0.003,
@@ -183,90 +183,112 @@
   {
    "year": 2025,
    "supply_t": 85000.0,
-   "demand_t": 90600.0,
-   "deficit_t": 5600.0,
-   "stock_to_use_months": 2.258,
-   "price_mtu": 925.8
+   "demand_t": 90570.0,
+   "deficit_t": 5570.0,
+   "stock_to_use_months": 2.262,
+   "price_mtu": 925.0,
+   "other_mine_t": 17850.0,
+   "scrap_secondary_t": 0.0
   },
   {
    "year": 2026,
-   "supply_t": 90082.0,
-   "demand_t": 92412.0,
+   "supply_t": 90051.4,
+   "demand_t": 92381.4,
    "deficit_t": 2330.0,
-   "stock_to_use_months": 1.911,
-   "price_mtu": 2579.1
+   "stock_to_use_months": 1.915,
+   "price_mtu": 2575.1,
+   "other_mine_t": 18296.2,
+   "scrap_secondary_t": 2206.6
   },
   {
    "year": 2027,
-   "supply_t": 93234.5,
-   "demand_t": 93560.0,
-   "deficit_t": 325.5,
-   "stock_to_use_months": 1.846,
-   "price_mtu": 2057.8
+   "supply_t": 93496.8,
+   "demand_t": 90464.5,
+   "deficit_t": -3032.3,
+   "stock_to_use_months": 2.358,
+   "price_mtu": 1736.6,
+   "other_mine_t": 18753.7,
+   "scrap_secondary_t": 2555.5
   },
   {
    "year": 2028,
-   "supply_t": 94960.4,
-   "demand_t": 95155.5,
-   "deficit_t": 195.1,
-   "stock_to_use_months": 1.791,
-   "price_mtu": 1411.4
+   "supply_t": 95179.7,
+   "demand_t": 92131.3,
+   "deficit_t": -3048.4,
+   "stock_to_use_months": 2.712,
+   "price_mtu": 1089.9,
+   "other_mine_t": 19222.5,
+   "scrap_secondary_t": 2569.7
   },
   {
    "year": 2029,
-   "supply_t": 97300.1,
-   "demand_t": 96853.0,
-   "deficit_t": -447.1,
-   "stock_to_use_months": 1.815,
-   "price_mtu": 958.2
+   "supply_t": 97410.3,
+   "demand_t": 94491.2,
+   "deficit_t": -2919.1,
+   "stock_to_use_months": 3.015,
+   "price_mtu": 725.0,
+   "other_mine_t": 19703.1,
+   "scrap_secondary_t": 2519.4
   },
   {
    "year": 2030,
-   "supply_t": 98853.9,
-   "demand_t": 98720.2,
-   "deficit_t": -133.7,
-   "stock_to_use_months": 1.797,
-   "price_mtu": 879.3
+   "supply_t": 98833.6,
+   "demand_t": 97141.3,
+   "deficit_t": -1692.3,
+   "stock_to_use_months": 3.142,
+   "price_mtu": 652.2,
+   "other_mine_t": 20195.6,
+   "scrap_secondary_t": 2449.2
   },
   {
    "year": 2031,
-   "supply_t": 100422.0,
-   "demand_t": 100635.4,
-   "deficit_t": 213.4,
-   "stock_to_use_months": 1.737,
-   "price_mtu": 727.3
+   "supply_t": 100289.9,
+   "demand_t": 99654.8,
+   "deficit_t": -635.1,
+   "stock_to_use_months": 3.139,
+   "price_mtu": 521.9,
+   "other_mine_t": 20700.5,
+   "scrap_secondary_t": 2399.0
   },
   {
    "year": 2032,
-   "supply_t": 102005.0,
-   "demand_t": 102531.6,
-   "deficit_t": 526.6,
-   "stock_to_use_months": 1.643,
-   "price_mtu": 651.4
+   "supply_t": 101761.1,
+   "demand_t": 102225.5,
+   "deficit_t": 464.4,
+   "stock_to_use_months": 3.006,
+   "price_mtu": 445.3,
+   "other_mine_t": 21218.0,
+   "scrap_secondary_t": 2350.6
   },
   {
    "year": 2033,
-   "supply_t": 102403.0,
-   "demand_t": 104363.8,
-   "deficit_t": 1960.7,
-   "stock_to_use_months": 1.389,
-   "price_mtu": 692.6
+   "supply_t": 102054.1,
+   "demand_t": 104770.5,
+   "deficit_t": 2716.3,
+   "stock_to_use_months": 2.622,
+   "price_mtu": 396.7,
+   "other_mine_t": 21748.5,
+   "scrap_secondary_t": 2310.4
   },
   {
    "year": 2034,
-   "supply_t": 102816.6,
-   "demand_t": 105711.4,
-   "deficit_t": 2894.8,
-   "stock_to_use_months": 1.043,
-   "price_mtu": 1065.4
+   "supply_t": 102373.0,
+   "demand_t": 107230.5,
+   "deficit_t": 4857.5,
+   "stock_to_use_months": 2.018,
+   "price_mtu": 418.5,
+   "other_mine_t": 22292.2,
+   "scrap_secondary_t": 2282.3
   },
   {
    "year": 2035,
-   "supply_t": 103245.9,
-   "demand_t": 105833.7,
-   "deficit_t": 2587.8,
-   "stock_to_use_months": 0.748,
-   "price_mtu": 2235.5
+   "supply_t": 102739.6,
+   "demand_t": 109303.9,
+   "deficit_t": 6564.2,
+   "stock_to_use_months": 1.259,
+   "price_mtu": 706.0,
+   "other_mine_t": 22849.5,
+   "scrap_secondary_t": 2287.6
   }
  ],
  "scenarios": {
@@ -275,47 +297,47 @@
    "price_path_mtu": [
     {
      "year": 2025,
-     "price_mtu": 925.8
+     "price_mtu": 925.0
     },
     {
      "year": 2026,
-     "price_mtu": 2579.1
+     "price_mtu": 2575.1
     },
     {
      "year": 2027,
-     "price_mtu": 2057.8
+     "price_mtu": 1736.6
     },
     {
      "year": 2028,
-     "price_mtu": 1411.4
+     "price_mtu": 1089.9
     },
     {
      "year": 2029,
-     "price_mtu": 958.2
+     "price_mtu": 725.0
     },
     {
      "year": 2030,
-     "price_mtu": 879.3
+     "price_mtu": 652.2
     },
     {
      "year": 2031,
-     "price_mtu": 727.3
+     "price_mtu": 521.9
     },
     {
      "year": 2032,
-     "price_mtu": 651.4
+     "price_mtu": 445.3
     },
     {
      "year": 2033,
-     "price_mtu": 692.6
+     "price_mtu": 396.7
     },
     {
      "year": 2034,
-     "price_mtu": 1065.4
+     "price_mtu": 418.5
     },
     {
      "year": 2035,
-     "price_mtu": 2235.5
+     "price_mtu": 706.0
     }
    ],
    "note": "Base: demand CAGR 2.0% (Merchant Research & Consulting via deck), documented Western additions on schedule, ~6 kt of deck-implied \"second wave\" supply by 2032, policy premium decays through 2033."
@@ -325,47 +347,47 @@
    "price_path_mtu": [
     {
      "year": 2025,
-     "price_mtu": 925.8
+     "price_mtu": 925.0
     },
     {
      "year": 2026,
-     "price_mtu": 2726.3
+     "price_mtu": 2947.2
     },
     {
      "year": 2027,
-     "price_mtu": 2943.9
+     "price_mtu": 2163.7
     },
     {
      "year": 2028,
-     "price_mtu": 2706.5
+     "price_mtu": 1468.1
     },
     {
      "year": 2029,
-     "price_mtu": 3751.7
+     "price_mtu": 1239.5
     },
     {
      "year": 2030,
-     "price_mtu": 2750.0
+     "price_mtu": 1123.0
     },
     {
      "year": 2031,
-     "price_mtu": 2522.6
+     "price_mtu": 1489.2
     },
     {
      "year": 2032,
-     "price_mtu": 2754.6
+     "price_mtu": 3753.4
     },
     {
      "year": 2033,
-     "price_mtu": 2744.8
+     "price_mtu": 1968.5
     },
     {
      "year": 2034,
-     "price_mtu": 2807.6
+     "price_mtu": 2947.4
     },
     {
      "year": 2035,
-     "price_mtu": 3242.3
+     "price_mtu": 4224.0
     }
    ],
    "note": "Bull: demand CAGR 3.0% (defense build-up, semiconductors/AI, EV), Sangdong II/Gentung delayed ~1 yr, second-wave supply halved and late, premium decays slowly (policy persists)."
@@ -375,47 +397,47 @@
    "price_path_mtu": [
     {
      "year": 2025,
-     "price_mtu": 925.8
+     "price_mtu": 925.0
     },
     {
      "year": 2026,
-     "price_mtu": 2475.6
+     "price_mtu": 2361.8
     },
     {
      "year": 2027,
-     "price_mtu": 1292.5
+     "price_mtu": 1176.1
     },
     {
      "year": 2028,
-     "price_mtu": 665.9
+     "price_mtu": 629.0
     },
     {
      "year": 2029,
-     "price_mtu": 440.7
+     "price_mtu": 429.1
     },
     {
      "year": 2030,
-     "price_mtu": 337.7
+     "price_mtu": 333.6
     },
     {
      "year": 2031,
-     "price_mtu": 303.5
+     "price_mtu": 301.8
     },
     {
      "year": 2032,
-     "price_mtu": 302.1
+     "price_mtu": 301.1
     },
     {
      "year": 2033,
-     "price_mtu": 301.4
+     "price_mtu": 300.8
     },
     {
      "year": 2034,
-     "price_mtu": 301.0
+     "price_mtu": 300.6
     },
     {
      "year": 2035,
-     "price_mtu": 300.8
+     "price_mtu": 300.5
     }
    ],
    "note": "Bear: demand CAGR 1.0% (global slowdown, substitution), additions accelerated (Gentung 2028), 12 kt second-wave supply by 2031, premium unwinds fast."

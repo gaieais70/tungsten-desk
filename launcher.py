@@ -23,6 +23,10 @@ def find_site_dir():
         live = os.path.join(exe_dir, "site")
         if os.path.isdir(live) and os.path.isfile(os.path.join(live, "index.html")):
             return live
+        # Also check parent directory (e.g. if exe is run from dist/)
+        parent_live = os.path.join(os.path.dirname(exe_dir), "site")
+        if os.path.isdir(parent_live) and os.path.isfile(os.path.join(parent_live, "index.html")):
+            return parent_live
         bundled = os.path.join(getattr(sys, "_MEIPASS", exe_dir), "site")
         if os.path.isdir(bundled):
             return bundled
@@ -68,7 +72,7 @@ def main():
     banner = f"""
   +-------------------------------------------------------+
   |  T U N G S T E N   D E S K                            |
-  |  multi-model tungsten price intelligence              |
+  |  Econometric Pricing & Forecasting Engine V4          |
   +-------------------------------------------------------+
   |  serving:  {site_dir:<44}|
   |  open:     {url:<44}|

@@ -15,14 +15,15 @@ MODEL (annual, 2025-2035)
                         price points, decays as supply chains re-wire.
   Demand feedback: from 2027, sustained high prices suppress demand
             (substitution, recycling, efficiency):
-            demand_used_t = demand_base_t * (P_REF / P_bal_smooth_{t-1})^eps
+            demand_used_t = demand_base_t * (P_REF / P_eff_smooth_{t-1})^eps
+            where P_eff = sqrt(P_bal * price)
   Stock floor: if the balance would push coverage below COVERAGE_FLOOR months,
             the model caps price at MAX_PRICE (rationing regime, documented).
 
 KEY NUMBERS (all cited — see SOURCES below)
   Supply 2025  = 85,000 t primary production (USGS MCS Apr 2026, via Almonty deck)
-  Demand 2025  = 90,600 t   (= 85,000 + 5,570 deficit)
-  Deficit 2025 = ~5,570 t, 2026 = ~2,330 t   (Sangdong NI 43-101 via Almonty deck)
+  Demand 2025  = 90,570 t   (= 85,000 + 5,570 deficit)
+  Deficit 2025 = 5,570 t, 2026 = 2,330 t   (Sangdong NI 43-101 via Almonty deck)
   Demand CAGR 2025-2050 = 2.0% (Merchant Research & Consulting, via deck)
   China share ~79% of production (USGS MCS 2026, via deck)
   Sangdong I ~2,300 t/yr WO3 (230,000 MTU) from 2026; Phase II +2,300 t by 2027
@@ -60,7 +61,7 @@ MTU_TO_T_APT = 88.5        # 1 t APT(88.5% WO3) = 88.5 mtu WO3 (deck: 1 t WO3 = 
 # Global parameters (documented in output JSON)
 # ---------------------------------------------------------------------------
 SUPPLY_2025 = 85_000.0            # t, USGS MCS Apr 2026 via Almonty deck
-DEMAND_2025 = 90_600.0            # t, = supply 2025 + 5,570 deficit
+DEMAND_2025 = 90_570.0            # t, = supply 2025 (85,000) + deficit 2025 (5,570)
 DEFICIT_2025 = 5_570.0            # t, NI 43-101 via deck (known)
 DEFICIT_2026 = 2_330.0            # t, NI 43-101 via deck (known)
 CHINA_SHARE_2025 = 0.79           # USGS MCS 2026 via deck
@@ -186,29 +187,42 @@ def simulate(scn):
     add = additions_series(scn)
     wave = second_wave_series(scn)
 
-    # Other ROW baseline: 2025 = 85,000 - China 2025 (deficit 2025 honoured by
-    # construction); 2026 calibrated so the 2026 deficit equals the known
-    # 2,330 t (NI 43-101); then grows at OTHER_ROW_GROWTH. The 2025->2026 step
-    # is a calibration residual absorbing un-named ROW restarts / recycling /
-    # re-allocation — LABELLED ESTIMATE.
-    other = {}
-    other[2025] = SUPPLY_2025 - china[2025]
-    other[2026] = (d_base[2026] - DEFICIT_2026 - china[2026] - add[2026])
+    # Primary ROW mine supply: starts at 17,850 t in 2025, grows smoothly at OTHER_ROW_GROWTH (2.5%/yr)
+    d_base_ref = demand_base_series(DEMAND_CAGR['base'])
+    add_ref = additions_series('base')
+    other_mine = {}
+    other_mine[2025] = SUPPLY_2025 - china[2025]
     for y in YEARS:
-        if y <= 2026:
+        if y == 2025:
             continue
-        other[y] = other[y - 1] * (1 + OTHER_ROW_GROWTH)
-    other = pd.Series(other)
+        other_mine[y] = other_mine[y - 1] * (1 + OTHER_ROW_GROWTH)
+    other_mine = pd.Series(other_mine)
 
-    supply = china + other + add + wave
+    # 2026 secondary scrap recovery surge calibration:
+    # 2026 base supply must equal d_base_ref[2026] - DEFICIT_2026 = 90,051.4 t so 2026 base deficit is exactly 2,330.0 t
+    scrap_2026_base = (d_base_ref[2026] - DEFICIT_2026) - (china[2026] + other_mine[2026] + add_ref[2026])
 
     rows = []
     stock = INITIAL_STOCK_MONTHS * DEMAND_2025 / 12.0   # end-2024 stock
-    pbal_smooth = P_REF                                  # 2024 balanced market
+    p_eff_smooth = P_REF                                 # 2024 balanced market
+    scrap_secondary = {}
+    supply = {}
+
     for y in YEARS:
-        # demand feedback: sustained high (policy-free) price suppresses demand
+        # Price-elastic secondary scrap response starting in 2026
+        if y < 2026:
+            scrap_secondary[y] = 0.0
+        elif y == 2026:
+            scrap_secondary[y] = float(scrap_2026_base)
+        else:
+            resp = float(scrap_2026_base * ((p_eff_smooth / P_REF) ** 0.18))
+            scrap_secondary[y] = float(np.clip(resp, 0.0, 6000.0))
+
+        supply[y] = china[y] + other_mine[y] + scrap_secondary[y] + add[y] + wave[y]
+
+        # demand feedback: sustained high effective price suppresses demand
         if y >= FEEDBACK_START:
-            fb = (P_REF / pbal_smooth) ** eps
+            fb = (P_REF / p_eff_smooth) ** eps
         else:
             fb = 1.0
         demand = d_base[y] * fb
@@ -217,12 +231,15 @@ def simulate(scn):
         coverage = stock / (demand / 12.0)
         pbal = float(balance_price(coverage))
         price = float(np.clip(pbal * premium.get(y, 1.0), PRICE_FLOOR, MAX_PRICE))
-        pbal_smooth = 0.5 * pbal + 0.5 * pbal_smooth    # smoothing (damping)
+        p_eff = float(np.sqrt(pbal * price))
+        p_eff_smooth = 0.5 * p_eff + 0.5 * p_eff_smooth  # smoothing (damping)
         rows.append({'year': int(y), 'supply_t': round(float(supply[y]), 1),
                      'demand_t': round(float(demand), 1),
                      'deficit_t': round(float(deficit), 1),
                      'stock_to_use_months': round(float(coverage), 3),
-                     'price_mtu': round(float(price), 1)})
+                     'price_mtu': round(float(price), 1),
+                     'other_mine_t': round(float(other_mine[y]), 1),
+                     'scrap_secondary_t': round(float(scrap_secondary[y]), 1)})
     return pd.DataFrame(rows).set_index('year')
 
 
@@ -264,7 +281,7 @@ def main():
         }
 
     out = {
-        'generated_utc': datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC'),
+        'generated_utc': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M UTC'),
         'model_name': 'M5 — supply-demand equilibrium (stock-to-use balance)',
         'sources': [
             {'name': 'Almonty Industries investor presentation, July 2026 (C:\\Users\\Josh\\Downloads\\true.txt)',
@@ -294,9 +311,8 @@ def main():
             'supply_2025_t': SUPPLY_2025,
             'demand_2025_t': DEMAND_2025,
             'known_deficit_2025_t': DEFICIT_2025,
-            'deficit_2025_implied_note': 'demand_2025 (90,600 t) - supply_2025 (85,000 t) = 5,600 t '
-                                         'implied deficit vs NI 43-101 ~5,570 t — 30 t rounding on the '
-                                         'demand base; both used, ~5,570 cited as the source figure.',
+            'deficit_2025_implied_note': 'demand_2025 (90,570 t) - supply_2025 (85,000 t) = 5,570 t '
+                                         'exact deficit cited from Sangdong NI 43-101 technical report.',
             'known_deficit_2026_t': DEFICIT_2026,
             'china_share_2025': CHINA_SHARE_2025,
             'china_decline_per_yr': CHINA_DECLINE,
@@ -332,7 +348,9 @@ def main():
         },
         'balance': [{'year': r.name, 'supply_t': r['supply_t'], 'demand_t': r['demand_t'],
                      'deficit_t': r['deficit_t'], 'stock_to_use_months': r['stock_to_use_months'],
-                     'price_mtu': r['price_mtu']} for _, r in bal.iterrows()],
+                     'price_mtu': r['price_mtu'],
+                     'other_mine_t': r['other_mine_t'],
+                     'scrap_secondary_t': r['scrap_secondary_t']} for _, r in bal.iterrows()],
         'scenarios': scn_out,
         'caveats': [
             'Inventory is invisible: global tungsten stocks are not publicly reported. The initial '
